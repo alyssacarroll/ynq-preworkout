@@ -2,8 +2,8 @@
 {% block title %}pre-workout quiz{% endblock %}
 
 {% block user %}
-    {% if usr != "" %}
-        <p>Welcome, {{ usr }}!</p>
+    {% if usr != "" and usr != None %}
+        <p>Hi, {{ usr }}!</p>
     {% endif %}
 {% endblock %}
 

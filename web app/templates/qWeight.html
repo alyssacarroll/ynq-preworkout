@@ -1,8 +1,8 @@
 {% extends "quiz_template.html" %}
 {% block content %}
     <h2>What's your weight?</h2>
-    <form method="POST" action="/quiz/results">
-        <input class="form-control" type="text" name="weight" placeholder="Default input" aria-label="default input example">
+    <form method="POST" action="/quiz/weight">
+        <span><input class="form-control" type="text" name="weight" placeholder="Weight (in lbs)" aria-label="default input example"><p>lbs</p></span>
         <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </form> 
 
