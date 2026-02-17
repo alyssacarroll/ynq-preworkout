@@ -19,7 +19,7 @@ def get_db():
         host="localhost",
         user="root",
         password="password",
-        database="preworkout_products",
+        database="mydb",
     )
 
 def ensure_tables(conn):
