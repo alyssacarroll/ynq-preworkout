@@ -1,24 +1,22 @@
 {% extends "base.html" %}
 
-<style>
-/* Smooth animation */
-.btn {
-  transition: all 0.2s ease;
-}
-
-/* Hover effect */
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
-}
-
-/* Optional: stronger selected state */
-.btn-check:checked + .btn {
-  background-color: #111;
-  color: white;
-  border-color: #111;
-}
-</style>
+{% block styles %}
+{{ super() }}
+  <style>
+    .btn {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+    }
+    .btn-check:checked + .btn {
+      background-color: #4b4b4b;
+      color: white;
+      border-color: #111;
+    }
+  </style>
+{% endblock %}
 
 {% block title %}pre-workout quiz{% endblock %}
 

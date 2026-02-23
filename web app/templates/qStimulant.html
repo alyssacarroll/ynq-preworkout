@@ -1,38 +1,30 @@
 {% extends "quiz_template.html" %}
 {% block content %}
 <h2>How much stimulant do you want your pre-workout to have?</h2>
+<br>
 <form method="POST" action="/quiz/stimulant">
 
     <div class="d-grid gap-3 col-6 mx-auto">
 
-        <input type="radio" class="btn-check" name="stimulant" id="stimulant1" autocomplete="off">
-        <label class="btn btn-outline-dark" for="stimulant1">Low Stimulant</label>
+        <input type="radio" class="btn-check" name="stimulant" id="no-stimulant" value="0" autocomplete="off">
+        <label class="btn btn-outline-dark" for="no-stimulant">None</label>
 
-        <input type="radio" class="btn-check" name="stimulant" id="stimulant2" autocomplete="off">
-        <label class="btn btn-outline-dark" for="stimulant2">Medium Stimulant</label>
+        <input type="radio" class="btn-check" name="stimulant" id="low-stimulant" value="50" autocomplete="off">
+        <label class="btn btn-outline-dark" for="low-stimulant">Low</label>
 
-        <input type="radio" class="btn-check" name="stimulant" id="stimulant3" autocomplete="off">
-        <label class="btn btn-outline-dark" for="stimulant3">High Stimulant</label>
+        <input type="radio" class="btn-check" name="stimulant" id="medium-stimulant" value="150" autocomplete="off">
+        <label class="btn btn-outline-dark" for="medium-stimulant">Moderate</label>
 
-    <button type="submit" class="btn btn-primary mt-3">Next</button>
+        <input type="radio" class="btn-check" name="stimulant" id="high-stimulant" value="250"  autocomplete="off">
+        <label class="btn btn-outline-dark" for="high-stimulant">High</label>        
+
+        <input type="radio" class="btn-check" name="stimulant" id="any-stimulant" value="any" autocomplete="off">
+        <label class="btn btn-outline-dark" for="any-stimulant">I don't care</label>
+    </div>
+    
+<button type="submit" class="btn btn-primary mt-4" style="width: 75px;">Next</button>
 </form>
-<style>
-/* Smooth animation */
-.btn {
-  transition: all 0.2s ease;
-}
 
-/* Hover effect */
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
-}
 
-/* Optional: stronger selected state */
-.btn-check:checked + .btn {
-  background-color: #111;
-  color: white;
-  border-color: #111;
-}
-</style>
+
 {% endblock %}

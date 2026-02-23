@@ -67,7 +67,7 @@ def goals():
 @app.route("/quiz/stimulant", methods=["GET", "POST"])
 def stimulant():
     if request.method == "POST":
-        session["stimulant"] = request.form.get("stimulant", "").strip()
+        session["stimulant"] = request.form.get("stimulant", "")
         return redirect(url_for('results'))
     return render_template("qStimulant.html",
                            usr=session.get("user"))
