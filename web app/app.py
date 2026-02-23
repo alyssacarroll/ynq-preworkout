@@ -138,14 +138,14 @@ def products():
 def calculate_ingredient_amounts():
     """ calculates ingredient amounts based on quiz responses and stores in session
     
-    2-9 mg/kg caffeine, 3.2-6.4 g beta-alanine, 3-5 g creatine
+    2-9 mg/kg caffeine, 0.3 g beta-alanine, 0.03 g creatine
     """
     kg = int(session.get("weight")) * 0.453592
     
     # initial calculations
     caffeine     = int(kg * 5.5)
-    beta_alanine = int(kg * 4800)
-    creatine     = int(kg * 4000)
+    beta_alanine = 4800
+    creatine     = int(kg * 30)
     
     # factoring in preferences
     stim = session.get("stimulant")
