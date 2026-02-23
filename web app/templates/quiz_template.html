@@ -1,4 +1,25 @@
 {% extends "base.html" %}
+
+<style>
+/* Smooth animation */
+.btn {
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+}
+
+/* Optional: stronger selected state */
+.btn-check:checked + .btn {
+  background-color: #111;
+  color: white;
+  border-color: #111;
+}
+</style>
+
 {% block title %}pre-workout quiz{% endblock %}
 
 {% block user %}

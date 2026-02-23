@@ -14,11 +14,6 @@ def home():
     return render_template("home.html")
 
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
-@app.route("/quiz")
-def quiz():
-    return render_template("quiz_template.html",
-                           usr=session.get("user"))
-
 
 @app.route("/quiz/name", methods=["GET", "POST"])
 def name():

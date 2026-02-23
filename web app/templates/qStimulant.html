@@ -1,9 +1,38 @@
 {% extends "quiz_template.html" %}
 {% block content %}
-    <h2>How much stimulant do you want your pre-workout to have?</h2>
-    <form method="POST" action="/quiz/stimulant">
-        <span><input class="form-control" type="text" name="stimulant" placeholder="Stimulant (in mg)" aria-label="200mg"><p>mg</p></span>
-        <button type="submit" class="btn btn-primary mt-3">Next</button>
-    </form> 
+<h2>How much stimulant do you want your pre-workout to have?</h2>
+<form method="POST" action="/quiz/stimulant">
 
+    <div class="d-grid gap-3 col-6 mx-auto">
+
+        <input type="radio" class="btn-check" name="stimulant" id="stimulant1" autocomplete="off">
+        <label class="btn btn-outline-dark" for="stimulant1">Low Stimulant</label>
+
+        <input type="radio" class="btn-check" name="stimulant" id="stimulant2" autocomplete="off">
+        <label class="btn btn-outline-dark" for="stimulant2">Medium Stimulant</label>
+
+        <input type="radio" class="btn-check" name="stimulant" id="stimulant3" autocomplete="off">
+        <label class="btn btn-outline-dark" for="stimulant3">High Stimulant</label>
+
+    <button type="submit" class="btn btn-primary mt-3">Next</button>
+</form>
+<style>
+/* Smooth animation */
+.btn {
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+}
+
+/* Optional: stronger selected state */
+.btn-check:checked + .btn {
+  background-color: #111;
+  color: white;
+  border-color: #111;
+}
+</style>
 {% endblock %}
