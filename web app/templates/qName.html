@@ -1,9 +1,9 @@
 {% extends "quiz_template.html" %}
 {% block content %}
-    <h2 class="container" style="padding-top: 50px">What's your name?</h2>
+    <h2 class="container question">What's your name?</h2>
     <form method="POST" action="/quiz/name">
-        <input class="form-control" type="text" name="user" placeholder="Your Name" aria-label="name input example">
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        <input class="form-control" type="text" name="user" placeholder="Your Name" aria-label="name input example" style="margin-bottom: 1rem">
+        <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
     </form> 
 
 {% endblock %}

@@ -2,8 +2,8 @@
 {% block content %}
     <h2>What's your weight?</h2>
     <form method="POST" action="/quiz/weight">
-        <span><input class="form-control" type="text" name="weight" placeholder="Weight (in lbs)" aria-label="default input example"><p>lbs</p></span>
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        <div class="d-flex justify-content-center"><input class="form-control" type="text" name="weight" placeholder="Weight (in lbs)" aria-label="weight input" style="text-align: center;"></div>
+        <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
     </form> 
 
 {% endblock %}

@@ -18,21 +18,26 @@
 
         .logo {
             height: auto;
-            font-size: 2.5rem;
+            font-size: 1.5rem;
+            padding: 0.5rem;
         }
 
         .app-container {
             display: flex;
             justify-content: center;
+            align-items: center;
+            /* make container fill the viewport minus header space so we can vertically center */
+            min-height: calc(100vh - 4rem);
             padding: 1rem;
         }
 
         .app-inner {
             max-width: 980px;
             margin: 0 auto;
-            /* center inner content horizontally */
             text-align: center;
-            /* center inner text */
+            /* lift the inner content higher above the exact center */
+            transform: translateY(-50%);
+            transition: transform 200ms ease;
         }
     </style>
 
@@ -45,6 +50,9 @@
     <h1 class="logo">YNQ Pre-Workout</h1>
     <div class="app-container">
         <div class="app-inner">
+            
+            <h1 style="margin-bottom: 1rem;">YNQ Pre-Workout</h1>
+            
             <h3>Find the pre-workout that works for <u>you</u></h3>
             {% block content %}
             <a href='/quiz/name'> take quiz </a>
