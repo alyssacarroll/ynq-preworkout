@@ -1,10 +1,12 @@
 from unittest import case
 
 from flask import Flask, redirect, url_for, render_template, request, session
+from datetime import timedelta
 import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = "key"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 DB_NAME = "dlsd_preworkout_products"
 TABLE_NAME = "preworkout"
@@ -28,6 +30,7 @@ def name():
     """
     if request.method == "POST": # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
+        session.permanent = True
         return redirect(url_for('weight'))  # redirect to weight question page
     return render_template("qName.html", 
                            usr=session.get("user"))  
@@ -163,8 +166,8 @@ def calculate_ingredient_weights():
     
     2-9 mg/kg caffeine, 0.03 g creatine, 0.3 g beta-alanine
     """
-    # convert weight to kg
-    kg = int(session.get("weight")) * 0.453592
+    
+    stim = session.get("stimulant")
     
     # initial calculations
     caffeine         = 0                    
@@ -201,7 +204,6 @@ def calculate_ingredient_weights():
         betaine += 1 
                        
     # factoring in preferences
-    stim = session.get("stimulant")
     match stim:
         case "none":
             caffeine = 0
@@ -211,6 +213,8 @@ def calculate_ingredient_weights():
             caffeine += 2
         case "high":
             caffeine += 3
+        case "any":
+            caffeine += 0
 
     return caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
            l_citrulline, l_theanine, l_tyrosine, taurine, betaine
@@ -219,8 +223,26 @@ def calculate_ranges():
     """ calculates ingredient ranges based on ingredient weights and stores in session
         TODO: calculate ranges -- maybe split into different methods
     """
+    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
+    l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
+    
+    # convert weight to kg
+    kg = int(session.get("weight")) * 0.453592
+    
     caffeine_min = 0
     caffeine_max = 0
+    if caffeine == 1:
+        caffeine_min = 50
+        caffeine_max = kg * 2
+    elif caffeine == 2:
+        caffeine_min = kg * 2
+        caffeine_max = kg * 4
+    elif caffeine == 3:
+        caffeine_min = kg * 4
+        caffeine_max = kg * 6
+    elif caffeine == 4:
+        caffeine_min = kg * 6
+        caffeine_max = kg * 9
     
     beta_alanine_min = 0
     beta_alanine_max = 0
