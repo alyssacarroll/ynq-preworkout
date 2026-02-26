@@ -49,7 +49,7 @@ def weight():
     """
     if request.method == "POST":
         session["weight"] = request.form.get("weight", "").strip()
-        return redirect(url_for('stimulant'))
+        return redirect(url_for('goals'))
     return render_template("qWeight.html", 
                            usr=session.get("user"))
   
@@ -62,9 +62,12 @@ def goals():
         # TODO: store goals in session
         session["pumpGoal"] = False
         session["energyGoal"] = False
+        session["focusGoal"] = False
         session["enduranceGoal"] = False
+        return redirect(url_for('stimulant'))
     # TODO: create qGoals.html
-    return -1
+    return render_template("qGoals.html",
+                           usr=session.get("user"))
 
 # TODO: change to stimulant level
 @app.route("/quiz/stimulant", methods=["GET", "POST"])

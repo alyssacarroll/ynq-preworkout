@@ -2,13 +2,14 @@
 
 {% block content %}
     <h2>Thank you for taking the quiz!</h2>
-    <p>Your weight is: {{ weight }}<i>lbs</i></p>
-    <p>Your desired stimulant content is: {{ stimulant }}<i>mg</i></p>
+    <p>Your weight is:<i> {{ weight }} lbs</i></p>
+    <p>Your desired stimulant content is:<i> {{ stimulant }}</i></p>
     <p>Based on your quiz results, we recommend the following ingredient amounts:</p>
-    <ul>
-        <li>Caffeine: {{ caffeine }} mg</li>
-        <li>Beta-Alanine: {{ (beta_alanine / 1000) | int }} g</li>
-        <li>Creatine: {{ (creatine / 1000) | round(2) }} g</li>
+    <p>    
+        Caffeine: {{ caffeine }} mg<br>
+        Beta-Alanine: {{ (beta_alanine / 1000) | int }} g<br>
+        Creatine: {{ (creatine / 1000) | round(2) }} g<br>
+    </p>
     <p> click <a href="/quiz/customize">here</a> to customize your blend</p>
     <p> click <a href="/"        >here</a> to go back home </p>
 {% endblock %}
