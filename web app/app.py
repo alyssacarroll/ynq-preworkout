@@ -149,7 +149,7 @@ def calculate_ingredient_amounts():
     
     # initial calculations
     caffeine     = int(kg * 5.5)    # mg
-    creatine     = kg * 0.03        # g
+    creatine     = round((kg * 0.03), 2)        # g
     beta_alanine = 4.8              # g
     
     # factoring in preferences
