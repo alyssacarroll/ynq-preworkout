@@ -28,10 +28,10 @@ def name():
         _type_: render_template or redirect
         renders name question page or redirects to weight question page
     """
-    if request.method == "POST": # user submits name
+    if request.method == "POST":                                # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
-        session.permanent = True
-        return redirect(url_for('weight'))  # redirect to weight question page
+        session.permanent = True                                # make session permanent (lasts for 10 minutes)
+        return redirect(url_for('weight'))                      # redirect to weight question page
     return render_template("qName.html", 
                            usr=session.get("user"))  
    
