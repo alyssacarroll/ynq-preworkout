@@ -77,7 +77,7 @@ def goals():
 def stimulant():
     if request.method == "POST":
         session["stimulant"] = request.form.get("stimulant", "")
-        return redirect(url_for('results'))
+        return redirect(url_for('customize'))
     return render_template("qStimulant.html",
                            usr=session.get("user"))
 
@@ -148,11 +148,19 @@ def products():
     cur.close()
     conn.close()
 
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
+
     return render_template("products.html",
                             products=products,
                             caffeine=session.get("custom_caffeine"),
                             beta_alanine=session.get("custom_betaAlanine"),
-                            creatine=session.get("custom_creatine")
+                            creatine=session.get("custom_creatine"),
+                            caffeine_min=caffeine_min,
+                            caffeine_max=caffeine_max,
+                            beta_alanine_min=beta_alanine_min,
+                            beta_alanine_max=beta_alanine_max,
+                            creatine_min=creatine_min,
+                            creatine_max=creatine_max
     )
 
 
@@ -251,7 +259,7 @@ def calculate_ranges():
         beta_alanine_max = 2.5
     if beta_alanine == 2:
         beta_alanine_min = 2.5
-        beta_alanine_max = 4.5
+        beta_alanine_max = 3.9
     if beta_alanine == 3:
         beta_alanine_min = 4.5
         beta_alanine_max = 6.4

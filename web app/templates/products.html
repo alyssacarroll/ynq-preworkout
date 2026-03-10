@@ -4,57 +4,97 @@
 
 {% block content %}
 
-    {% set productFound = false %}
+{% set productFound = false %}
 
-    <h1>Products</h1>
-    <div> Caffeine: {{ caffeine }}mg</div>
-    <div> Creatine: {{ creatine }}g</div>
-    <div style="margin-bottom: 20px;"> Beta-Alanine: {{ beta_alanine }}g</div>
+<h1>Products</h1>
+<div> Caffeine: {{ caffeine }}mg</div>
+<div> Creatine: {{ creatine }}g</div>
+<div style="margin-bottom: 20px;"> Beta-Alanine: {{ beta_alanine }}g</div>
 
-    {% if products %}
-        <div class="row g-4">
-            {% for p in products %}
+{% if products %}
+<div class="row g-4">
+    {% for p in products %}
 
-            {% if p["Caffeine Blend"] == caffeine     | int
-            and   p["Creatine"]       == creatine     | float
-            and   p["Beta_Alanine"]   == beta_alanine | float %}
+    {% if p["Caffeine Blend"] | int== caffeine | int
+    and p["Creatine"] | float == creatine | float
+    and p["Beta_Alanine"] | float == beta_alanine | float %}
 
-            {% set productFound = true %}
+    {% set productFound = true %}
 
-            <div class="col-md-6 col-lg-4">
-                <!-- card structure from Bootstrap -->
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-start">
-                        <h5 class="card-title">{{ p["Product Name"] }}</h5>
-                        <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
-                        <div class="card-text small ingredients">
-                            <strong>Ingredients:</strong>
+    <div class="col-md-6 col-lg-4">
+        <!-- card structure from Bootstrap -->
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-start">
+                <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
+                <div class="card-text small ingredients">
+                    <strong>Ingredients:</strong>
 
-                            <div>Calories: <i>{{ p["Calories"] }}</i></div>
-                            <div>Caffeine Blend: <i>{{ p["Caffeine Blend"] | int }}mg</i></div>
-                            <div>Creatine: <i>{{ p["Creatine"] }}g</i></div>
-                            <div>Beta-Alanine: <i>{{ p["Beta_Alanine"] }}g</i></div>
-                            
-                            
-                            <!-- <div>Other Ingredients:</div>
+                    <div>Calories: <i>{{ p["Calories"] }}</i></div>
+                    <div>Caffeine Blend: <i>{{ p["Caffeine Blend"] | int }}mg</i></div>
+                    <div>Creatine: <i>{{ p["Creatine"] | round(1) }}g</i></div>
+                    <div>Beta-Alanine: <i>{{ p["Beta_Alanine"] }}g</i></div>
+
+                    <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" 
+                    target="_blank" class="btn btn-sm mt-3 d-block text-center" 
+                    style="background: var(--accent); color: #fcfaf6; border-radius: 4px; font-weight: 600;
+                    letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem;">
+                    View Product →
+                    </a>
+                    <!-- <div>Other Ingredients:</div>
                             <i class="ingredients-list text-muted" style="font-size: small;">
                                 {{ p["Other Ingredients"] }}
                             </i> -->
 
-                        </div>
-                    </div>
                 </div>
             </div>
-            {% endif %}
-
-            {% endfor %}
         </div>
+    </div>
     {% endif %}
 
-    {% if not productFound %}
-        <p>No product found with those specifications.</p>
-        <p> Here are similar products:</p>
-        <!-- TODO: add products that are similar to the user's preferences -->
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if not productFound %}
+<h4 style="margin-top: 3rem;"> Similar products:</h4>
+<!-- TODO: add products that are similar to the user's preferences -->
+<div class="row g-4">
+    {% for p in products %}
+
+    {% if p["Caffeine Blend"] >= caffeine_min | int and p["Caffeine Blend"] <= caffeine_max | int
+    and p["Creatine"] >= creatine_min | float and p["Creatine"] <= creatine_max | float
+    and p["Beta_Alanine"] >= beta_alanine_min | float and p["Beta_Alanine"] <= beta_alanine_max | float %}
+
+
+    <div class="col-md-6 col-lg-4">
+        <!-- card structure from Bootstrap -->
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-start">
+                <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
+                <div class="card-text small ingredients">
+                    <strong>Ingredients:</strong>
+
+                    <div>Calories: <i>{{ p["Calories"] }}</i></div>
+                    <div>Caffeine Blend: <i>{{ p["Caffeine Blend"] | int }}mg</i></div>
+                    <div>Creatine: <i>{{ p["Creatine"] }}g</i></div>
+                    <div>Beta-Alanine: <i>{{ p["Beta_Alanine"] }}g</i></div>
+
+                    <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" 
+                    target="_blank" class="btn btn-sm mt-3 d-block text-center" 
+                    style="background: var(--accent); color: #fcfaf6; border-radius: 4px; font-weight: 600; 
+                    letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem;">
+                    View Product →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
+
+    {% endfor %}
+</div>
+{% endif %}
 
 {% endblock %}
