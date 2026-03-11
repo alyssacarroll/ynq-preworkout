@@ -5,19 +5,30 @@
 {% block content %}
 
 {% set productFound = false %}
+{% set c = caffeine | int %}
+{% set cr = creatine | float %}
+{% set ba = beta_alanine | float %}
 
 <h1>Products</h1>
-<div> Caffeine: {{ caffeine }}mg</div>
-<div> Creatine: {{ creatine }}g</div>
-<div style="margin-bottom: 20px;"> Beta-Alanine: {{ beta_alanine }}g</div>
+<!-- <div> Caffeine: {{ caffeine }}mg</div> -->
 
 {% if products %}
 <div class="row g-4">
     {% for p in products %}
 
-    {% if p["Caffeine Blend"] | int== caffeine | int
-    and p["Creatine"] | float == creatine | float
-    and p["Beta_Alanine"] | float == beta_alanine | float %}
+    <!-- Score calculation -->
+    {% set score = 0 %}
+    {% if p["Caffeine Blend"] | int == c %}
+    {% set score = score + 1 %}
+    {% endif %}
+    {% if p["Creatine"] | float == cr %}
+    {% set score = score + 1 %}
+    {% endif %}
+    {% if p["Beta_Alanine"] | float == ba %}
+    {% set score = score + 1 %}
+    {% endif %}
+
+    {% if score == 3 %}
 
     {% set productFound = true %}
 
@@ -51,42 +62,28 @@
         </div>
     </div>
     {% endif %}
-
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if not productFound %}
-<h4 style="margin-top: 3rem;"> Similar products:</h4>
-<!-- TODO: add products that are similar to the user's preferences -->
-<div class="row g-4">
-    {% for p in products %}
-
-    {% if p["Caffeine Blend"] >= caffeine_min | int and p["Caffeine Blend"] <= caffeine_max | int
-    and p["Creatine"] >= creatine_min | float and p["Creatine"] <= creatine_max | float
-    and p["Beta_Alanine"] >= beta_alanine_min | float and p["Beta_Alanine"] <= beta_alanine_max | float %}
-
-
+    {% if score == 2 and not productFound %}
     <div class="col-md-6 col-lg-4">
         <!-- card structure from Bootstrap -->
         <div class="card h-100 shadow-sm">
             <div class="card-body text-start">
-                <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                <h5 class="card-title">{{ p["Product Name"] }} score=2</h5>
                 <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
                 <div class="card-text small ingredients">
                     <strong>Ingredients:</strong>
 
                     <div>Calories: <i>{{ p["Calories"] }}</i></div>
                     <div>Caffeine Blend: <i>{{ p["Caffeine Blend"] | int }}mg</i></div>
-                    <div>Creatine: <i>{{ p["Creatine"] }}g</i></div>
+                    <div>Creatine: <i>{{ p["Creatine"] | round(1) }}g</i></div>
                     <div>Beta-Alanine: <i>{{ p["Beta_Alanine"] }}g</i></div>
 
                     <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" 
                     target="_blank" class="btn btn-sm mt-3 d-block text-center" 
-                    style="background: var(--accent); color: #fcfaf6; border-radius: 4px; font-weight: 600; 
+                    style="background: var(--accent); color: #fcfaf6; border-radius: 4px; font-weight: 600;
                     letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem;">
                     View Product →
                     </a>
+
                 </div>
             </div>
         </div>
@@ -95,6 +92,50 @@
 
     {% endfor %}
 </div>
+{% endif %}
+
+{% if productFound == false %}
+    <h4 style="margin-top: 3rem;"> Similar products:</h4>
+    <!-- TODO: add products that are similar to the user's preferences -->
+    <div class="row g-4">
+        {% for p in products %}
+
+        {% if (p["Caffeine Blend"] | int) >= (c - 50)
+        and (p["Caffeine Blend"] | int) <= (c + 50)
+        and (p["Creatine"] | float)     >= (cr - 2.5)
+        and (p["Creatine"] | float)     <= (cr + 2.5)
+        and (p["Beta_Alanine"] | float) >= (ba - 0.5)
+        and (p["Beta_Alanine"] | float) <= (ba + 0.5) %}
+
+
+        <div class="col-md-6 col-lg-4">
+            <!-- card structure from Bootstrap -->
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-start">
+                    <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                    <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
+                    <div class="card-text small ingredients">
+                        <strong>Ingredients:</strong>
+
+                        <div>Calories: <i>{{ p["Calories"] }}</i></div>
+                        <div>Caffeine Blend: <i>{{ p["Caffeine Blend"] | int }}mg</i></div>
+                        <div>Creatine: <i>{{ p["Creatine"] }}g</i></div>
+                        <div>Beta-Alanine: <i>{{ p["Beta_Alanine"] }}g</i></div>
+
+                        <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" 
+                        target="_blank" class="btn btn-sm mt-3 d-block text-center" 
+                        style="background: var(--accent); color: #fcfaf6; border-radius: 4px; font-weight: 600; 
+                        letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem;">
+                        View Product →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% endfor %}
+    </div>
 {% endif %}
 
 {% endblock %}
