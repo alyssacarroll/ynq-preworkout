@@ -26,7 +26,7 @@
 
 {% if products %}
 
-  {# â”€â”€ EXACT / SCORE=3 MATCHES â”€â”€ #}
+  {# -- EXACT / SCORE=3 MATCHES -- #}
   {% set ns = namespace(found=false) %}
   {% for p in products %}
     {% set score = 0 %}
@@ -70,7 +70,7 @@
   </div>
   {% endif %}
 
-  {# â”€â”€ SCORE=2 MATCHES (only if no perfect matches) â”€â”€ #}
+  {# -- SCORE=2 MATCHES (only if no perfect matches) -- #}
   {% if not ns.found %}
   <div class="section-divider">
     <span class="section-divider-label">Close Matches</span>
@@ -105,7 +105,7 @@
   </div>
   {% endif %}
 
-  {# â”€â”€ SIMILAR PRODUCTS (fuzzy range, only if no exact match found) â”€â”€ #}
+  {# -- SIMILAR PRODUCTS (fuzzy range, only if no exact match found) -- #}
   {% if not ns.found %}
   <div class="section-divider" style="margin-top: 3rem;">
     <span class="section-divider-label">Similar Products</span>
