@@ -15,6 +15,51 @@
       color: white;
       border-color: #111;
     }
+
+    /* Quiz progress navbar */
+    .quiz-nav {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      color: #bbb;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .quiz-nav-item.completed {
+      color: #555;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .quiz-nav-item.active {
+      color: #2c2c28;
+      pointer-events: auto;
+      font-weight: 600;
+    }
+
+    .quiz-nav-bar {
+      height: 3px;
+      width: 100%;
+      border-radius: 2px;
+      background-color: #ddd;
+    }
+
+    .quiz-nav-item.completed .quiz-nav-bar,
+    .quiz-nav-item.active .quiz-nav-bar {
+      background-color: #529963;
+    }
   </style>
 {% endblock %}
 
@@ -26,4 +71,34 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+  {% set steps = [
+    ("name",      "Name",      "/quiz/name"),
+    ("goals",     "Goals",     "/quiz/goals"),
+    ("stimulant", "Stimulant", "/quiz/stimulant"),
+    ("customize", "Customize", "/quiz/customize")
+  ] %}
+
+  {% set completed = session.get("completed_steps", []) %}
+
+  <nav class="quiz-nav">
+    {% for step_id, label, url in steps %}
+      {% if step_id == current_step %}
+        <a class="quiz-nav-item active" href="{{ url }}">
+          {{ label }}
+          <div class="quiz-nav-bar"></div>
+        </a>
+      {% elif step_id in completed %}
+        <a class="quiz-nav-item completed" href="{{ url }}">
+          {{ label }}
+          <div class="quiz-nav-bar"></div>
+        </a>
+      {% else %}
+        <span class="quiz-nav-item">
+          {{ label }}
+          <div class="quiz-nav-bar"></div>
+        </span>
+      {% endif %}
+    {% endfor %}
+  </nav>
+{% endblock %}
