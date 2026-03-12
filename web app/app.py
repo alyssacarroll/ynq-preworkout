@@ -31,9 +31,14 @@ def name():
     if request.method == "POST":                                # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
         session.permanent = True                                # make session permanent (lasts for 10 minutes)
+        session["completed_steps"] = session.get("completed_steps", [])
+        if "name" not in session["completed_steps"]:
+            session["completed_steps"].append("name")
         return redirect(url_for('goals'))                      # redirect to weight question page
     return render_template("qName.html", 
-                           usr=session.get("user"))  
+                           usr=session.get("user"),
+                           current_step="name"
+                           )  
    
 
 #TODO
@@ -68,18 +73,26 @@ def goals():
         session["focusGoal"]     = "focus"     in selected_goals
         session["enduranceGoal"] = "endurance" in selected_goals
         session["strengthGoal"]  = "strength"  in selected_goals
+        if "goals" not in session["completed_steps"]:
+            session["completed_steps"].append("goals")
         return redirect(url_for('stimulant'))
     return render_template("qGoals.html",
-                           usr=session.get("user"))
+                           usr=session.get("user"),
+                           current_step="goals"
+                           )
 
 # TODO: change to stimulant level
 @app.route("/quiz/stimulant", methods=["GET", "POST"])
 def stimulant():
     if request.method == "POST":
         session["stimulant"] = request.form.get("stimulant", "")
+        if "stimulant" not in session["completed_steps"]:
+            session["completed_steps"].append("stimulant")
         return redirect(url_for('customize'))
     return render_template("qStimulant.html",
-                           usr=session.get("user"))
+                           usr=session.get("user"),
+                           current_step="stimulant"
+                           )
 
 
 # <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
@@ -121,6 +134,7 @@ def customize():
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
+                            current_step="customize",
                             caffeine_min=caffeine_min,
                             caffeine_max=caffeine_max,
                             beta_alanine_min=beta_alanine_min,
