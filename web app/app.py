@@ -1,16 +1,15 @@
-from unittest import case
-
 from flask import Flask, redirect, url_for, render_template, request, session
 from datetime import timedelta
-import mysql.connector
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://user:n9bmGzRxr8UNq99WXWkxJUstotwiIB6n@dpg-d6q0muk50q8c73cf2dd0-a.virginia-postgres.render.com/dlsd_preworkout_products"
+db = SQLAlchemy(app)
+
 app.secret_key = "key"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
-
-DB_NAME = "dlsd_preworkout_products"
-TABLE_NAME = "preworkout"
-DB_PASSWORD = "password"
 
 
 # <><><><><><><><><><><><><> MAIN PAGE <><><><><><><><><><><><><><><><>
@@ -147,20 +146,10 @@ def customize():
 @app.route("/products")
 def products(): 
     # establish connection w/ database
-    conn = mysql.connector.connect(
-       host="localhost",
-       user="root",
-       password=DB_PASSWORD,
-       database=DB_NAME
-    )
-    cur = conn.cursor(dictionary=True)  # cursor that collects data
+    query = text("SELECT * FROM preworkout")
+    result = db.session.execute(query)
 
-    cur.execute("SELECT * FROM " + TABLE_NAME)  
-    products = cur.fetchall()
-
-    # close database connection
-    cur.close()
-    conn.close()
+    products = [dict(row._mapping) for row in result]
 
     caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
 
