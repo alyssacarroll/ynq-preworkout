@@ -2,10 +2,11 @@ from flask import Flask, redirect, url_for, render_template, request, session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+import os
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://user:n9bmGzRxr8UNq99WXWkxJUstotwiIB6n@dpg-d6q0muk50q8c73cf2dd0-a.virginia-postgres.render.com/dlsd_preworkout_products"
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL = os.getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 
 app.secret_key = "key"
