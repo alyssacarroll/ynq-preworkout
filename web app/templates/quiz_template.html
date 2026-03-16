@@ -2,89 +2,195 @@
 
 {% block styles %}
 {{ super() }}
-  <style>
-    .btn {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 3px 7px rgba(0,0,0,0.1);
-    }
-    .btn-check:checked + .btn {
-      background-color: #4b4b4b;
-      color: white;
-      border-color: #111;
-    }
+<style>
+  .btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-    .quiz-nav {
-      display: flex;
-      justify-content: center;
-      gap: 2.5rem;
-      margin-bottom: 2rem;
-    }
-    .quiz-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-      text-decoration: none;
-      color: #bbb;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      pointer-events: none;
-    }
-    .quiz-nav-item.completed {
-      color: #555;
-      pointer-events: auto;
-      cursor: pointer;
-    }
-    .quiz-nav-item.active {
-      color: #2c2c28;
-      pointer-events: auto;
-      font-weight: 600;
-    }
-    .quiz-nav-bar {
-      height: 3px;
-      width: 100%;
-      border-radius: 2px;
-      background-color: #ddd;
-    }
-    .quiz-nav-item.completed .quiz-nav-bar,
-    .quiz-nav-item.active .quiz-nav-bar {
-      background-color: #529963;
-    }
-  </style>
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-check:checked+.btn {
+    background-color: #4b4b4b;
+    color: white;
+    border-color: #111;
+  }
+
+  /* Custom submit button that preserves Bootstrap basics */
+  .btn.btn-submit {
+    background-color: #529963;
+    color: #ffffff;
+    border-color: #5faa70;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .btn.btn-submit:hover,
+  .btn.btn-submit:focus {
+    background-color: #67b378;
+    border-color: #529963;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+  }
+
+  .btn.btn-submit:active {
+    background-color: #1e7e34;
+    border-color: #1c7430;
+  }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .quiz-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    text-decoration: none;
+    color: #bbb;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .quiz-nav-item.completed {
+    color: #555;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .quiz-nav-item.active {
+    color: #2c2c28;
+    pointer-events: auto;
+    font-weight: 600;
+  }
+
+  .quiz-nav-bar {
+    height: 3px;
+    width: 100%;
+    border-radius: 2px;
+    background-color: #ddd;
+  }
+
+  .quiz-nav-item.completed .quiz-nav-bar,
+  .quiz-nav-item.active .quiz-nav-bar {
+    background-color: #529963;
+  }
+
+  /* back button */
+  .btn-back {
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    width: fit-content;
+    margin-top: -0.5rem;
+  }
+
+  .btn-back:hover {
+    transform: translateY(-2px);
+    text-shadow: #242422;
+    color: #535350;
+  }
+
+  /* SLIDERS */
+  .slider {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .slider.card {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .slider label {
+    margin-bottom: 0.2rem;
+    font-weight: 400;
+  }
+
+  .slider .mb-0 {
+    margin-bottom: 0rem !important;
+  }
+
+  .slider input[type="range"] {
+    margin-top: 0.2rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .slider small {
+    line-height: 0.25;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    background-color: #6eb17d !important;
+  }
+
+  .form-range::-moz-range-thumb {
+    background-color: #539962 !important;
+  }
+
+  /* remove bootstrap blue glow */
+  .form-range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, .25);
+  }
+
+  .form-range:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, .25);
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    background: linear-gradient(--accent, --accent) 0/0% 100% no-repeat, #dee2e6 !important;
+  }
+
+  .form-range::-moz-range-track {
+    background: #dee2e6;
+  }
+</style>
+
 {% endblock %}
 
 {% block title %}pre-workout quiz{% endblock %}
 
 {% block user %}
-    {% if usr != "" and usr != None %}
-        <p>Hi, {{ usr }}!</p>
-    {% endif %}
+{% if usr != "" and usr != None %}
+<p>Hi, {{ usr }}!</p>
+{% endif %}
 {% endblock %}
 
 {% block content %}
-  {% set steps = [
-    ("name",      "Name",      "/quiz/name"),
-    ("goals",     "Goals",     "/quiz/goals"),
-    ("stimulant", "Stimulant", "/quiz/stimulant"),
-    ("customize", "Customize", "/quiz/customize")
-  ] %}
-  {% set completed = session.get("completed_steps", []) %}
+{% set steps = [
+("name", "Name", "/quiz/name"),
+("goals", "Goals", "/quiz/goals"),
+("stimulant", "Stimulant", "/quiz/stimulant"),
+("customize", "Customize", "/quiz/customize")
+] %}
+{% set completed = session.get("completed_steps", []) %}
 
-  <nav class="quiz-nav">
-    {% for step_id, label, url in steps %}
-      {% if step_id == current_step %}
-        <a class="quiz-nav-item active" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
-      {% elif step_id in completed %}
-        <a class="quiz-nav-item completed" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
-      {% else %}
-        <span class="quiz-nav-item">{{ label }}<div class="quiz-nav-bar"></div></span>
-      {% endif %}
-    {% endfor %}
-  </nav>
+<nav class="quiz-nav">
+  {% for step_id, label, url in steps %}
+  {% if step_id == current_step %}
+  <a class="quiz-nav-item active" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
+  {% elif step_id in completed %}
+  <a class="quiz-nav-item completed" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
+  {% else %}
+  <span class="quiz-nav-item">{{ label }}<div class="quiz-nav-bar"></div></span>
+  {% endif %}
+  {% endfor %}
+</nav>
 
-  {% block quiz_content %}{% endblock %}
+{% block quiz_content %}{% endblock %}
 {% endblock %}
