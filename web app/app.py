@@ -7,13 +7,13 @@ import os
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-db = SQLAlchemy(app)
-
-app.secret_key = "key"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
+app.secret_key = "key"
 
-# <><><><><><><><><><><><><> MAIN PAGE <><><><><><><><><><><><><><><><>
+db = SQLAlchemy(app)
+
+# <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 @app.route("/")
 def home():
     return render_template("home.html")
