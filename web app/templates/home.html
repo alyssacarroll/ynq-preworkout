@@ -8,7 +8,9 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <style>
-    *,*::before,*::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -110,18 +112,10 @@
       justify-content: center;
       padding: 8rem 3rem 5rem;
       overflow: hidden;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: -10%;
-      right: -5%;
-      width: 55%;
-      height: 130%;
-      background: linear-gradient(135deg, rgba(143, 170, 139, 0.1) 0%, transparent 60%);
-      transform: skewX(-8deg);
-      pointer-events: none;
+      background-image: linear-gradient(to right, rgba(252, 250, 246, 0.92) 40%, rgba(252, 250, 246, 0.6) 100%),
+      url("{{ url_for('static', filename='wall.png') }}");
+      background-size: cover;
+      background-position: center;
     }
 
     .hero-eyebrow {
@@ -461,22 +455,36 @@
         transform: translateX(-50%);
       }
     }
+
     /* ===== RESPONSIVE FORMATTING ===== */
     /* Tablet */
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
+      nav {
+        padding: 1rem 1.5rem;
+      }
 
       .hero {
         padding: 7rem 1.5rem 4rem;
         min-height: 100svh;
       }
 
-      .hero-sub { max-width: 100%; font-size: 1rem; }
-      .hero-stats { gap: 1.5rem; margin-top: 3rem; }
+      .hero-sub {
+        max-width: 100%;
+        font-size: 1rem;
+      }
 
-      .section { padding: 4rem 1.5rem; }
+      .hero-stats {
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
 
-      .steps { grid-template-columns: 1fr; }
+      .section {
+        padding: 4rem 1.5rem;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
 
       .cta-banner {
         margin: 0 1.5rem 4rem;
@@ -485,9 +493,14 @@
         align-items: flex-start;
       }
 
-      .cta-banner::before { font-size: 8rem; }
+      .cta-banner::before {
+        font-size: 8rem;
+      }
 
-      .btn-dark { width: 100%; text-align: center; }
+      .btn-dark {
+        width: 100%;
+        text-align: center;
+      }
 
       footer {
         padding: 1.5rem;
@@ -499,12 +512,26 @@
 
     /* Mobile */
     @media (max-width: 480px) {
-      nav { padding: 0.9rem 1.25rem; }
-      .nav-brand { font-size: 1.25rem; }
-      .nav-cta { font-size: 0.75rem; padding: 0.45rem 1rem; }
+      nav {
+        padding: 0.9rem 1.25rem;
+      }
 
-      .hero { padding: 6rem 1.25rem 3rem; }
-      .hero-title { -webkit-text-stroke-width: 1px; }
+      .nav-brand {
+        font-size: 1.25rem;
+      }
+
+      .nav-cta {
+        font-size: 0.75rem;
+        padding: 0.45rem 1rem;
+      }
+
+      .hero {
+        padding: 6rem 1.25rem 3rem;
+      }
+
+      .hero-title {
+        -webkit-text-stroke-width: 1px;
+      }
 
       .hero-actions {
         flex-direction: column;
@@ -518,20 +545,34 @@
         padding: 0.9rem 1.5rem;
       }
 
-      .hero-stats { gap: 1.25rem; }
-      .stat-num { font-size: 2rem; }
+      .hero-stats {
+        gap: 1.25rem;
+      }
 
-      .section { padding: 3rem 1.25rem; }
-      .step { padding: 2rem 1.5rem; }
+      .stat-num {
+        font-size: 2rem;
+      }
+
+      .section {
+        padding: 3rem 1.25rem;
+      }
+
+      .step {
+        padding: 2rem 1.5rem;
+      }
 
       .cta-banner {
         margin: 0 1.25rem 3rem;
         padding: 2rem 1.5rem;
       }
 
-      .cta-banner::before { font-size: 5rem; }
+      .cta-banner::before {
+        font-size: 5rem;
+      }
 
-      footer { padding: 1.25rem; }
+      footer {
+        padding: 1.25rem;
+      }
     }
   </style>
 
