@@ -125,9 +125,9 @@ def customize():
 
     """
     if request.method == "POST":
-        session["custom_caffeine"] = request.form.get("custom_caffeine", "").strip()
-        session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", "").strip()
-        session["custom_creatine"] = request.form.get("custom_creatine", "").strip()
+        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
+        session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
+        session["custom_creatine"] = request.form.get("custom_creatine", -1)
         return redirect(url_for('products'))
     caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
     return render_template("qCustomize.html",

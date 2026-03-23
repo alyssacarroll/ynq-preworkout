@@ -159,6 +159,32 @@
   .form-range::-moz-range-track {
     background: #dee2e6;
   }
+
+  .form-check-input:focus {
+    box-shadow: none;
+    border-color: rgba(15, 166, 101, 0.25);
+  }
+
+  .form-check-input:checked {
+    background-color: green;
+    border-color: green;
+  }
+
+  .form-check-input[type="checkbox"].form-check-input {
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+
+  .form-check-input[type="checkbox"].form-check-input:checked {
+    background-color: #529963;
+    border-color: #529963;
+  }
+
+  .form-check-input[type="checkbox"].form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(82, 153, 99, 0.25);
+    border-color: #529963;
+  }
 </style>
 
 {% endblock %}
