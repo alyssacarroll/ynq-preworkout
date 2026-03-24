@@ -304,8 +304,8 @@
 {% set ns = namespace(found=false) %}
 {% for p in products %}
 {% set score = 0 %}
-{% if p["Caffeine Blend"] | int == c %}{% set score = score + 1 %}{% endif %}
-{% if p["Creatine"] | float == cr %}{% set score = score + 1 %}{% endif %}
+{% if p["Caffeine Blend"] | int == c %} {% set score = score + 1 %}{% endif %}
+{% if p["Creatine"] | float == cr %}    {% set score = score + 1 %}{% endif %}
 {% if p["Beta_Alanine"] | float == ba %}{% set score = score + 1 %}{% endif %}
 {% if score == 3 %}{% set ns.found = true %}{% endif %}
 {% endfor %}

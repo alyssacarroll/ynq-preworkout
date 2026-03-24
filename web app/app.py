@@ -11,9 +11,28 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 app.secret_key = "key"
 
+# uri = os.getenv("DATABASE_URL")
+
+# # REMOVE channel_binding (important for psycopg2)
+# uri = uri.replace("&channel_binding=require", "")
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = uri
+
+# app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+#     "pool_pre_ping": True,
+#     "pool_recycle": 300,
+# }
+
 db = SQLAlchemy(app)
 
+# @app.route("/test-db")
+# def test_db():
+#     print(os.getenv("DATABASE_URL"))
+#     db.session.execute(text("SELECT 1"))
+#     return "DB works"
+
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
+
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -165,6 +184,26 @@ def products():
                             beta_alanine_max=beta_alanine_max,
                             creatine_min=creatine_min,
                             creatine_max=creatine_max
+    )
+    
+@app.route("/products")
+def products(): 
+    """
+    NEW AND IMPROVED PRODUCTS FUNCTION
+    """
+    # establish connection w/ database
+    query = text("SELECT * FROM preworkout")
+    result = db.session.execute(query)
+
+    products = [dict(row._mapping) for row in result]
+    ingredients_list = [] # call to calc function
+
+    return render_template("products.html",
+                            products=products,
+                            caffeine=session.get("custom_caffeine"),
+                            beta_alanine=session.get("custom_betaAlanine"),
+                            creatine=session.get("custom_creatine"),
+                            ingredients=ingredients_list
     )
 
 
