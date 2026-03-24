@@ -17,11 +17,18 @@ def length(ingredients):
             length += 1
     return length
 
-# ingredients is list of all ingredients regardless of whether they are toggled or not
 def score_product(product, ingredients):
+    score = 0
     # loop through ingredients in list
-    # score+=1 if match
-    pass
+    for i in ingredients:
+        if i["caffeine"] == product["Caffeine Blend"]:
+            score += 1
+        if i["creatine"] == product["Creatine"]:
+            score += 1
+        if i["beta_alanine"] == product["Beta_Alanine"]:
+            score += 1
+        # TODO: continue this for the rest of ingredients
+    return score
 
 
 def is_similar(product, ingredients):
