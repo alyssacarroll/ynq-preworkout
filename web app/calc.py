@@ -1,6 +1,5 @@
 # ingredients = {caffeine: 100, beta_alanine: 0.5, creatine: 5, l_citrulline: -1}
 
-
 def length(ingredients):
     """finds the number of included/toggled ingredients.
     i.e. ingredients that don't equal -1

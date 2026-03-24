@@ -3,7 +3,8 @@ from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import os
-from calc_ingredients import *
+import calc_ingredients as ci
+import calc
 
 app = Flask(__name__)
 
@@ -120,7 +121,7 @@ def stimulant():
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
     """
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             # weight=session.get("weight"),
@@ -149,7 +150,7 @@ def customize():
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
         session["custom_creatine"] = request.form.get("custom_creatine", -1)
         return redirect(url_for('products'))
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -172,7 +173,7 @@ def products():
 
     products = [dict(row._mapping) for row in result]
 
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
 
     return render_template("products.html",
                             products=products,
@@ -201,7 +202,7 @@ def products2():
                    "beta_alanine": session.get("custom_beta_alanine"),
                    "creatine"    : session.get("custom_creatine")} 
     
-    perfect, close, similar = categorize_products(products, ingredients)
+    perfect, close, similar = calc.categorize_products(products, ingredients)
     return render_template("products.html",
                            perfect=perfect,
                            close=close,
