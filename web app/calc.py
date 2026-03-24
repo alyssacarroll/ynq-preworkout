@@ -1,6 +1,6 @@
 # ingredients = {caffeine: 100, beta_alanine: 0.5, creatine: 5, l_citrulline: -1}
 
-def length(ingredients):
+def get_length(ingredients):
     """finds the number of included/toggled ingredients.
     i.e. ingredients that don't equal -1
 
@@ -18,14 +18,13 @@ def length(ingredients):
 
 def score_product(product, ingredients):
     score = 0
-    # loop through ingredients in list
-    for i in ingredients:
-        if i["caffeine"] == product["Caffeine Blend"]:
-            score += 1
-        if i["creatine"] == product["Creatine"]:
-            score += 1
-        if i["beta_alanine"] == product["Beta_Alanine"]:
-            score += 1
+    if ingredients["caffeine"]     != -1 and int(ingredients["caffeine"])       == int(product["Caffeine Blend"]):
+        score += 1
+    if ingredients["creatine"]     != -1 and float(ingredients["creatine"])     == float(product["Creatine"]):
+        score += 1
+    if ingredients["beta_alanine"] != -1 and float(ingredients["beta_alanine"]) == float(product["Beta_Alanine"]):
+        score += 1
+    return score
         # TODO: continue this for the rest of ingredients
     return score
 
@@ -43,20 +42,20 @@ def is_similar(product, ingredients):
         _type_: _description_
     """
     similarity_score = 0
-    if product["caffeine"] != -1 and abs(int(product["Caffeine Blend"]) - product["caffeine"])    <= 50:
+    if ingredients["caffeine"] != -1 and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"]))    <= 50:
         similarity_score += 1
-    if product["creatine"] != -1 and abs(int(product["Creatine"])       - product["creatine"])    <= 2.5:
+    if ingredients["creatine"] != -1 and abs(int(product["Creatine"])       - int(ingredients["creatine"]))    <= 2.5:
         similarity_score += 1
-    if product["beta_alanine"] and abs(int(product["Beta_Alanine"])     - product["beta_alanine"]) <= 0.5:
+    if ingredients["beta_alanine"] and abs(int(product["Beta_Alanine"])     - int(ingredients["beta_alanine"])) <= 0.5:
         similarity_score += 1
     # TODO: continue this for the rest of ingredients
             
-    return similarity_score == len(ingredients)
+    return similarity_score == get_length(ingredients)
 
 
 def categorize_products(products, ingredients):
     perfect, close, similar = [], [], []
-    length = length(ingredients)
+    length = get_length(ingredients)
     for p in products:
         s = score_product(p, ingredients)
         if s == length:

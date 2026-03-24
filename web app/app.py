@@ -146,22 +146,21 @@ def customize():
 
     """
     if request.method == "POST":
-        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
+        session["custom_caffeine"]    = request.form.get("custom_caffeine", -1)
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
-        session["custom_creatine"] = request.form.get("custom_creatine", -1)
-        return redirect(url_for('products'))
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
+        session["custom_creatine"]    = request.form.get("custom_creatine", -1)
+        return redirect(url_for('products2'))
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
                             current_step="customize",
-                            caffeine_min=caffeine_min,
-                            caffeine_max=caffeine_max,
-                            beta_alanine_min=beta_alanine_min,
-                            beta_alanine_max=beta_alanine_max,
-                            creatine_min=creatine_min,
-                            creatine_max=creatine_max
+                            caffeine_min=0,
+                            caffeine_max=0,
+                            beta_alanine_min=0,
+                            beta_alanine_max=0,
+                            creatine_min=0,
+                            creatine_max=0
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
@@ -198,12 +197,12 @@ def products2():
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients = {"caffeine"    : session.get("custom_caffeine"),
-                   "beta_alanine": session.get("custom_beta_alanine"),
-                   "creatine"    : session.get("custom_creatine")} 
+    ingredients = {"caffeine"    : session.get("custom_caffeine", 0),
+                   "beta_alanine": session.get("custom_beta_alanine", 0),
+                   "creatine"    : session.get("custom_creatine", 0)} 
     
     perfect, close, similar = calc.categorize_products(products, ingredients)
-    return render_template("products.html",
+    return render_template("products2.html",
                            perfect=perfect,
                            close=close,
                            similar=similar,
