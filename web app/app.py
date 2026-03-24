@@ -196,14 +196,14 @@ def products():
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients_list = [] # call to calc function
+    ingredients = [] # call to calc function
 
     return render_template("products.html",
                             products=products,
                             caffeine=session.get("custom_caffeine"),
                             beta_alanine=session.get("custom_betaAlanine"),
                             creatine=session.get("custom_creatine"),
-                            ingredients=ingredients_list
+                            ingredients_list=ingredients
     )
 
 
