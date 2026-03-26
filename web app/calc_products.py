@@ -1,11 +1,12 @@
 # ingredients = {caffeine: 100, beta_alanine: 0.5, creatine: 5, l_citrulline: -1}
 
+
 def get_length(ingredients):
     """finds the number of included/toggled ingredients.
     i.e. ingredients that don't equal -1
 
     Args:
-        ingredients (dict): all ingredients
+        ingredients (dict): all ingredients (from qCustomize page)
 
     Returns:
         int: num ingredients that != -1
@@ -16,13 +17,23 @@ def get_length(ingredients):
             length += 1
     return length
 
+
 def score_product(product, ingredients):
+    """counts how many product ingredients match the user's preferences
+
+    Args:
+        product (dict): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
+        ingredients (dict): list of the ingredients that the user wants in their product
+
+    Returns:
+        int: number of ingredients that match the user's preferences
+    """
     score = 0
-    if ingredients["caffeine"]     != -1 and int(ingredients["caffeine"])       == int(product["Caffeine Blend"]):
+    if ingredients["caffeine"] != -1 and int(ingredients["caffeine"]) == int(product["Caffeine Blend"]):
         score += 1
     if ingredients["beta_alanine"] != -1 and float(ingredients["beta_alanine"]) == float(product["Beta_Alanine"]):
         score += 1
-    if ingredients["creatine"]     != -1 and float(ingredients["creatine"])     == float(product["Creatine"]):
+    if ingredients["creatine"] != -1 and float(ingredients["creatine"]) == float(product["Creatine"]):
         score += 1
     # TODO: continue this for the rest of ingredients
     return score
@@ -34,18 +45,18 @@ def is_similar(product, ingredients):
     for example, if the user wants 100mg of caffeine, a similar product would have 80mg of caffeine.
 
     Args:
-        product (dict_entry): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
+        product (dict): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
         ingredients (dict): list of the ingredients that the user wants in their product
 
     Returns:
         _type_: _description_
     """
     similarity_score = 0
-    if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"])   - int(ingredients["caffeine"]))     <= 50:
+    if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"])) <= 50:
         similarity_score += 1
     if ingredients["beta_alanine"] != -1 and abs(float(product["Beta_Alanine"]) - float(ingredients["beta_alanine"])) <= 0.5:
         similarity_score += 1
-    if ingredients["creatine"] != -1     and abs(float(product["Creatine"])     - float(ingredients["creatine"]))     <= 2.5:
+    if ingredients["creatine"] != -1     and abs(float(product["Creatine"]) - float(ingredients["creatine"])) <= 2.5:
         similarity_score += 1
     # TODO: continue this for the rest of ingredients
             
@@ -53,11 +64,11 @@ def is_similar(product, ingredients):
 
 
 def categorize_products(products, ingredients):
-    """categorizes each product based on their similarity score
+    """categorizes each product into perfect, close, or similar based on their similarity score
 
     Args:
-        products (_type_): _description_
-        ingredients (_type_): _description_
+        products (list): products from DSLD
+        ingredients (dict): user's preferred ingredient doses
 
     Returns:
         perfect (list): products that match every ingredient that the user prefers
@@ -68,10 +79,14 @@ def categorize_products(products, ingredients):
     length = get_length(ingredients)
     for p in products:
         s = score_product(p, ingredients)
+        # product's ingredients match exactly what the user wants
         if s == length:
             perfect.append(p)
-        elif s >= length * 0.75:
+        # product's ingredients match at least 50% of what the user wants
+        # TODO: change to 75% after adding ingredients
+        elif s >= (length * 0.5):
             close.append(p)
+        # product has similar ingredients to what the user wants
         elif is_similar(p, ingredients):
             similar.append(p)
     return perfect, close, similar
