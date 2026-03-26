@@ -149,7 +149,7 @@ def customize():
         session["custom_caffeine"]    = request.form.get("custom_caffeine", -1)
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
         session["custom_creatine"]    = request.form.get("custom_creatine", -1)
-        return redirect(url_for('products2'))
+        return redirect(url_for('products'))
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -164,31 +164,9 @@ def customize():
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
+    
 @app.route("/products")
 def products(): 
-    # establish connection w/ database
-    query = text("SELECT * FROM preworkout")
-    result = db.session.execute(query)
-
-    products = [dict(row._mapping) for row in result]
-
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
-
-    return render_template("products.html",
-                            products=products,
-                            caffeine=session.get("custom_caffeine"),
-                            beta_alanine=session.get("custom_betaAlanine"),
-                            creatine=session.get("custom_creatine"),
-                            caffeine_min=caffeine_min,
-                            caffeine_max=caffeine_max,
-                            beta_alanine_min=beta_alanine_min,
-                            beta_alanine_max=beta_alanine_max,
-                            creatine_min=creatine_min,
-                            creatine_max=creatine_max
-    )
-    
-@app.route("/products2")
-def products2(): 
     """
     NEW AND IMPROVED PRODUCTS FUNCTION
     """
@@ -203,7 +181,7 @@ def products2():
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.get_length(ingredients)
-    return render_template("products2.html",
+    return render_template("products.html",
                            perfect=perfect,
                            close=close,
                            similar=similar,
