@@ -20,12 +20,11 @@ def score_product(product, ingredients):
     score = 0
     if ingredients["caffeine"]     != -1 and int(ingredients["caffeine"])       == int(product["Caffeine Blend"]):
         score += 1
-    if ingredients["creatine"]     != -1 and float(ingredients["creatine"])     == float(product["Creatine"]):
-        score += 1
     if ingredients["beta_alanine"] != -1 and float(ingredients["beta_alanine"]) == float(product["Beta_Alanine"]):
         score += 1
-    return score
-        # TODO: continue this for the rest of ingredients
+    if ingredients["creatine"]     != -1 and float(ingredients["creatine"])     == float(product["Creatine"]):
+        score += 1
+    # TODO: continue this for the rest of ingredients
     return score
 
 
@@ -42,11 +41,11 @@ def is_similar(product, ingredients):
         _type_: _description_
     """
     similarity_score = 0
-    if ingredients["caffeine"] != -1 and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"]))    <= 50:
+    if ingredients["caffeine"] != -1 and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"]))     <= 50:
         similarity_score += 1
-    if ingredients["creatine"] != -1 and abs(int(product["Creatine"])       - int(ingredients["creatine"]))    <= 2.5:
+    if ingredients["beta_alanine"] and abs(float(product["Beta_Alanine"]) - float(ingredients["beta_alanine"])) <= 0.5:
         similarity_score += 1
-    if ingredients["beta_alanine"] and abs(int(product["Beta_Alanine"])     - int(ingredients["beta_alanine"])) <= 0.5:
+    if ingredients["creatine"] != -1 and abs(float(product["Creatine"])   - float(ingredients["creatine"]))     <= 2.5:
         similarity_score += 1
     # TODO: continue this for the rest of ingredients
             

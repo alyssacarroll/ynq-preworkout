@@ -305,10 +305,10 @@
         <div class="product-name">{{ p["Product Name"] }}</div>
         <div class="brand-name">{{ p["Brand Name"] }}</div>
         <div class="ingredients-label">Ingredients</div>
-        <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] }}</span></div>
+        <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] | int }}</span></div>
         <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
         <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
+        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
         <div class="spacer"></div>
         <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
           class="view-product-btn">View Product →</a>
