@@ -290,6 +290,9 @@
   <h1 class="products-title">Products For You</h1>
   <p class="products-subtitle">Products are ranked by how closely they match your ingredient preferences.</p>
 </div>
+<div>caffeine = {{caff}}</div>
+<div>beta-alanine = {{beta}}</div>
+<div>creatine = {{cre}}</div>
 
 {% if perfect %}
 <div class="section-divider">
@@ -328,14 +331,14 @@
     {% for p in close %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <div class="match-tag"><span class="match-dot"></span> 2 / 3 Match</div>
+        <div class="match-tag"><span class="match-dot"></span> Close Match</div>
         <div class="product-name">{{ p["Product Name"] }}</div>
         <div class="brand-name">{{ p["Brand Name"] }}</div>
         <div class="ingredients-label">Ingredients</div>
         <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] }}</span></div>
         <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
         <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
+        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
         <div class="spacer"></div>
         <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
           class="view-product-btn">View Product →</a>
@@ -361,8 +364,8 @@
         <div class="ingredients-label">Ingredients</div>
         <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] }}</span></div>
         <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] }}g</span></div>
         <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
+        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] }}g</span></div>
         <div class="spacer"></div>
         <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
           class="view-product-btn">View Product →</a>

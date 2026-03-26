@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import os
 import calc_ingredients as ci
-import calc
+import calc_products as cp
 
 app = Flask(__name__)
 
@@ -198,14 +198,19 @@ def products2():
 
     products = [dict(row._mapping) for row in result]
     ingredients = {"caffeine"    : session.get("custom_caffeine", 0),
-                   "beta_alanine": session.get("custom_beta_alanine", 0),
+                   "beta_alanine": session.get("custom_betaAlanine", 0),
                    "creatine"    : session.get("custom_creatine", 0)} 
     
-    perfect, close, similar = calc.categorize_products(products, ingredients)
+    perfect, close, similar = cp.categorize_products(products, ingredients)
+    length = cp.get_length(ingredients)
     return render_template("products2.html",
                            perfect=perfect,
                            close=close,
                            similar=similar,
+                           length=length ,
+                           caff=session.get("custom_caffeine", 0),
+                           beta=session.get("custom_betaAlanine", 0),
+                           cre=session.get("custom_creatine", 0)
     )
 
 

@@ -41,11 +41,11 @@ def is_similar(product, ingredients):
         _type_: _description_
     """
     similarity_score = 0
-    if ingredients["caffeine"] != -1 and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"]))     <= 50:
+    if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"])   - int(ingredients["caffeine"]))     <= 50:
         similarity_score += 1
-    if ingredients["beta_alanine"] and abs(float(product["Beta_Alanine"]) - float(ingredients["beta_alanine"])) <= 0.5:
+    if ingredients["beta_alanine"] != -1 and abs(float(product["Beta_Alanine"]) - float(ingredients["beta_alanine"])) <= 0.5:
         similarity_score += 1
-    if ingredients["creatine"] != -1 and abs(float(product["Creatine"])   - float(ingredients["creatine"]))     <= 2.5:
+    if ingredients["creatine"] != -1     and abs(float(product["Creatine"])     - float(ingredients["creatine"]))     <= 2.5:
         similarity_score += 1
     # TODO: continue this for the rest of ingredients
             
@@ -53,6 +53,17 @@ def is_similar(product, ingredients):
 
 
 def categorize_products(products, ingredients):
+    """categorizes each product based on their similarity score
+
+    Args:
+        products (_type_): _description_
+        ingredients (_type_): _description_
+
+    Returns:
+        perfect (list): products that match every ingredient that the user prefers
+        close (list): products that match 75% of the ingredients that the user prefers
+        similar (list): products that have similar ingredient values to those which the user prefers
+    """
     perfect, close, similar = [], [], []
     length = get_length(ingredients)
     for p in products:
