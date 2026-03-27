@@ -2,8 +2,9 @@
 
 
 {% block quiz_content %}
-<h2 style="font-size: 1.5rem; padding-bottom: 10px;">Here are the ingredient recommendations based on your quiz results:
+<h2 style="font-size: 1.5rem; padding-bottom: 10px;">Customize your blend:
 </h2>
+<p>ingredients are pre-populated with the optimal doses for you</p>
 
 <form method="POST" action="/quiz/customize">
     <!-- CAFFEINE SLIDER -->
@@ -17,7 +18,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between mb-0"><small>0 mg</small><small>500 mg</small></div>
-        <input type="range" class="form-range green-slider" min="0" max="500" step="50" id="custom_caffeine"
+        <input type="range" class="form-range green-slider" min="0" max="500" step="25" id="custom_caffeine"
             name="custom_caffeine" value="{{ (caffeine_min + caffeine_max) / 2 }}">
         <div class="mb-0"><small id="caffeine_value">{{ ((caffeine_min + caffeine_max) / 2) | int }} mg</small></div>
     </div>
