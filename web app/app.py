@@ -150,17 +150,14 @@ def customize():
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
         session["custom_creatine"]    = request.form.get("custom_creatine", -1)
         return redirect(url_for('products'))
-    return render_template("qCustomize.html",
+    return render_template("qCustomize2.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
                             current_step="customize",
-                            caffeine_min=0,
-                            caffeine_max=0,
-                            beta_alanine_min=0,
-                            beta_alanine_max=0,
-                            creatine_min=0,
-                            creatine_max=0
+                            caffeine=100,
+                            beta_alanine=1.6,
+                            creatine=5
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
