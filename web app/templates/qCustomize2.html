@@ -372,10 +372,8 @@
         </div>
 
         <!-- BOTTOM BUTTONS -->
-        <div class="bottom-actions">
-            <a class="btn-back" href="/quiz/stimulant">← Back</a>
-            <button type="submit" class="btn btn-primary mt-3">Get your results!</button>
-        </div>
+        <a class="btn-back" href="/quiz/stimulant">← Back</a>
+        <button type="submit" class="btn btn-primary mt-3 btn-submit">Get your results!</button>
     </div>
 </form>
 
@@ -396,32 +394,32 @@
     /* ── STATIC DATA ── */
     const UNITS = {
         caffeine: 'mg', beta: 'g', creatine: 'g', theanine: 'mg',
-        betaine: 'g', taurine: 'g', citrulline: 'g', tyrosine: 'mg', glutamine: 'g',
+        betaine: 'g', taurine: 'mg', citrulline: 'g', tyrosine: 'mg', agmatine: 'mg',
     };
     const STEPS = {
         caffeine: 25, beta: 0.1, creatine: 0.5, theanine: 25,
-        betaine: 0.1, taurine: 0.1, citrulline: 0.1, tyrosine: 25, glutamine: 0.5,
+        betaine: 0.1, taurine: 100, citrulline: 0.5, tyrosine: 50, agmatine: 50,
     };
     const MINS = {
-        caffeine: 50, beta: 0.5, creatine: 1, theanine: 50,
-        betaine: 0.5, taurine: 0.5, citrulline: 1, tyrosine: 100, glutamine: 1,
+        caffeine: 0, beta: 0, creatine: 0, theanine: 0,
+        betaine: 0, taurine: 0, citrulline: 0, tyrosine: 0, agmatine: 0,
     };
     const MAXS = {
-        caffeine: 500, beta: 6.4, creatine: 10, theanine: 400,
-        betaine: 3, taurine: 3, citrulline: 8, tyrosine: 500, glutamine: 10,
+        caffeine: 500, beta: 6.4, creatine: 15, theanine: 500,
+        betaine: 5, taurine: 3000, citrulline: 11, tyrosine: 4000, agmatine: 1500,
     };
     const NAMES = {
         caffeine: 'Caffeine', beta: 'Beta-Alanine', creatine: 'Creatine',
         theanine: 'L-Theanine', betaine: 'Betaine', taurine: 'Taurine',
-        citrulline: 'L-Citrulline', tyrosine: 'L-Tyrosine', glutamine: 'Glutamine',
+        citrulline: 'L-Citrulline', tyrosine: 'L-Tyrosine', agmatine: 'Agmatine Sulfate',
     };
 
     /* ── STATE ── */
-    const RECOMMENDED = ['caffeine', 'beta', 'creatine', 'theanine'];
-    const POOL_IDS = ['betaine', 'taurine', 'citrulline', 'tyrosine', 'glutamine'];
+    const RECOMMENDED = {{recommended}};
+    const POOL_IDS = ['theanine','betaine', 'taurine', 'citrulline', 'tyrosine', 'agmatine'];
     const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
 
-    const POOL_DEFAULTS = { betaine: 1.5, taurine: 1, citrulline: 4, tyrosine: 250, glutamine: 3 };
+    const POOL_DEFAULTS = { betaine: 1.5, taurine: 1, citrulline: 4, tyrosine: 250, agmatine: 3 };
 
     const state = {};
     ALL_IDS.forEach(id => {

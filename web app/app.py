@@ -157,7 +157,8 @@ def customize():
                             current_step="customize",
                             caffeine=100,
                             beta_alanine=1.6,
-                            creatine=5
+                            creatine=5,
+                            recommended=['caffeine', 'beta_alanine', 'creatine']
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
