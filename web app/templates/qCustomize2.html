@@ -1,0 +1,691 @@
+{% extends "quiz_template.html" %}
+
+{% block quiz_content %}
+<style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #f2ede4;
+        --card: #ffffff;
+        --green: #5a8055;
+        --green-dark: #4a7045;
+        --green-thumb: #5a8055;
+        --border: #e0dbd0;
+        --border-card: #d8d3c8;
+        --text: #1e1e18;
+        --text-2: #6b6660;
+        --text-3: #a09a90;
+        --track: #ddd8ce;
+    }
+    
+    /* ── LAYOUT ── */
+    .customize-wrap {
+        max-width: 90vw;
+        min-width: 300px;
+        margin: 0 auto;
+        padding: 0 1.75rem 5rem;
+    }
+
+    h1.blend-title {
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 1.75rem;
+        color: var(--text);
+    }
+
+    /* ── CARDS ── */
+    .ing-card {
+        background: var(--card);
+        border: 1px solid var(--border-card);
+        border-radius: 14px;
+        padding: 1.5rem 1.75rem;
+        margin-bottom: 14px;
+        width: 100%;    
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .reset-all-btn {
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--text-3);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        transition: color 0.15s;
+    }
+
+    .reset-all-btn:hover {
+        color: var(--text-2);
+    }
+
+    /* ── INGREDIENT GRID ── */
+    .ing-grid {
+        display: grid;
+        /* grid-template-columns: repeat(auto-fit, minmax(160px, 240px)); */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem 2rem;
+    }
+
+    @media (max-width: 680px) {
+        .ing-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 440px) {
+        .ing-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ── INGREDIENT ITEM ── */
+    .ing-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .ing-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* info bubble */
+    .info-btn {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1.5px solid var(--text-3);
+        background: none;
+        color: var(--text-3);
+        font-size: 9px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: inherit;
+        flex-shrink: 0;
+        position: relative;
+        transition: border-color 0.12s, color 0.12s;
+    }
+    
+    .info-btn:hover {
+        border-color: var(--green);
+        color: var(--green);
+    }
+
+    .tooltip {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        /* change: below instead of above */
+        bottom: auto;
+        /* change: remove bottom positioning */
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--text);
+        color: #f2ede4;
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 1.5;
+        padding: 7px 10px;
+        border-radius: 7px;
+        width: 200px;
+        z-index: 100;
+        pointer-events: none;
+        white-space: normal;
+    }
+
+    .tooltip::after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        /* change: arrow on top now */
+        top: auto;
+        /* change: remove top */
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-bottom-color: var(--text);
+        /* change: arrow points up */
+    }
+
+    .info-btn:hover .tooltip,
+    .info-btn:focus .tooltip {
+        display: block !important;
+    }
+
+    .ing-item {
+        overflow: visible;
+    }
+
+    .ing-card {
+        overflow: visible;
+    }
+
+    /* slider */
+    .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        flex: 1;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--track);
+        outline: none;
+        cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--green-thumb);
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 1px var(--green-thumb);
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    input[type=range]:hover::-webkit-slider-thumb {
+        transform: scale(1.15);
+    }
+
+    input[type=range]::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--green-thumb);
+        border: 2px solid #fff;
+        cursor: pointer;
+    }
+
+    .remove-x {
+        background: none;
+        border: none;
+        color: var(--text-3);
+        font-size: 14px;
+        cursor: pointer;
+        padding: 0 2px;
+        line-height: 1;
+        transition: color 0.12s;
+        flex-shrink: 0;
+    }
+
+    .remove-x:hover {
+        color: var(--text);
+    }
+
+    .dose-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dose-val {
+        font-size: 12px;
+        color: var(--text-2);
+    }
+
+    .reset-one {
+        font-size: 11px;
+        color: var(--text-3);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        transition: color 0.12s;
+        padding: 0;
+    }
+
+    .reset-one:hover {
+        color: var(--text-2);
+    }
+
+    /* inner divider */
+    .inner-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 1.25rem 0;
+        display: none;
+    }
+
+    .inner-divider.visible {
+        display: block;
+    }
+
+    .inner-divider-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        margin-bottom: 1rem;
+        display: none;
+        text-align: left;
+    }
+
+    .inner-divider-label.visible {
+        display: block;
+    }
+
+    /* add pool */
+    .add-pool {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 24px;
+    }
+
+    .add-chip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text);
+        background: none;
+        border: 1px solid var(--border-card);
+        border-radius: 100px;
+        padding: 5px 12px 5px 10px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.12s, border-color 0.12s;
+        position: relative;
+    }
+
+    .add-chip:hover {
+        background: var(--bg);
+        border-color: #b8b2a8;
+    }
+
+    .add-chip .plus {
+        font-size: 14px;
+        color: var(--green);
+        font-weight: 700;
+    }
+
+    .empty-pool {
+        font-size: 13px;
+        color: var(--text-3);
+        font-style: italic;
+        display: none;
+    }
+
+    .empty-pool.show {
+        display: block;
+    }
+
+    /* toast */
+    .toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #2a2820;
+        color: #f2ede4;
+        font-size: 13px;
+        font-weight: 400;
+        padding: 11px 18px;
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 999;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+
+    .toast-undo {
+        font-weight: 700;
+        color: #8fba78;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 13px;
+        padding: 0;
+        transition: color 0.12s;
+    }
+
+    .toast-undo:hover {
+        color: #aed494;
+    }
+
+    /* bottom */
+    .bottom-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 1.5rem;
+    }
+
+    .btn-back-link {
+        font-size: 13px;
+        color: var(--text-2);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: color 0.12s;
+        text-decoration: none;
+    }
+
+    .btn-back-link:hover {
+        color: var(--text);
+    }
+
+    .btn-submit-main {
+        background: var(--green);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 13px 40px;
+        font-size: 15px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        letter-spacing: 0.02em;
+        transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-submit-main:hover {
+        background: var(--green-dark);
+    }
+
+    .btn-submit-main:active {
+        transform: scale(0.97);
+    }
+</style>
+
+<form method="POST" action="/quiz/customize" id="customize-form">
+    <!-- Hidden inputs — updated by JS before submit -->
+    <input type="hidden" name="custom_caffeine" id="hid_caffeine">
+    <input type="hidden" name="custom_betaAlanine" id="hid_beta">
+    <input type="hidden" name="custom_creatine" id="hid_creatine">
+    <input type="hidden" name="custom_theanine" id="hid_theanine">
+    <input type="hidden" name="custom_betaine" id="hid_betaine">
+    <input type="hidden" name="custom_taurine" id="hid_taurine">
+    <input type="hidden" name="custom_citrulline" id="hid_citrulline">
+    <input type="hidden" name="custom_tyrosine" id="hid_tyrosine">
+    <input type="hidden" name="custom_glutamine" id="hid_glutamine">
+
+    <div class="customize-wrap">
+        <h1 class="blend-title">Customize your blend:</h1>
+
+        <!-- RECOMMENDED CARD -->
+        <div class="ing-card">
+            <div class="card-header">
+                <span class="card-title">Recommended</span>
+                <button type="button" class="reset-all-btn" onclick="resetAll()">reset all ↺</button>
+            </div>
+            <div class="ing-grid" id="rec-grid"></div>
+            <hr class="inner-divider" id="inner-div">
+            <div class="inner-divider-label" id="inner-label">Added by you</div>
+            <div class="ing-grid" id="added-grid"></div>
+        </div>
+
+        <!-- ADD INGREDIENTS CARD -->
+        <div class="ing-card">
+            <div class="card-header">
+                <span class="card-title">Add Ingredients</span>
+            </div>
+            <div class="add-pool" id="pool"></div>
+            <div class="empty-pool" id="pool-empty">All available ingredients have been added.</div>
+        </div>
+
+        <div class="bottom-actions">
+            <a class="btn-back-link" href="/quiz/stimulant">← Back</a>
+            <button type="submit" class="btn-submit-main">Get your results!</button>
+        </div>
+    </div>
+</form>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <span id="toast-msg"></span>
+    <button type="button" class="toast-undo" onclick="undoRemove()">Undo</button>
+</div>
+
+<script>
+    /* ── FLASK VALUES ── */
+    const ING_RECS = {
+        caffeine: {{ caffeine | default(0) }},
+        beta: {{ beta_alanine | default(0) }},
+        creatine: {{ creatine | default(0) }}
+    };
+
+    /* ── STATIC DATA ── */
+    const INFO = {
+        caffeine: 'TODO',
+        beta: 'TODO',
+        creatine: 'TODO',
+        theanine: 'TODO',
+        betaine: 'TODO',
+        taurine: 'TODO',
+        citrulline: 'TODO',
+        tyrosine: 'TODO',
+        glutamine: 'TODO',
+    };
+    const UNITS = {
+        caffeine: 'mg', beta: 'g', creatine: 'g', theanine: 'mg',
+        betaine: 'g', taurine: 'g', citrulline: 'g', tyrosine: 'mg', glutamine: 'g',
+    };
+    const STEPS = {
+        caffeine: 25, beta: 0.1, creatine: 0.5, theanine: 25,
+        betaine: 0.1, taurine: 0.1, citrulline: 0.1, tyrosine: 25, glutamine: 0.5,
+    };
+    const MINS = {
+        caffeine: 50, beta: 0.5, creatine: 1, theanine: 50,
+        betaine: 0.5, taurine: 0.5, citrulline: 1, tyrosine: 100, glutamine: 1,
+    };
+    const MAXS = {
+        caffeine: 500, beta: 6.4, creatine: 10, theanine: 400,
+        betaine: 3, taurine: 3, citrulline: 8, tyrosine: 500, glutamine: 10,
+    };
+    const NAMES = {
+        caffeine: 'Caffeine', beta: 'Beta-Alanine', creatine: 'Creatine',
+        theanine: 'L-Theanine', betaine: 'Betaine', taurine: 'Taurine',
+        citrulline: 'L-Citrulline', tyrosine: 'L-Tyrosine', glutamine: 'Glutamine',
+    };
+    const HID = {
+        caffeine: 'hid_caffeine', beta: 'hid_beta', creatine: 'hid_creatine',
+        theanine: 'hid_theanine', betaine: 'hid_betaine', taurine: 'hid_taurine',
+        citrulline: 'hid_citrulline', tyrosine: 'hid_tyrosine', glutamine: 'hid_glutamine',
+    };
+
+    /* ── STATE ── */
+    const RECOMMENDED = ['caffeine', 'beta', 'creatine', 'theanine'];
+    const POOL_IDS = ['betaine', 'taurine', 'citrulline', 'tyrosine', 'glutamine'];
+    const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
+
+    const POOL_DEFAULTS = { betaine: 1.5, taurine: 1, citrulline: 4, tyrosine: 250, glutamine: 3 };
+
+    const state = {};
+    ALL_IDS.forEach(id => {
+        const rec = ING_RECS[id] !== undefined ? ING_RECS[id] : (POOL_DEFAULTS[id] || MINS[id]);
+        state[id] = {
+            val: rec,
+            rec: rec,
+            inRec: RECOMMENDED.includes(id),
+            isOrig: RECOMMENDED.includes(id),
+        };
+    });
+
+    /* ── HELPERS ── */
+    function fmt(id) {
+        const v = state[id].val;
+        const step = STEPS[id];
+        const disp = step >= 10 ? Math.round(v) : step >= 1 ? Math.round(v) : parseFloat(v.toFixed(1));
+        return `${disp} ${UNITS[id]}`;
+    }
+
+    function syncHidden() {
+        ALL_IDS.forEach(id => {
+            const el = document.getElementById(HID[id]);
+            if (el) el.value = state[id].inRec ? state[id].val : '';
+        });
+    }
+
+    /* ── RENDER ── */
+    function ingItemHTML(id) {
+        const s = state[id];
+        const min = MINS[id], max = MAXS[id], step = STEPS[id];
+        const pct = Math.max(0, Math.min(100, ((s.val - min) / (max - min)) * 100));
+        return `
+  <div class="ing-item" id="item-${id}">
+    <div class="ing-label">
+        <span>${NAMES[id]}</span>
+        <span class="info-btn" tabindex="0">?
+        <div class="tooltip">${INFO[id]}</div>
+        </span>
+    </div>
+    <div class="slider-row">
+      <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}"
+        style="background: linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)"
+        oninput="slide('${id}', this)">
+      <button type="button" class="remove-x" title="Remove" onclick="removeIng('${id}')">✕</button>
+    </div>
+    <div class="dose-row">
+      <span class="dose-val" id="dv-${id}">${fmt(id)}</span>
+      <button type="button" class="reset-one" onclick="resetOne('${id}')">reset ↺</button>
+    </div>
+  </div>`;
+    }
+
+    function chipHTML(id) {
+        return `
+  <button type="button" class="add-chip" id="chip-${id}" onclick="addIng('${id}')">
+    <span class="plus">+</span>
+    ${NAMES[id]}
+    <span class="info-btn" tabindex="0" onclick="event.stopPropagation()">?
+      <div class="tooltip">${INFO[id]}</div>
+    </span>
+  </button>`;
+    }
+
+    function render() {
+        const origIn = RECOMMENDED.filter(id => state[id].inRec);
+        const addedIn = POOL_IDS.filter(id => state[id].inRec);
+        const poolOut = ALL_IDS.filter(id => !state[id].inRec);
+
+        document.getElementById('rec-grid').innerHTML = origIn.map(ingItemHTML).join('');
+        document.getElementById('added-grid').innerHTML = addedIn.map(ingItemHTML).join('');
+
+        const divEl = document.getElementById('inner-div');
+        const labelEl = document.getElementById('inner-label');
+        divEl.classList.toggle('visible', addedIn.length > 0);
+        labelEl.classList.toggle('visible', addedIn.length > 0);
+
+        const pool = document.getElementById('pool');
+        const empty = document.getElementById('pool-empty');
+        pool.innerHTML = poolOut.map(chipHTML).join('');
+        empty.classList.toggle('show', poolOut.length === 0);
+
+        syncHidden();
+    }
+
+    /* ── INTERACTIONS ── */
+    function slide(id, el) {
+        state[id].val = parseFloat(el.value);
+        const pct = Math.max(0, Math.min(100, ((state[id].val - MINS[id]) / (MAXS[id] - MINS[id])) * 100));
+        el.style.background = `linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)`;
+        document.getElementById(`dv-${id}`).textContent = fmt(id);
+        syncHidden();
+    }
+
+    function resetOne(id) {
+        state[id].val = state[id].rec;
+        render();
+    }
+
+    function resetAll() {
+        RECOMMENDED.forEach(id => { state[id].val = state[id].rec; state[id].inRec = true; });
+        POOL_IDS.forEach(id => { state[id].val = state[id].rec; state[id].inRec = false; });
+        render();
+    }
+
+    /* ── TOAST ── */
+    let toastTimer = null;
+    let lastRemoved = null;
+
+    function showToast(id) {
+        lastRemoved = id;
+        document.getElementById('toast-msg').textContent = `"${NAMES[id]}" removed`;
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+            lastRemoved = null;
+        }, 3000);
+    }
+
+    function undoRemove() {
+        if (!lastRemoved) return;
+        state[lastRemoved].inRec = true;
+        render();
+        document.getElementById('toast').classList.remove('show');
+        clearTimeout(toastTimer);
+        lastRemoved = null;
+    }
+
+    function removeIng(id) {
+        state[id].inRec = false;
+        render();
+        showToast(id);
+    }
+
+    function addIng(id) {
+        state[id].inRec = true;
+        render();
+    }
+
+    render();
+</script>
+{% endblock %}
