@@ -47,6 +47,7 @@
         padding: 1.5rem 1.75rem;
         margin-bottom: 14px;
         width: 100%;    
+        overflow: visible;
     }
 
     .card-header {
@@ -83,7 +84,6 @@
     /* ── INGREDIENT GRID ── */
     .ing-grid {
         display: grid;
-        /* grid-template-columns: repeat(auto-fit, minmax(160px, 240px)); */
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem 2rem;
     }
@@ -116,81 +116,7 @@
         color: var(--text);
     }
 
-    /* info bubble */
-    .info-btn {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        border: 1.5px solid var(--text-3);
-        background: none;
-        color: var(--text-3);
-        font-size: 9px;
-        font-weight: 700;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: inherit;
-        flex-shrink: 0;
-        position: relative;
-        transition: border-color 0.12s, color 0.12s;
-    }
-    
-    .info-btn:hover {
-        border-color: var(--green);
-        color: var(--green);
-    }
-
-    .tooltip {
-        display: none;
-        position: absolute;
-        top: calc(100% + 6px);
-        /* change: below instead of above */
-        bottom: auto;
-        /* change: remove bottom positioning */
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--text);
-        color: #f2ede4;
-        font-size: 11px;
-        font-weight: 400;
-        line-height: 1.5;
-        padding: 7px 10px;
-        border-radius: 7px;
-        width: 200px;
-        z-index: 100;
-        pointer-events: none;
-        white-space: normal;
-    }
-
-    .tooltip::after {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        /* change: arrow on top now */
-        top: auto;
-        /* change: remove top */
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-bottom-color: var(--text);
-        /* change: arrow points up */
-    }
-
-    .info-btn:hover .tooltip,
-    .info-btn:focus .tooltip {
-        display: block !important;
-    }
-
-    .ing-item {
-        overflow: visible;
-    }
-
-    .ing-card {
-        overflow: visible;
-    }
-
-    /* slider */
+    /* ── SLIDER ── */
     .slider-row {
         display: flex;
         align-items: center;
@@ -326,7 +252,6 @@
         cursor: pointer;
         font-family: inherit;
         transition: background 0.12s, border-color 0.12s;
-        position: relative;
     }
 
     .add-chip:hover {
@@ -396,7 +321,7 @@
         color: #aed494;
     }
 
-    /* bottom */
+    /* Bottom actions */
     .bottom-actions {
         display: flex;
         justify-content: center;
@@ -405,7 +330,7 @@
         margin-top: 1.5rem;
     }
 
-    .btn-back-link {
+    .btn-back {
         font-size: 13px;
         color: var(--text-2);
         background: none;
@@ -416,45 +341,12 @@
         text-decoration: none;
     }
 
-    .btn-back-link:hover {
+    .btn-back:hover {
         color: var(--text);
-    }
-
-    .btn-submit-main {
-        background: var(--green);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 13px 40px;
-        font-size: 15px;
-        font-weight: 700;
-        font-family: inherit;
-        cursor: pointer;
-        letter-spacing: 0.02em;
-        transition: background 0.15s, transform 0.1s;
-    }
-
-    .btn-submit-main:hover {
-        background: var(--green-dark);
-    }
-
-    .btn-submit-main:active {
-        transform: scale(0.97);
     }
 </style>
 
 <form method="POST" action="/quiz/customize" id="customize-form">
-    <!-- Hidden inputs — updated by JS before submit -->
-    <input type="hidden" name="custom_caffeine" id="hid_caffeine">
-    <input type="hidden" name="custom_betaAlanine" id="hid_beta">
-    <input type="hidden" name="custom_creatine" id="hid_creatine">
-    <input type="hidden" name="custom_theanine" id="hid_theanine">
-    <input type="hidden" name="custom_betaine" id="hid_betaine">
-    <input type="hidden" name="custom_taurine" id="hid_taurine">
-    <input type="hidden" name="custom_citrulline" id="hid_citrulline">
-    <input type="hidden" name="custom_tyrosine" id="hid_tyrosine">
-    <input type="hidden" name="custom_glutamine" id="hid_glutamine">
-
     <div class="customize-wrap">
         <h1 class="blend-title">Customize your blend:</h1>
 
@@ -479,14 +371,15 @@
             <div class="empty-pool" id="pool-empty">All available ingredients have been added.</div>
         </div>
 
+        <!-- BOTTOM BUTTONS -->
         <div class="bottom-actions">
-            <a class="btn-back-link" href="/quiz/stimulant">← Back</a>
-            <button type="submit" class="btn-submit-main">Get your results!</button>
+            <a class="btn-back" href="/quiz/stimulant">← Back</a>
+            <button type="submit" class="btn btn-primary mt-3">Get your results!</button>
         </div>
     </div>
 </form>
 
-<!-- TOAST -->
+<!-- TOAST (undo remove)-->
 <div class="toast" id="toast">
     <span id="toast-msg"></span>
     <button type="button" class="toast-undo" onclick="undoRemove()">Undo</button>
@@ -501,17 +394,6 @@
     };
 
     /* ── STATIC DATA ── */
-    const INFO = {
-        caffeine: 'TODO',
-        beta: 'TODO',
-        creatine: 'TODO',
-        theanine: 'TODO',
-        betaine: 'TODO',
-        taurine: 'TODO',
-        citrulline: 'TODO',
-        tyrosine: 'TODO',
-        glutamine: 'TODO',
-    };
     const UNITS = {
         caffeine: 'mg', beta: 'g', creatine: 'g', theanine: 'mg',
         betaine: 'g', taurine: 'g', citrulline: 'g', tyrosine: 'mg', glutamine: 'g',
@@ -532,11 +414,6 @@
         caffeine: 'Caffeine', beta: 'Beta-Alanine', creatine: 'Creatine',
         theanine: 'L-Theanine', betaine: 'Betaine', taurine: 'Taurine',
         citrulline: 'L-Citrulline', tyrosine: 'L-Tyrosine', glutamine: 'Glutamine',
-    };
-    const HID = {
-        caffeine: 'hid_caffeine', beta: 'hid_beta', creatine: 'hid_creatine',
-        theanine: 'hid_theanine', betaine: 'hid_betaine', taurine: 'hid_taurine',
-        citrulline: 'hid_citrulline', tyrosine: 'hid_tyrosine', glutamine: 'hid_glutamine',
     };
 
     /* ── STATE ── */
@@ -565,13 +442,6 @@
         return `${disp} ${UNITS[id]}`;
     }
 
-    function syncHidden() {
-        ALL_IDS.forEach(id => {
-            const el = document.getElementById(HID[id]);
-            if (el) el.value = state[id].inRec ? state[id].val : '';
-        });
-    }
-
     /* ── RENDER ── */
     function ingItemHTML(id) {
         const s = state[id];
@@ -581,9 +451,6 @@
   <div class="ing-item" id="item-${id}">
     <div class="ing-label">
         <span>${NAMES[id]}</span>
-        <span class="info-btn" tabindex="0">?
-        <div class="tooltip">${INFO[id]}</div>
-        </span>
     </div>
     <div class="slider-row">
       <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}"
@@ -603,9 +470,6 @@
   <button type="button" class="add-chip" id="chip-${id}" onclick="addIng('${id}')">
     <span class="plus">+</span>
     ${NAMES[id]}
-    <span class="info-btn" tabindex="0" onclick="event.stopPropagation()">?
-      <div class="tooltip">${INFO[id]}</div>
-    </span>
   </button>`;
     }
 
@@ -626,8 +490,6 @@
         const empty = document.getElementById('pool-empty');
         pool.innerHTML = poolOut.map(chipHTML).join('');
         empty.classList.toggle('show', poolOut.length === 0);
-
-        syncHidden();
     }
 
     /* ── INTERACTIONS ── */
@@ -636,7 +498,6 @@
         const pct = Math.max(0, Math.min(100, ((state[id].val - MINS[id]) / (MAXS[id] - MINS[id])) * 100));
         el.style.background = `linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)`;
         document.getElementById(`dv-${id}`).textContent = fmt(id);
-        syncHidden();
     }
 
     function resetOne(id) {
@@ -645,8 +506,14 @@
     }
 
     function resetAll() {
-        RECOMMENDED.forEach(id => { state[id].val = state[id].rec; state[id].inRec = true; });
-        POOL_IDS.forEach(id => { state[id].val = state[id].rec; state[id].inRec = false; });
+        RECOMMENDED.forEach(id => { 
+            state[id].val = state[id].rec; 
+            state[id].inRec = true; 
+        });
+        POOL_IDS.forEach(id => { 
+            state[id].val = state[id].rec; 
+            state[id].inRec = false; 
+        });
         render();
     }
 
