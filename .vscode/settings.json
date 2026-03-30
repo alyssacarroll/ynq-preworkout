@@ -3,9 +3,9 @@
         {
             "path": "",
             "envManager": "ms-python.python:system",
-            "packageManager": "ms-python.python:pip",
-            "css.validate": false,
-            "html.validate.scripts": false
+            "packageManager": "ms-python.python:pip"
         }
-    ]
+    ],
+    "css.validate": false,
+    "html.validate.scripts": false
 }
