@@ -415,7 +415,9 @@
     };
 
     /* ── STATE ── */
-    const RECOMMENDED = {{recommended}};
+    const RECOMMENDED = ['caffeine', 'beta', 'creatine'];
+    // TODO: replace ^^^ with this:
+    // const RECOMMENDED = {{ recommended}};
     const POOL_IDS = ['theanine','betaine', 'taurine', 'citrulline', 'tyrosine', 'agmatine'];
     const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
 
@@ -433,6 +435,7 @@
     });
 
     /* ── HELPERS ── */
+    // Format display value with units, rounding based on step size
     function fmt(id) {
         const v = state[id].val;
         const step = STEPS[id];
@@ -441,34 +444,36 @@
     }
 
     /* ── RENDER ── */
+    // Builds and returns the HTML string for a single ingredient slider component
     function ingItemHTML(id) {
         const s = state[id];
         const min = MINS[id], max = MAXS[id], step = STEPS[id];
         const pct = Math.max(0, Math.min(100, ((s.val - min) / (max - min)) * 100));
         return `
-  <div class="ing-item" id="item-${id}">
-    <div class="ing-label">
-        <span>${NAMES[id]}</span>
-    </div>
-    <div class="slider-row">
-      <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}"
-        style="background: linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)"
-        oninput="slide('${id}', this)">
-      <button type="button" class="remove-x" title="Remove" onclick="removeIng('${id}')">✕</button>
-    </div>
-    <div class="dose-row">
-      <span class="dose-val" id="dv-${id}">${fmt(id)}</span>
-      <button type="button" class="reset-one" onclick="resetOne('${id}')">reset ↺</button>
-    </div>
-  </div>`;
+            <div class="ing-item" id="item-${id}">
+                <div class="ing-label">
+                    <span>${NAMES[id]}</span>
+                </div>
+                <div class="slider-row">
+                <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}"
+                    style="background: linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)"
+                    oninput="slide('${id}', this)">
+                <button type="button" class="remove-x" title="Remove" onclick="removeIng('${id}')">✕</button>
+                </div>
+                <div class="dose-row">
+                <span class="dose-val" id="dv-${id}">${fmt(id)}</span>
+                <button type="button" class="reset-one" onclick="resetOne('${id}')">reset ↺</button>
+                </div>
+            </div>`;
     }
 
+    
     function chipHTML(id) {
         return `
-  <button type="button" class="add-chip" id="chip-${id}" onclick="addIng('${id}')">
-    <span class="plus">+</span>
-    ${NAMES[id]}
-  </button>`;
+            <button type="button" class="add-chip" id="chip-${id}" onclick="addIng('${id}')">
+                <span class="plus">+</span>
+                ${NAMES[id]}
+            </button>`;
     }
 
     function render() {
