@@ -97,6 +97,7 @@ def weight():
     """
     if request.method == "POST":
         session["weight"] = request.form.get("weight", "")
+        session["completed_steps"].append("weight")
         return redirect(url_for('goals'))
     session["visited_steps"].append("weight")
     return render_template("qWeight.html", 
