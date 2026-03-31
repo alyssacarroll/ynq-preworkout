@@ -62,25 +62,39 @@ def name():
                            )  
    
 
-#TODO
+#TODO: create qAge.html
+@app.route("/quiz/age", methods=["GET", "POST"])
 def age():
-    return -1
-    
-    
-# TODO
+    """ asks user for age and stores in session. redirects to sex question page.
+    """
+    if request.method == "POST":
+        session["age"] = request.form.get("age", "")
+        return redirect(url_for('sex'))
+    return render_template("qAge.html",
+                           usr=session.get("user"))
+
+# TODO: create qSex.html
+@app.route("/quiz/sex", methods=["GET", "POST"])
 def sex():
-    return -1
+    """asks user for sex and stores it in session. redirects to weight page.
+
+    """
+    if request.method == "POST":
+        session["sex"] = request.form.get("sex", "")
+        return redirect(url_for('weight'))
+    return render_template("qSex.html",
+                           usr=session.get("user"))
 
 
-# @app.route("/quiz/weight", methods=["GET", "POST"])
-# def weight():
-#     """ asks user for weight and stores in session. redirects to results page.
-#     """
-#     if request.method == "POST":
-#         session["weight"] = request.form.get("weight", "").strip()
-#         return redirect(url_for('goals'))
-#     return render_template("qWeight.html", 
-#                            usr=session.get("user"))
+@app.route("/quiz/weight", methods=["GET", "POST"])
+def weight():
+    """ asks user for weight and stores in session. redirects to goals page.
+    """
+    if request.method == "POST":
+        session["weight"] = request.form.get("weight", "")
+        return redirect(url_for('goals'))
+    return render_template("qWeight.html", 
+                           usr=session.get("user"))
   
   
 @app.route("/quiz/goals", methods=["GET", "POST"])
