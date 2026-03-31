@@ -116,7 +116,7 @@ def goals():
                            current_step="goals"
                            )
 
-# TODO: change to stimulant level
+
 @app.route("/quiz/stimulant", methods=["GET", "POST"])
 def stimulant():
     if request.method == "POST":
@@ -138,7 +138,7 @@ def results():
     caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
     return render_template("qResults.html",
                             usr=session.get("user"),
-                            # weight=session.get("weight"),
+                            weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
                             pumpGoal=session.get("pumpGoal"),
                             energyGoal=session.get("energyGoal"),
@@ -156,23 +156,27 @@ def results():
 
 @app.route("/quiz/customize", methods=["GET", "POST"])
 def customize():
-    """displays slider page
+    """displays customization page w/ sliders
 
     """
     if request.method == "POST":
-        session["custom_caffeine"]    = request.form.get("custom_caffeine", -1)
-        session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", -1)
-        session["custom_creatine"]    = request.form.get("custom_creatine", -1)
+        session["custom_caffeine"]    = request.form.get("custom_caffeine",   -1)
+        session["custom_beta"]        = request.form.get("custom_beta",       -1)
+        session["custom_creatine"]    = request.form.get("custom_creatine",   -1)
+        session["custom_theanine"]    = request.form.get("custom_theanine",   -1)
+        session["custom_betaine"]     = request.form.get("custom_betaine",    -1)
+        session["custom_taurine"]     = request.form.get("custom_taurine",    -1)
+        session["custom_citrulline"]  = request.form.get("custom_citrulline", -1)
+        session["custom_tyrosine"]    = request.form.get("custom_tyrosine",   -1)
+        session["custom_agmatine"]     = request.form.get("custom_agmatine",  -1)
         return redirect(url_for('products'))
     return render_template("qCustomize2.html",
                             usr=session.get("user"),
-                            weight=session.get("weight"),
-                            stimulant=session.get("stimulant"),
                             current_step="customize",
                             caffeine=100,
-                            beta_alanine=1.6,
+                            beta=1.6,
                             creatine=5,
-                            recommended=['caffeine', 'beta_alanine', 'creatine']
+                            recommended=['caffeine', 'beta', 'creatine']
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
