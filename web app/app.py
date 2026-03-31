@@ -55,7 +55,10 @@ def name():
         session["completed_steps"] = session.get("completed_steps", [])
         if "name" not in session["completed_steps"]:
             session["completed_steps"].append("name")
-        return redirect(url_for('goals'))                      # redirect to weight question page
+        return redirect(url_for('weight'))                      # redirect to weight question page
+    
+    session["visited_steps"] = session.get("visited_steps", [])
+    session["visited_steps"].append("name")
     return render_template("qName.html", 
                            usr=session.get("user"),
                            current_step="name"
@@ -70,6 +73,7 @@ def age():
     if request.method == "POST":
         session["age"] = request.form.get("age", "")
         return redirect(url_for('sex'))
+    session["visited_steps"].append("age")
     return render_template("qAge.html",
                            usr=session.get("user"))
 
@@ -82,6 +86,7 @@ def sex():
     if request.method == "POST":
         session["sex"] = request.form.get("sex", "")
         return redirect(url_for('weight'))
+    session["visited_steps"].append("sex")
     return render_template("qSex.html",
                            usr=session.get("user"))
 
@@ -93,6 +98,7 @@ def weight():
     if request.method == "POST":
         session["weight"] = request.form.get("weight", "")
         return redirect(url_for('goals'))
+    session["visited_steps"].append("weight")
     return render_template("qWeight.html", 
                            usr=session.get("user"))
   
@@ -111,6 +117,7 @@ def goals():
         if "goals" not in session["completed_steps"]:
             session["completed_steps"].append("goals")
         return redirect(url_for('stimulant'))
+    session["visited_steps"].append("goals")
     return render_template("qGoals.html",
                            usr=session.get("user"),
                            current_step="goals"
@@ -123,7 +130,8 @@ def stimulant():
         session["stimulant"] = request.form.get("stimulant", "")
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
-        return redirect(url_for('customize'))
+        return redirect(url_for('results'))
+    session["visited_steps"].append("stimulant")
     return render_template("qStimulant.html",
                            usr=session.get("user"),
                            current_step="stimulant"
@@ -133,9 +141,18 @@ def stimulant():
 # <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
 @app.route("/quiz/results", methods=["GET", "POST"])
 def results():
-    """ displays quiz results. placeholder for future slider adjustment page.
+    """ displays quiz results. for debugging purposes.
     """
-    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = ci.calculate_ranges()
+    ci.set_user_info(session.get("age", ""),
+                     session.get("weight", -1),
+                     session.get("sex", ""), 
+                     [session.get("pumpGoal", False),
+                      session.get("energyGoal", False),
+                      session.get("focusGoal", False),
+                      session.get("enduranceGoal", False),
+                      session.get("strengthGoal", False)],
+                     session.get("stimulant", -1))
+    caffeine = ci.calculate_caffeine()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -145,12 +162,7 @@ def results():
                             focusGoal=session.get("focusGoal"),
                             enduranceGoal=session.get("enduranceGoal"),
                             strengthGoal=session.get("strengthGoal"),
-                            caffeine_min=caffeine_min,
-                            caffeine_max=caffeine_max,
-                            beta_alanine_min=beta_alanine_min,
-                            beta_alanine_max=beta_alanine_max,
-                            creatine_min=creatine_min,
-                            creatine_max=creatine_max
+                            caffeine=caffeine
                             )
                     
 

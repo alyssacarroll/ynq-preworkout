@@ -18,29 +18,6 @@
     border-color: #111;
   }
 
-  /* Custom submit button that preserves Bootstrap basics */
-  .btn.btn-submit {
-    background-color: #529963;
-    color: #ffffff;
-    border-color: #5faa70;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    transition: background-color 150ms ease, border-color 150ms ease;
-  }
-
-  .btn.btn-submit:hover,
-  .btn.btn-submit:focus {
-    background-color: #67b378;
-    border-color: #529963;
-    color: #ffffff;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
-  }
-
-  .btn.btn-submit:active {
-    background-color: #1e7e34;
-    border-color: #1c7430;
-  }
-
   .quiz-nav {
     display: flex;
     justify-content: center;
@@ -84,107 +61,6 @@
   .quiz-nav-item.active .quiz-nav-bar {
     background-color: #529963;
   }
-
-  /* back button */
-  .btn-back {
-    color: inherit;
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    width: fit-content;
-    margin-top: -0.5rem;
-  }
-
-  .btn-back:hover {
-    transform: translateY(-2px);
-    text-shadow: #242422;
-    color: #535350;
-  }
-
-  /* SLIDERS */
-  .slider {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .slider.card {
-    padding-top: 0.75rem;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .slider label {
-    margin-bottom: 0.2rem;
-    font-weight: 400;
-  }
-
-  .slider .mb-0 {
-    margin-bottom: 0rem !important;
-  }
-
-  .slider input[type="range"] {
-    margin-top: 0.2rem;
-    margin-bottom: 0.1rem;
-  }
-
-  .slider small {
-    line-height: 0.25;
-  }
-
-  .form-range::-webkit-slider-thumb {
-    background-color: #6eb17d !important;
-  }
-
-  .form-range::-moz-range-thumb {
-    background-color: #539962 !important;
-  }
-
-  /* remove bootstrap blue glow */
-  .form-range:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, .25);
-  }
-
-  .form-range:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, .25);
-  }
-
-  .form-range::-webkit-slider-runnable-track {
-    background: linear-gradient(--accent, --accent) 0/0% 100% no-repeat, #dee2e6 !important;
-  }
-
-  .form-range::-moz-range-track {
-    background: #dee2e6;
-  }
-
-  .form-check-input:focus {
-    box-shadow: none;
-    border-color: rgba(15, 166, 101, 0.25);
-  }
-
-  .form-check-input:checked {
-    background-color: green;
-    border-color: green;
-  }
-
-  .form-check-input[type="checkbox"].form-check-input {
-    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-    background-color: #ccc;
-    border-color: #ccc;
-  }
-
-  .form-check-input[type="checkbox"].form-check-input:checked {
-    background-color: #529963;
-    border-color: #529963;
-  }
-
-  .form-check-input[type="checkbox"].form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem rgba(82, 153, 99, 0.25);
-    border-color: #529963;
-  }
 </style>
 
 {% endblock %}
@@ -200,10 +76,14 @@
 {% block content %}
 {% set steps = [
 ("name", "Name", "/quiz/name"),
+("age", "Age", "/quiz/age"),
+("sex", "Sex", "/quiz/sex"),
+("weight", "Weight", "/quiz/weight"),
 ("goals", "Goals", "/quiz/goals"),
 ("stimulant", "Stimulant", "/quiz/stimulant"),
 ("customize", "Customize", "/quiz/customize")
 ] %}
+{% set visited = session.get("visited_steps", []) %}
 {% set completed = session.get("completed_steps", []) %}
 
 <nav class="quiz-nav">

@@ -145,6 +145,47 @@
                 padding: 1.25rem;
             }
         }
+
+        /* Custom submit button that preserves Bootstrap basics */
+        .btn.btn-submit {
+            background-color: #529963;
+            color: #ffffff;
+            border-color: #5faa70;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            transition: background-color 150ms ease, border-color 150ms ease;
+        }
+
+        .btn.btn-submit:hover,
+        .btn.btn-submit:focus {
+            background-color: #67b378;
+            border-color: #529963;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+        }
+
+        .btn.btn-submit:active {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        /* back button */
+        .btn-back {
+            color: inherit;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            width: fit-content;
+            margin-top: -0.5rem;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            text-shadow: #242422;
+            color: #535350;
+        }
     </style>
 
     {% block styles %}{% endblock %}
