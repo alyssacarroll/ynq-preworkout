@@ -3,6 +3,7 @@
 # sex: male, female, don't consider
 # goals: pump, energy, focus, endurance, strength
 # stimulant preference: none, low, moderate, high, any
+from test.test_decimal import TODO_TESTS
 
 
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
@@ -63,3 +64,50 @@ def calculate_caffeine():
         caffeine = min(caffeine, 400, kg * 5)
     
     return int(caffeine)
+
+def calculate_beta():
+    """calculates Beta-Alanine based on weight and goals. not implemented yet.
+    """
+    # TODO
+    pass
+
+def calculate_creatine():
+    """calculates creatine based on weight and goals. not implemented yet.
+    """
+    pass
+
+def calculate_betaine():
+    """calculates betaine
+    """
+    # TODO
+    pass
+
+def calculate_taurine():
+    """calculates taurine
+    """
+    # TODO
+    pass
+
+def calculate_citrulline():
+    """calculates L-Citrulline
+    """
+    # TODO
+    pass
+
+def calculate_theanine():
+    """calculates L-Tyrosine
+    """
+    # TODO
+    pass
+
+def calculate_tyrosine():
+    """calculates L-Theanine
+    """
+    # TODO
+    pass
+
+def calculate_agmatine():
+    """calculates Agmatine Sulfate
+    """
+    # TODO
+    pass
