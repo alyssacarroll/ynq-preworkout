@@ -19,6 +19,9 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
 
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight
+    
+    recommended_intake: 3-6 mg/kg
+    improves:           energy, focus, endurance
     """
     # convert weight to kg
     kg = lbs * 0.453592
@@ -28,16 +31,12 @@ def calculate_caffeine():
     mg_per_kg = 0
     
     # ==== goal adjustments ====
-    if goals[0]: # pump
-        mg_per_kg += 0
     if goals[1]: # energy
         mg_per_kg += 4
     if goals[2]: # focus
         mg_per_kg += 1
     if goals[3]: # endurance
         mg_per_kg += 1
-    if goals[4]: # strength
-        mg_per_kg += 0
     
     caffeine = int(mg_per_kg * kg)
     
@@ -67,47 +66,74 @@ def calculate_caffeine():
 
 def calculate_beta():
     """calculates Beta-Alanine based on weight and goals. not implemented yet.
+    
+    recommended_intake: 3.2-6.4 g
+    improves:           endurance
     """
     # TODO
     pass
 
 def calculate_creatine():
     """calculates creatine based on weight and goals. not implemented yet.
+    
+    recommended_intake:  0.003 mg/kg (maintenance), 0.03 mg/kg (loading)
+    improves:            pump, strength
     """
+    # TODO
+    # increase for 31+ age group
+    # increase for strength goal
     pass
 
 def calculate_betaine():
     """calculates betaine
+    
+    recommended_intake: 1.25g (sources differ)
+    improves:           strength, endurance
     """
     # TODO
     pass
 
 def calculate_taurine():
     """calculates taurine
+    
+    recommended_intake: 6.7-23 mg/kg
+    improves:           focus
     """
     # TODO
     pass
 
 def calculate_citrulline():
     """calculates L-Citrulline
+    
+    recommended_intake: 3-5g
+    improves:           pump
     """
     # TODO
     pass
 
 def calculate_theanine():
     """calculates L-Tyrosine
+    
+    recommended_intake: 200-400 mg
+    improves:           focus
     """
     # TODO
     pass
 
 def calculate_tyrosine():
-    """calculates L-Theanine
+    """calculates L-Tyrosine
+    
+    recommended_intake: 100-150 mg/kg
+    improves:           focus
     """
     # TODO
     pass
 
 def calculate_agmatine():
     """calculates Agmatine Sulfate
+    
+    recommended_intake: 
+    improves:           pump
     """
     # TODO
     pass
