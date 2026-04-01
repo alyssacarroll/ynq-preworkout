@@ -1,12 +1,12 @@
 {% extends "quiz_template.html" %}
 {% block quiz_content %}
-    <h2>What's your weight?</h2>
+    <h2 class="container question">What's your weight?</h2>
     <form method="POST" action="/quiz/weight">
-        <div class="d-flex justify-content-center">
-            <input class="form-control" type="number" name="weight" placeholder="Weight (in lbs)" aria-label="weight input" style="width: 250px;">
-            <p> lbs </p>
+        <div class="d-grid gap-3 col-6 mx-auto">
+        <input class="form-control" type="number" name="weight" placeholder="Weight (in lbs)" aria-label="weight input">
+        
+        <a class="btn-back" href="/quiz/sex" > ← Back </a>
         </div>
-        <a class="btn-back" href="/quiz/goals" > &#8592; Back </a>
         <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
     </form> 
 

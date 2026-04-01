@@ -1,0 +1,24 @@
+{% extends "quiz_template.html" %}
+{% block quiz_content %}
+<h2>What's your sex?</h2>
+<br>
+<form method="POST" action="/quiz/sex">
+
+    <div class="d-grid gap-3 col-6 mx-auto">
+
+        <input type="checkbox" class="btn-check" name="sex" id="male" value="male" autocomplete="off">
+        <label class="btn btn-outline-dark" for="male">Male</label>
+
+        <input type="checkbox" class="btn-check" name="sex" id="female" value="female" autocomplete="off">
+        <label class="btn btn-outline-dark" for="female">Female</label>
+
+        <input type="checkbox" class="btn-check" name="sex" id="ignore" value="ignore" autocomplete="off">
+        <label class="btn btn-outline-dark" for="ignore">Don't consider this</label>
+
+        <a class="btn-back" href="/quiz/age" > &#8592; Back </a>
+    </div>
+    
+    <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
+</form>
+
+{% endblock %}

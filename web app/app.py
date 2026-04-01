@@ -5,6 +5,7 @@ from sqlalchemy import text
 import os
 import calc_ingredients as ci
 import calc_products as cp
+from torch.xpu import current_device
 
 app = Flask(__name__)
 
@@ -55,7 +56,7 @@ def name():
         session["completed_steps"] = session.get("completed_steps", [])
         if "name" not in session["completed_steps"]:
             session["completed_steps"].append("name")
-        return redirect(url_for('weight'))                      # redirect to weight question page
+        return redirect(url_for('age'))                      # redirect to weight question page
     
     session["visited_steps"] = session.get("visited_steps", [])
     session["visited_steps"].append("name")
@@ -72,10 +73,15 @@ def age():
     """
     if request.method == "POST":
         session["age"] = request.form.get("age", "")
+        if "age" not in session["completed_steps"]:
+            session["completed_steps"].append("age")
         return redirect(url_for('sex'))
-    session["visited_steps"].append("age")
+    if "age" not in session["visited_steps"]:
+        session["visited_steps"].append("age")
     return render_template("qAge.html",
-                           usr=session.get("user"))
+                           usr=session.get("user"),
+                           current_step="age"
+                           )
 
 # TODO: create qSex.html
 @app.route("/quiz/sex", methods=["GET", "POST"])
@@ -85,10 +91,15 @@ def sex():
     """
     if request.method == "POST":
         session["sex"] = request.form.get("sex", "")
+        if "sex" not in session["completed_steps"]:
+            session["completed_steps"].append("sex")
         return redirect(url_for('weight'))
-    session["visited_steps"].append("sex")
+    if "sex" not in session["visited_steps"]:
+        session["visited_steps"].append("sex")
     return render_template("qSex.html",
-                           usr=session.get("user"))
+                           usr=session.get("user"),
+                           current_step="sex"
+                           )
 
 
 @app.route("/quiz/weight", methods=["GET", "POST"])
@@ -97,11 +108,15 @@ def weight():
     """
     if request.method == "POST":
         session["weight"] = request.form.get("weight", "")
-        session["completed_steps"].append("weight")
+        if "weight" not in session["completed_steps"]:
+            session["completed_steps"].append("weight")
         return redirect(url_for('goals'))
-    session["visited_steps"].append("weight")
+    if "weight" not in session["visited_steps"]:
+        session["visited_steps"].append("weight")
     return render_template("qWeight.html", 
-                           usr=session.get("user"))
+                           usr=session.get("user"),
+                           current_step="weight"
+                           )
   
   
 @app.route("/quiz/goals", methods=["GET", "POST"])
@@ -118,7 +133,8 @@ def goals():
         if "goals" not in session["completed_steps"]:
             session["completed_steps"].append("goals")
         return redirect(url_for('stimulant'))
-    session["visited_steps"].append("goals")
+    if "goals" not in session["visited_steps"]:
+        session["visited_steps"].append("goals")
     return render_template("qGoals.html",
                            usr=session.get("user"),
                            current_step="goals"
@@ -132,7 +148,8 @@ def stimulant():
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
         return redirect(url_for('results'))
-    session["visited_steps"].append("stimulant")
+    if "stimulant" not in session["visited_steps"]:
+        session["visited_steps"].append("stimulant")
     return render_template("qStimulant.html",
                            usr=session.get("user"),
                            current_step="stimulant"
