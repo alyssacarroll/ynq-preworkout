@@ -200,7 +200,7 @@ def customize():
         session["custom_tyrosine"]    = request.form.get("custom_tyrosine",   -1)
         session["custom_agmatine"]     = request.form.get("custom_agmatine",  -1)
         return redirect(url_for('products'))
-    return render_template("qCustomize2.html",
+    return render_template("qCustomize.html",
                             usr=session.get("user"),
                             current_step="customize",
                             caffeine=100,
