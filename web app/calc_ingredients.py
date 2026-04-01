@@ -4,7 +4,6 @@
 # goals: pump, energy, focus, endurance, strength
 # stimulant preference: none, low, moderate, high, any
 
-CAFF_MG_PER_KG = 3
 
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     global age, lbs, sex, goals, stim
@@ -20,28 +19,47 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight
     """
+    # convert weight to kg
     kg = lbs * 0.453592
     
     # base caffeine calculation
-    caffeine = kg * CAFF_MG_PER_KG
+    caffeine = 0
+    mg_per_kg = 0
     
+    # ==== goal adjustments ====
+    if goals[0]: # pump
+        mg_per_kg += 0
+    if goals[1]: # energy
+        mg_per_kg += 4
+    if goals[2]: # focus
+        mg_per_kg += 1
+    if goals[3]: # endurance
+        mg_per_kg += 1
+    if goals[4]: # strength
+        mg_per_kg += 0
+    
+    caffeine = int(mg_per_kg * kg)
+    
+    # ==== stimulant preference adjustments ====
     if stim == "none":
         caffeine = 0
+        return caffeine
     elif stim == "low":
-        caffeine = 1 * kg
+        caffeine = min(caffeine, 100)
     elif stim == "moderate":
-        caffeine = 4 * kg
+        caffeine = min(caffeine, 200)
     elif stim == "high":
-        caffeine = 6 * kg
+        caffeine = min(caffeine, 500)
     elif stim == "any":
         # keep base caffeine calculation
         pass
-    
-    # cap caffeine at 500 mg
-    if caffeine > 500:
-        caffeine = 500
         
+    # cap caffeine at 6mg/kg or 500 mg, whichever is lower
+    if caffeine > min(kg * 6, 500):
+        caffeine = min(kg * 6, 500)
+        
+    # less caffeine for seniors
     if age == "65+":
-        caffeine = min(caffeine, 400)
+        caffeine = min(caffeine, 400, kg * 5)
     
     return int(caffeine)
