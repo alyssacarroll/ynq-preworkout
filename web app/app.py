@@ -107,6 +107,20 @@ def weight():
     """ asks user for weight and stores in session. redirects to goals page.
     """
     if request.method == "POST":
+        if request.form.get("weight", "") == "":
+            error = "Please enter your weight."
+            return render_template("qWeight.html", 
+                                   usr=session.get("user"),
+                                   current_step="weight",
+                                   error=error
+                                   )
+        if not request.form.get("weight", "").isdigit():
+            error = "Please enter a valid weight."
+            return render_template("qWeight.html", 
+                                   usr=session.get("user"),
+                                   current_step="weight",
+                                   error=error
+                                   )
         session["weight"] = request.form.get("weight", "")
         if "weight" not in session["completed_steps"]:
             session["completed_steps"].append("weight")

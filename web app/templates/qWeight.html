@@ -4,7 +4,7 @@
     <form method="POST" action="/quiz/weight">
         <div class="d-grid gap-3 col-6 mx-auto">
         <input class="form-control" type="number" name="weight" placeholder="Weight (in lbs)" aria-label="weight input">
-        
+        <div class="error-msg">{{ error }}</div>
         <a class="btn-back" href="/quiz/sex" > ← Back </a>
         </div>
         <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
