@@ -36,66 +36,92 @@ db = SQLAlchemy(app)
 
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
+
 @app.route("/")
 def home():
     return render_template("home.html")
 
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 
+
 @app.route("/quiz/name", methods=["GET", "POST"])
 def name():
     """ asks user for name and stores in session. redirects to weight question page.
-
-    Returns:
-        _type_: render_template or redirect
-        renders name question page or redirects to weight question page
     """
-    if request.method == "POST":                                # user submits name
+    if request.method == "POST":  # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
-        session.permanent = True                                # make session permanent (lasts for 10 minutes)
+        session.permanent = True  # make session permanent (lasts for 10 minutes)
         session["completed_steps"] = session.get("completed_steps", [])
+        
+        # nav bar updates
         if "name" not in session["completed_steps"]:
             session["completed_steps"].append("name")
-        return redirect(url_for('age'))                      # redirect to weight question page
+            
+        return redirect(url_for('age'))  # redirect to weight question page
     
+    # nav bar updates
     session["visited_steps"] = session.get("visited_steps", [])
     session["visited_steps"].append("name")
-    return render_template("qName.html", 
+    
+    return render_template("qName.html",
                            usr=session.get("user"),
                            current_step="name"
                            )  
    
-
-#TODO: create qAge.html
 @app.route("/quiz/age", methods=["GET", "POST"])
 def age():
     """ asks user for age and stores in session. redirects to sex question page.
     """
     if request.method == "POST":
+        # ensure user selects an option
+        if request.form.get("age", "") == "":
+            error = "Please select an option."
+            return render_template("qAge.html",
+                                   usr=session.get("user"),
+                                   current_step="age",
+                                   error=error)
         session["age"] = request.form.get("age", "")
+        
+        # nav bar updates
         if "age" not in session["completed_steps"]:
             session["completed_steps"].append("age")
+            
         return redirect(url_for('sex'))
+    
+    # nav bar updates
     if "age" not in session["visited_steps"]:
         session["visited_steps"].append("age")
+        
     return render_template("qAge.html",
                            usr=session.get("user"),
                            current_step="age"
                            )
 
-# TODO: create qSex.html
+
 @app.route("/quiz/sex", methods=["GET", "POST"])
 def sex():
     """asks user for sex and stores it in session. redirects to weight page.
-
     """
     if request.method == "POST":
+        # ensure user selects an option
+        if request.form.get("sex", "") == "":
+            error = "Please select an option."
+            return render_template("qSex.html",
+                                   usr=session.get("user"),
+                                   current_step="sex",
+                                   error=error)
         session["sex"] = request.form.get("sex", "")
+        
+        # nav bar updates
         if "sex" not in session["completed_steps"]:
             session["completed_steps"].append("sex")
-        return redirect(url_for('weight'))
+            
+        return redirect(url_for('weight')) 
+    
+    # nav bar updates
     if "sex" not in session["visited_steps"]:
         session["visited_steps"].append("sex")
+        
     return render_template("qSex.html",
                            usr=session.get("user"),
                            current_step="sex"
@@ -107,27 +133,34 @@ def weight():
     """ asks user for weight and stores in session. redirects to goals page.
     """
     if request.method == "POST":
+        # user cannot submit empty weight
         if request.form.get("weight", "") == "":
             error = "Please enter your weight."
-            return render_template("qWeight.html", 
+            return render_template("qWeight.html",
                                    usr=session.get("user"),
                                    current_step="weight",
                                    error=error
                                    )
-        if not request.form.get("weight", "").isdigit():
+        # weight entered must be a number
+        if not (request.form.get("weight", "").isdigit()):
             error = "Please enter a valid weight."
-            return render_template("qWeight.html", 
+            return render_template("qWeight.html",
                                    usr=session.get("user"),
                                    current_step="weight",
                                    error=error
                                    )
         session["weight"] = request.form.get("weight", "")
+        # nav bar updates
         if "weight" not in session["completed_steps"]:
             session["completed_steps"].append("weight")
+            
         return redirect(url_for('goals'))
+    
+    # nav bar updates
     if "weight" not in session["visited_steps"]:
         session["visited_steps"].append("weight")
-    return render_template("qWeight.html", 
+        
+    return render_template("qWeight.html",
                            usr=session.get("user"),
                            current_step="weight"
                            )
@@ -139,16 +172,22 @@ def goals():
     """
     if request.method == "POST":
         selected_goals = request.form.getlist("goal")
-        session["pumpGoal"]      = "pump"      in selected_goals
-        session["energyGoal"]    = "energy"    in selected_goals
-        session["focusGoal"]     = "focus"     in selected_goals
+        session["pumpGoal"] = "pump"      in selected_goals
+        session["energyGoal"] = "energy"    in selected_goals
+        session["focusGoal"] = "focus"     in selected_goals
         session["enduranceGoal"] = "endurance" in selected_goals
-        session["strengthGoal"]  = "strength"  in selected_goals
+        session["strengthGoal"] = "strength"  in selected_goals
+        
+        # nav bar updates
         if "goals" not in session["completed_steps"]:
             session["completed_steps"].append("goals")
+            
         return redirect(url_for('stimulant'))
+    
+    # nav bar updates
     if "goals" not in session["visited_steps"]:
         session["visited_steps"].append("goals")
+        
     return render_template("qGoals.html",
                            usr=session.get("user"),
                            current_step="goals"
@@ -158,12 +197,25 @@ def goals():
 @app.route("/quiz/stimulant", methods=["GET", "POST"])
 def stimulant():
     if request.method == "POST":
+        # ensure user selects an option
+        if request.form.get("stimulant", "") == "":
+            error = "Please select an option."
+            return render_template("qStimulant.html",
+                                   usr=session.get("user"),
+                                   current_step="stimulant",
+                                   error=error)
         session["stimulant"] = request.form.get("stimulant", "")
+        
+        # nav bar updates
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
+            
         return redirect(url_for('results'))
+    
+    # nav bar updates
     if "stimulant" not in session["visited_steps"]:
         session["visited_steps"].append("stimulant")
+        
     return render_template("qStimulant.html",
                            usr=session.get("user"),
                            current_step="stimulant"
@@ -177,7 +229,7 @@ def results():
     """
     ci.set_user_info(session.get("age", ""),
                      session.get("weight", -1),
-                     session.get("sex", ""), 
+                     session.get("sex", ""),
                      [session.get("pumpGoal", False),
                       session.get("energyGoal", False),
                       session.get("focusGoal", False),
@@ -204,15 +256,15 @@ def customize():
 
     """
     if request.method == "POST":
-        session["custom_caffeine"]    = request.form.get("custom_caffeine",   -1)
-        session["custom_beta"]        = request.form.get("custom_beta",       -1)
-        session["custom_creatine"]    = request.form.get("custom_creatine",   -1)
-        session["custom_theanine"]    = request.form.get("custom_theanine",   -1)
-        session["custom_betaine"]     = request.form.get("custom_betaine",    -1)
-        session["custom_taurine"]     = request.form.get("custom_taurine",    -1)
-        session["custom_citrulline"]  = request.form.get("custom_citrulline", -1)
-        session["custom_tyrosine"]    = request.form.get("custom_tyrosine",   -1)
-        session["custom_agmatine"]     = request.form.get("custom_agmatine",  -1)
+        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
+        session["custom_beta"] = request.form.get("custom_beta", -1)
+        session["custom_creatine"] = request.form.get("custom_creatine", -1)
+        session["custom_theanine"] = request.form.get("custom_theanine", -1)
+        session["custom_betaine"] = request.form.get("custom_betaine", -1)
+        session["custom_taurine"] = request.form.get("custom_taurine", -1)
+        session["custom_citrulline"] = request.form.get("custom_citrulline", -1)
+        session["custom_tyrosine"] = request.form.get("custom_tyrosine", -1)
+        session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
         return redirect(url_for('products'))
     return render_template("qCustomize.html",
                             usr=session.get("user"),
@@ -224,6 +276,7 @@ def customize():
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
+
     
 @app.route("/products")
 def products(): 
@@ -235,9 +288,9 @@ def products():
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients = {"caffeine"    : session.get("custom_caffeine", 0),
+    ingredients = {"caffeine": session.get("custom_caffeine", 0),
                    "beta_alanine": session.get("custom_betaAlanine", 0),
-                   "creatine"    : session.get("custom_creatine", 0)} 
+                   "creatine": session.get("custom_creatine", 0)} 
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.get_length(ingredients)
@@ -250,9 +303,6 @@ def products():
                            beta=session.get("custom_betaAlanine", 0),
                            cre=session.get("custom_creatine", 0)
     )
-
-
-        
 
 
 if __name__ == "__main__":
