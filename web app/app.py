@@ -250,7 +250,7 @@ def results():
                             )
                     
 
-@app.route("/quiz/customize", methods=["GET", "POST"])
+@app.route("/customize", methods=["GET", "POST"])
 def customize():
     """displays customization page w/ sliders
 
@@ -266,13 +266,14 @@ def customize():
         session["custom_tyrosine"] = request.form.get("custom_tyrosine", -1)
         session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
         return redirect(url_for('products'))
-    return render_template("qCustomize.html",
+    
+    return render_template("customize.html",
                             usr=session.get("user"),
                             current_step="customize",
                             caffeine=100,
                             beta=1.6,
                             creatine=5,
-                            recommended=['caffeine', 'beta', 'creatine']
+                            recommended=['caffeine', 'beta', 'creatine'] # TODO update this to reflect actual recommendations based on quiz results
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
