@@ -222,8 +222,14 @@ def calculate_citrulline():
     recommended_intake: 3-5g
     improves:           pump
     """
-    # TODO
-    pass
+    citrulline = 3 # base recommendation
+    if goals[0]: # pump
+        if kg > 68: 
+            citrulline = 5
+        else:   # if user is lighter, recommend less citrulline
+            citrulline = 4
+            
+    return citrulline
 
 def calculate_theanine():
     """calculates L-Tyrosine
