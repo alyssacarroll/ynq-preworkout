@@ -5,7 +5,6 @@ from sqlalchemy import text
 import os
 from calculations import calc_ingredients as ci
 from calculations import calc_products as cp
-from torch.xpu import current_device
 
 app = Flask(__name__)
 
