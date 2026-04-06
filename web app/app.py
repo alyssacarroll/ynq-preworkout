@@ -267,18 +267,12 @@ def customize():
         session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
         return redirect(url_for('products'))
     
-    caffeine = ci.calculate_caffeine()
-    beta = ci.calculate_beta()
-    creatine = ci.calculate_creatine()
     recommended = ci.get_recommendations()
     pool = ci.get_pool()
     
     return render_template("customize.html",
                             usr=session.get("user"),
                             current_step="customize",
-                            caffeine=caffeine,
-                            beta=beta,
-                            creatine=creatine,
                             recommended=recommended,
                             pool=pool
                             )
