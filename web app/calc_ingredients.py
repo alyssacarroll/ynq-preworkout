@@ -177,13 +177,12 @@ def calculate_beta():
     recommended_intake: 3.2-6.4 g
     improves:           endurance
     """
-    # TODO: maybe change this to lower
-    beta = 3.2  # base recommendation
+    beta = 1.6  # base recommendation
     
     if goals[3]:  # endurance
-        beta += 2.5
+        beta = 3.2
     if goals[1]:  # energy
-        beta += 0.5
+        beta += 0.25
     
     return beta
 
@@ -216,9 +215,9 @@ def calculate_betaine():
     betaine = 1.25  # base recommendation
     
     if goals[3]:  # endurance
-        betaine += 1.25
+        betaine = 2.5
     if goals[4]:  # strength
-        betaine += 1
+        betaine = 2.5
         
     return betaine
 
@@ -226,13 +225,13 @@ def calculate_betaine():
 def calculate_taurine():
     """calculates taurine
     
-    recommended_intake: 6.7-23 mg/kg
+    recommended_intake: 1000-3000 mg
     improves:           focus
     """
-    taurine = 6.7 * kg  # base recommendation
+    taurine = 1000  # base recommendation
     
     if goals[2]:  # focus
-        taurine = 23 * kg
+        taurine = 2000
         
     return taurine
 
