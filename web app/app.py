@@ -291,7 +291,7 @@ def products():
 
     products = [dict(row._mapping) for row in result]
     ingredients = {"caffeine": session.get("custom_caffeine", 0),
-                   "beta_alanine": session.get("custom_beta", 0),
+                   "beta": session.get("custom_beta", 0),
                    "creatine": session.get("custom_creatine", 0),
                    "betaine": session.get("custom_betaine", 0),
                    "taurine": session.get("custom_taurine", 0),
@@ -302,14 +302,16 @@ def products():
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.num_active_ing(ingredients)
+    active = cp.active_ingredients(ingredients)
     return render_template("products.html",
                            perfect=perfect,
                            close=close,
                            similar=similar,
-                           length=length ,
-                           caff=session.get("custom_caffeine", 0),
-                           beta=session.get("custom_beta", 0),
-                           cre=session.get("custom_creatine", 0)
+                           length=length,
+                           active=active,
+                           caff=session.get("custom_caffeine", 0), # debugging
+                           beta=session.get("custom_beta", 0),     # debugging
+                           cre=session.get("custom_creatine", 0)   # debugging
     )
 
 

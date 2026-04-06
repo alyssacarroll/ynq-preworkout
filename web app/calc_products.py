@@ -17,6 +17,21 @@ def num_active_ing(ingredients):
             length += 1
     return length
 
+def active_ingredients(ingredients):
+    """finds the ingredients that the user has included/toggled.
+    i.e. ingredients that don't equal -1
+
+    Args:
+        ingredients (dict): all ingredients (from qCustomize page)
+
+    Returns:
+        list: list of ingredient names that != -1
+    """
+    active = []
+    for i in ingredients:
+        if ingredients[i] != -1:
+            active.append(i)
+    return active
 
 def score_product(product, ingredients):
     """counts how many product ingredients match the user's preferences
@@ -41,11 +56,11 @@ def score_product(product, ingredients):
         score += 1
     if ingredients["citrulline"] != -1 and float(ingredients["citrulline"]) == float(product["L_Citrulline"]):
         score += 1
-    if ingredients["theanine"] != -1   and float(ingredients["theanine"]) == float(product["Theanine"]):
+    if ingredients["theanine"] != -1   and float(ingredients["theanine"]) == float(product["L_Theanine"]):
         score += 1
-    if ingredients["tyrosine"] != -1   and float(ingredients["tyrosine"]) == float(product["Tyrosine"]):
+    if ingredients["tyrosine"] != -1   and float(ingredients["tyrosine"]) == float(product["L_Tyrosine"]):
         score += 1
-    if ingredients["agmatine"] != -1   and float(ingredients["agmatine"]) == float(product["Agmatine"]):
+    if ingredients["agmatine"] != -1   and float(ingredients["agmatine"]) == float(product["Agmatine_Sulfate"]):
         score += 1
         
     return score
@@ -66,7 +81,7 @@ def is_similar(product, ingredients):
     similarity_score = 0
     if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"])) <= 50:
         similarity_score += 1
-    if ingredients["beta_alanine"] != -1 and abs(float(product["Beta_Alanine"]) - float(ingredients["beta_alanine"])) <= 0.5:
+    if ingredients["beta"] != -1 and abs(float(product["Beta_Alanine"]) - float(ingredients["beta"])) <= 0.5:
         similarity_score += 1
     if ingredients["creatine"] != -1     and abs(float(product["Creatine"]) - float(ingredients["creatine"])) <= 2.5:
         similarity_score += 1
@@ -76,11 +91,11 @@ def is_similar(product, ingredients):
         similarity_score += 1
     if ingredients["citrulline"] != -1   and abs(float(product["L_Citrulline"]) - float(ingredients["citrulline"])) <= 0.5:
         similarity_score += 1
-    if ingredients["theanine"] != -1     and abs(float(product["Theanine"]) - float(ingredients["theanine"])) <= 50:
+    if ingredients["theanine"] != -1     and abs(float(product["L_Theanine"]) - float(ingredients["theanine"])) <= 50:
         similarity_score += 1
-    if ingredients["tyrosine"] != -1     and abs(float(product["Tyrosine"]) - float(ingredients["tyrosine"])) <= 500:
+    if ingredients["tyrosine"] != -1     and abs(float(product["L_Tyrosine"]) - float(ingredients["tyrosine"])) <= 500:
         similarity_score += 1
-    if ingredients["agmatine"] != -1     and abs(float(product["Agmatine"]) - float(ingredients["agmatine"])) <= 250:
+    if ingredients["agmatine"] != -1     and abs(float(product["Agmatine_Sulfate"]) - float(ingredients["agmatine"])) <= 250:
         similarity_score += 1
             
     return similarity_score == num_active_ing(ingredients)
