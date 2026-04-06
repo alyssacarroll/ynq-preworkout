@@ -194,8 +194,14 @@ def calculate_betaine():
     recommended_intake: 1.25g (sources differ)
     improves:           strength, endurance
     """
-    betaine = 0 # base recommendation
-    pass
+    betaine = 1.25 # base recommendation
+    
+    if goals[3]: # endurance
+        betaine += 1.25
+    if goals[4]: # strength
+        betaine += 1
+        
+    return betaine
 
 def calculate_taurine():
     """calculates taurine
@@ -203,8 +209,12 @@ def calculate_taurine():
     recommended_intake: 6.7-23 mg/kg
     improves:           focus
     """
-    # TODO
-    pass
+    taurine = 6.7 * kg # base recommendation
+    
+    if goals[2]: # focus
+        taurine = 23 * kg
+        
+    return taurine
 
 def calculate_citrulline():
     """calculates L-Citrulline
