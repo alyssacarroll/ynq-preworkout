@@ -29,13 +29,25 @@ def score_product(product, ingredients):
         int: number of ingredients that match the user's preferences
     """
     score = 0
-    if ingredients["caffeine"] != -1 and int(ingredients["caffeine"]) == int(product["Caffeine Blend"]):
+    if ingredients["caffeine"] != -1   and int(ingredients["caffeine"]) == int(product["Caffeine Blend"]):
         score += 1
-    if ingredients["beta_alanine"] != -1 and float(ingredients["beta_alanine"]) == float(product["Beta_Alanine"]):
+    if ingredients["beta"] != -1       and float(ingredients["beta"]) == float(product["Beta_Alanine"]):
         score += 1
-    if ingredients["creatine"] != -1 and float(ingredients["creatine"]) == float(product["Creatine"]):
+    if ingredients["creatine"] != -1   and float(ingredients["creatine"]) == float(product["Creatine"]):
         score += 1
-    # TODO: continue this for the rest of ingredients
+    if ingredients["betaine"] != -1    and float(ingredients["betaine"]) == float(product["Betaine"]):
+        score += 1
+    if ingredients["taurine"] != -1    and float(ingredients["taurine"]) == float(product["Taurine"]):
+        score += 1
+    if ingredients["citrulline"] != -1 and float(ingredients["citrulline"]) == float(product["L_Citrulline"]):
+        score += 1
+    if ingredients["theanine"] != -1   and float(ingredients["theanine"]) == float(product["Theanine"]):
+        score += 1
+    if ingredients["tyrosine"] != -1   and float(ingredients["tyrosine"]) == float(product["Tyrosine"]):
+        score += 1
+    if ingredients["agmatine"] != -1   and float(ingredients["agmatine"]) == float(product["Agmatine"]):
+        score += 1
+        
     return score
 
 
