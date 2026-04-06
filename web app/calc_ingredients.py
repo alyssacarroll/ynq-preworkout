@@ -17,10 +17,14 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     
 def get_recommendations():
     """ identifies which ingredients should be in the user's product based on their preferences
-    returns a list of ingredients
+    and calculates recommended amounts for each ingredient
+    
+    returns: dictionary of recommended ingredients and their amounts, e.g. {"caffeine": 150, "beta": 4.5}
+    
     """
     
     recommended_ingredients = []
+    recommended_amounts = {}
     
     # === stimulant preference adjustments ====
     if stim == "none": # best ingredients for non-stimulant pre-workout: beta-alanine, l-citrulline, taurine
@@ -45,16 +49,25 @@ def get_recommendations():
         recommended_ingredients.append("tyrosine")
     if goals[3]: # endurance
         recommended_ingredients.append("caffeine")
-        recommended_ingredients.append("beta-alanine")
+        recommended_ingredients.append("beta")
         recommended_ingredients.append("betaine")
     if goals[4]: # strength
         recommended_ingredients.append("creatine")
         recommended_ingredients.append("betaine")
             
+    if age in ["36-50", "51-64", "65+"]:
+        recommended_ingredients.append("creatine")
+    
     # get rid of duplicates
     unique_recs = set(recommended_ingredients)
     
-    return list(unique_recs)
+    # calculate recommended amounts for each ingredient
+    for ingredient in unique_recs:
+        result = eval("calculate_" + ingredient + "()")
+        if result:
+            recommended_amounts[ingredient] = result
+    
+    return recommended_amounts
 
 
 # <><><><><><><><><><><><> INDIVIDUAL CALCULATIONS <><><><><><><><><><><><><><><>
@@ -89,6 +102,7 @@ def calculate_caffeine():
         caffeine = min(caffeine, 200)
     elif stim == "high":
         caffeine = min(caffeine, 500)
+        caffeine = max(caffeine, kg * 6) # if user doesn't have many stimulant-heavy goals but still wants high stimulant preference
     elif stim == "any":
         # keep base caffeine calculation
         pass

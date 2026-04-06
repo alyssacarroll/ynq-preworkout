@@ -388,12 +388,13 @@
 
 <script>
     /* ── FLASK VALUES ── */
-    const ING_RECS = {
-        caffeine: {{ caffeine | default(0) }},
-        beta:     {{ beta | default(0) }},
-        creatine: {{ creatine | default(0) }}
-        // TODO: add other ingredients when implemented in backend
-    };
+    // const ING_RECS = {
+    //     caffeine: {{ caffeine | default(0) }},
+    //     beta:     {{ beta | default(0) }},
+    //     creatine: {{ creatine | default(0) }}
+    //     // TODO: add other ingredients when implemented in backend
+    // };
+    const ING_RECS = {{ recommended | tojson }};
 
     /* ── STATIC DATA ── */
     const UNITS = {
@@ -419,9 +420,9 @@
     };
 
     /* ── STATE ── */
-    const RECOMMENDED = ['caffeine', 'beta', 'creatine'];
+    // const RECOMMENDED = ['caffeine', 'beta', 'creatine'];
     // TODO: replace ^^^ with this:
-    // const RECOMMENDED = {{ recommended}};
+    const RECOMMENDED = Object.keys(ING_RECS);
     const POOL_IDS = ['theanine','betaine', 'taurine', 'citrulline', 'tyrosine', 'agmatine'];
     const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
 
