@@ -76,15 +76,15 @@ def categorize_products(products, ingredients):
         similar (list): products that have similar ingredient values to those which the user prefers
     """
     perfect, close, similar = [], [], []
+    
     length = get_length(ingredients)
     for p in products:
         s = score_product(p, ingredients)
         # product's ingredients match exactly what the user wants
         if s == length:
             perfect.append(p)
-        # product's ingredients match at least 50% of what the user wants
-        # TODO: change to 75% after adding ingredients
-        elif s >= (length * 0.5):
+        # product's ingredients match at least 2/3 of what the user wants
+        elif s >= (length * 0.66):
             close.append(p)
         # product has similar ingredients to what the user wants
         elif is_similar(p, ingredients):

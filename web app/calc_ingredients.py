@@ -7,9 +7,9 @@ from test.test_decimal import TODO_TESTS
 
 
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
-    global age, lbs, sex, goals, stim
+    global age, kg, sex, goals, stim
     age = user_age
-    lbs = int(user_lbs)
+    kg = int(user_lbs) * 0.453592
     sex = user_sex
     goals = user_goals
     stim = user_stimulant
@@ -17,15 +17,13 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
 # <><><><><><><><><><><><> CALCULATIONS <><><><><><><><><><><><><><><>
 
 
+
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight
     
     recommended_intake: 3-6 mg/kg
     improves:           energy, focus, endurance
-    """
-    # convert weight to kg
-    kg = lbs * 0.453592
-    
+    """    
     # base caffeine calculation
     caffeine = 0
     mg_per_kg = 0
@@ -65,24 +63,40 @@ def calculate_caffeine():
     return int(caffeine)
 
 def calculate_beta():
-    """calculates Beta-Alanine based on weight and goals. not implemented yet.
+    """calculates Beta-Alanine based on goals
     
     recommended_intake: 3.2-6.4 g
     improves:           endurance
     """
-    # TODO
-    pass
+    # TODO: maybe change this to lower
+    beta = 3.2 # base recommendation
+    
+    if goals[3]: # endurance
+        beta += 2.5
+    if goals[1]: # energy
+        beta += 0.5
+    
+    return beta
 
 def calculate_creatine():
     """calculates creatine based on weight and goals. not implemented yet.
     
-    recommended_intake:  0.003 mg/kg (maintenance), 0.03 mg/kg (loading)
+    recommended_intake:  0.03 g/kg (maintenance), 0.3 g/kg (loading)
     improves:            pump, strength
     """
-    # TODO
+    creatine = 0 # base recommendation
+    
+    # adjust for goals
+    if goals[0]: # pump
+        creatine += kg * 0.015
+    if goals[4]: # strength
+        creatine += kg * 0.03
+        
     # increase for 31+ age group
-    # increase for strength goal
-    pass
+    if age in ["36-50", "51-64", "65+"]:
+        creatine += 1
+    
+    return creatine
 
 def calculate_betaine():
     """calculates betaine

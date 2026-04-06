@@ -346,7 +346,7 @@
     }
 </style>
 
-<form method="POST" action="/quiz/customize" id="customize-form">
+<form method="POST" action="/customize" id="customize-form">
     <div class="customize-wrap">
         <h1 class="blend-title">Customize your blend:</h1>
 
@@ -387,8 +387,9 @@
     /* ── FLASK VALUES ── */
     const ING_RECS = {
         caffeine: {{ caffeine | default(0) }},
-        beta: {{ beta_alanine | default(0) }},
+        beta:     {{ beta | default(0) }},
         creatine: {{ creatine | default(0) }}
+        // TODO: add other ingredients when implemented in backend
     };
 
     /* ── STATIC DATA ── */
@@ -455,7 +456,7 @@
                     <span>${NAMES[id]}</span>
                 </div>
                 <div class="slider-row">
-                <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}"
+                <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}" id="custom_${id}" name="custom_${id}"
                     style="background: linear-gradient(to right, var(--green-thumb) ${pct}%, var(--track) ${pct}%)"
                     oninput="slide('${id}', this)">
                 <button type="button" class="remove-x" title="Remove" onclick="removeIng('${id}')">✕</button>

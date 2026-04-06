@@ -14,25 +14,25 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 app.secret_key = "key"
 
-# uri = os.getenv("DATABASE_URL")
+uri = os.getenv("DATABASE_URL")
 
-# # REMOVE channel_binding (important for psycopg2)
-# uri = uri.replace("&channel_binding=require", "")
+# REMOVE channel_binding (important for psycopg2)
+uri = uri.replace("&channel_binding=require", "")
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-# app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-#     "pool_pre_ping": True,
-#     "pool_recycle": 300,
-# }
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_pre_ping": True,
+    "pool_recycle": 300,
+}
 
 db = SQLAlchemy(app)
 
-# @app.route("/test-db")
-# def test_db():
-#     print(os.getenv("DATABASE_URL"))
-#     db.session.execute(text("SELECT 1"))
-#     return "DB works"
+@app.route("/test-db")
+def test_db():
+    print(os.getenv("DATABASE_URL"))
+    db.session.execute(text("SELECT 1"))
+    return "DB works"
 
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
@@ -267,12 +267,16 @@ def customize():
         session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
         return redirect(url_for('products'))
     
+    caffeine = ci.calculate_caffeine()
+    beta = ci.calculate_beta()
+    creatine = ci.calculate_creatine()
+    
     return render_template("customize.html",
                             usr=session.get("user"),
                             current_step="customize",
-                            caffeine=100,
-                            beta=1.6,
-                            creatine=5,
+                            caffeine=caffeine,
+                            beta=beta,
+                            creatine=creatine,
                             recommended=['caffeine', 'beta', 'creatine'] # TODO update this to reflect actual recommendations based on quiz results
                             )
 
