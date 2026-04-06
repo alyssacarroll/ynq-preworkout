@@ -271,6 +271,7 @@ def customize():
     beta = ci.calculate_beta()
     creatine = ci.calculate_creatine()
     recommended = ci.get_recommendations()
+    pool = ci.get_pool()
     
     return render_template("customize.html",
                             usr=session.get("user"),
@@ -278,7 +279,8 @@ def customize():
                             caffeine=caffeine,
                             beta=beta,
                             creatine=creatine,
-                            recommended=recommended
+                            recommended=recommended,
+                            pool=pool
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>

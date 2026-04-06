@@ -414,14 +414,12 @@
 
     /* ── STATE ── */
     const RECOMMENDED = Object.keys(ING_RECS); // just IDs for ING_RECS
-    const POOL_IDS = ['betaine', 'taurine', 'citrulline', 'theanine', 'tyrosine', 'agmatine'];
+    const POOL_IDS = {{ pool | keys | list | tojson }};
     const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
-
-    const POOL_DEFAULTS = { betaine: 0, taurine: 0, citrulline: 0, theanine: 0, tyrosine: 0, agmatine: 0 };
 
     const state = {};
     ALL_IDS.forEach(id => {
-        const rec = ING_RECS[id] !== undefined ? ING_RECS[id] : (POOL_DEFAULTS[id] || MINS[id]);
+        const rec = ING_RECS[id] !== undefined ? ING_RECS[id] : (0 || MINS[id]);
         state[id] = {
             val: rec,
             rec: rec,
