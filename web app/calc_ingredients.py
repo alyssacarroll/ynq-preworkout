@@ -7,6 +7,7 @@ from test.test_decimal import TODO_TESTS
 
 # <><><><><><><><><><><><> GLOBAL VARIABLES <><><><><><><><><><><><><><><>
 
+
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     global age, kg, sex, goals, stim
     age = user_age
@@ -16,6 +17,7 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     stim = user_stimulant
     
     set_ingredients()
+
 
 def set_ingredients():
     global caffeine, beta, creatine, betaine, taurine, citrulline, theanine, tyrosine, agmatine
@@ -37,6 +39,7 @@ def set_ingredients():
     
 # <><><><><><><><><><><><> REC & POOL CALCULATIONS <><><><><><><><><><><><><><><>
 
+
 def calculate_recommendations():
     """ identifies which ingredients should be in the user's product based on their preferences
     and calculates recommended amounts for each ingredient
@@ -47,31 +50,31 @@ def calculate_recommendations():
     recommended_ingredients = []
     
     # === stimulant preference adjustments ====
-    if stim == "none": # best ingredients for non-stimulant pre-workout: beta-alanine, l-citrulline, taurine
+    if stim == "none":  # best ingredients for non-stimulant pre-workout: beta-alanine, l-citrulline, taurine
         recommended_ingredients.append("beta")
         recommended_ingredients.append("citrulline")
         recommended_ingredients.append("taurine")
-    else: # top 3 most common ingredients in pre-workouts: caffeine, beta-alanine, citrulline
+    else:  # top 3 most common ingredients in pre-workouts: caffeine, beta-alanine, citrulline
         recommended_ingredients.append("caffeine")
         recommended_ingredients.append("beta")
         recommended_ingredients.append("citrulline")
     
     # === goal adjustments ====
-    if goals[0]: # pump
+    if goals[0]:  # pump
         recommended_ingredients.append("citrulline")
         recommended_ingredients.append("agmatine")
-    if goals[1]: # energy
+    if goals[1]:  # energy
         recommended_ingredients.append("caffeine")
-    if goals[2]: # focus
+    if goals[2]:  # focus
         recommended_ingredients.append("caffeine")
         recommended_ingredients.append("taurine")
         recommended_ingredients.append("theanine")
         recommended_ingredients.append("tyrosine")
-    if goals[3]: # endurance
+    if goals[3]:  # endurance
         recommended_ingredients.append("caffeine")
         recommended_ingredients.append("beta")
         recommended_ingredients.append("betaine")
-    if goals[4]: # strength
+    if goals[4]:  # strength
         recommended_ingredients.append("creatine")
         recommended_ingredients.append("betaine")
             
@@ -82,12 +85,26 @@ def calculate_recommendations():
     unique_recs = set(recommended_ingredients)
     
     # calculate recommended amounts for each ingredient
+    
+    func_map = {
+    "caffeine": calculate_caffeine,
+    "beta": calculate_beta,
+    "creatine": calculate_creatine,
+    "betaine": calculate_betaine,
+    "taurine": calculate_taurine,
+    "citrulline": calculate_citrulline,
+    "theanine": calculate_theanine,
+    "tyrosine": calculate_tyrosine,
+    "agmatine": calculate_agmatine
+    }
+    
     for ingredient in unique_recs:
-        result = eval("calculate_" + ingredient + "()")
+        result = func_map[ingredient]()
         if result:
             recommended_amounts[ingredient] = result
     
     return recommended_amounts
+
 
 def calculate_pool():
     """ identifies which ingredients should be in the pool of ingredients
@@ -103,6 +120,7 @@ def calculate_pool():
 
 # <><><><><><><><><><><><> INGREDIENT CALCULATIONS <><><><><><><><><><><><><><><>
 
+
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight
     
@@ -114,11 +132,11 @@ def calculate_caffeine():
     mg_per_kg = 0
     
     # ==== goal adjustments ====
-    if goals[1]: # energy
+    if goals[1]:  # energy
         mg_per_kg += 4
-    if goals[2]: # focus
+    if goals[2]:  # focus
         mg_per_kg += 1
-    if goals[3]: # endurance
+    if goals[3]:  # endurance
         mg_per_kg += 1
     
     caffeine = int(mg_per_kg * kg)
@@ -131,12 +149,12 @@ def calculate_caffeine():
         caffeine = min(caffeine, 100)
     elif stim == "moderate":
         caffeine = min(caffeine, 200)
-        caffeine = max(caffeine, kg * 2)    # if user doesn't have many stimulant-heavy goals but still wants moderate stimulant preference
+        caffeine = max(caffeine, kg * 2)  # if user doesn't have many stimulant-heavy goals but still wants moderate stimulant preference
     elif stim == "high":
         caffeine = min(caffeine, 500)
-        caffeine = max(caffeine, kg * 6)    # if user doesn't have many stimulant-heavy goals but still wants high stimulant preference
+        caffeine = max(caffeine, kg * 6)  # if user doesn't have many stimulant-heavy goals but still wants high stimulant preference
     elif stim == "any":
-        pass                                # keep base caffeine calculation
+        pass  # keep base caffeine calculation
         
     # cap caffeine at 6mg/kg or 500 mg, whichever is lower
     if caffeine > min(kg * 6, 500):
@@ -152,6 +170,7 @@ def calculate_caffeine():
     
     return caffeine
 
+
 def calculate_beta():
     """calculates Beta-Alanine based on goals
     
@@ -159,14 +178,15 @@ def calculate_beta():
     improves:           endurance
     """
     # TODO: maybe change this to lower
-    beta = 3.2 # base recommendation
+    beta = 3.2  # base recommendation
     
-    if goals[3]: # endurance
+    if goals[3]:  # endurance
         beta += 2.5
-    if goals[1]: # energy
+    if goals[1]:  # energy
         beta += 0.5
     
     return beta
+
 
 def calculate_creatine():
     """calculates creatine based on weight and goals. not implemented yet.
@@ -174,19 +194,18 @@ def calculate_creatine():
     recommended_intake:  0.03 g/kg (maintenance), 0.3 g/kg (loading)
     improves:            pump, strength
     """
-    creatine = 0 # base recommendation
+    creatine = 3  # base recommendation
     
     # adjust for goals
-    if goals[0]: # pump
-        creatine += kg * 0.015
-    if goals[4]: # strength
-        creatine += kg * 0.03
+    if goals[4]:  # strength
+        creatine += 2
         
-    # increase for 31+ age group
+    # increase for 36+ age group
     if age in ["36-50", "51-64", "65+"]:
         creatine += 1
     
     return creatine
+
 
 def calculate_betaine():
     """calculates betaine
@@ -194,14 +213,15 @@ def calculate_betaine():
     recommended_intake: 1.25g (sources differ)
     improves:           strength, endurance
     """
-    betaine = 1.25 # base recommendation
+    betaine = 1.25  # base recommendation
     
-    if goals[3]: # endurance
+    if goals[3]:  # endurance
         betaine += 1.25
-    if goals[4]: # strength
+    if goals[4]:  # strength
         betaine += 1
         
     return betaine
+
 
 def calculate_taurine():
     """calculates taurine
@@ -209,12 +229,13 @@ def calculate_taurine():
     recommended_intake: 6.7-23 mg/kg
     improves:           focus
     """
-    taurine = 6.7 * kg # base recommendation
+    taurine = 6.7 * kg  # base recommendation
     
-    if goals[2]: # focus
+    if goals[2]:  # focus
         taurine = 23 * kg
         
     return taurine
+
 
 def calculate_citrulline():
     """calculates L-Citrulline
@@ -222,14 +243,15 @@ def calculate_citrulline():
     recommended_intake: 3-5g
     improves:           pump
     """
-    citrulline = 3 # base recommendation
-    if goals[0]: # pump
+    citrulline = 3  # base recommendation
+    if goals[0]:  # pump
         if kg > 68: 
-            citrulline = 5
-        else:   # if user is lighter, recommend less citrulline
+            citrulline = 6
+        else:  # if user is lighter, recommend less citrulline
             citrulline = 4
             
     return citrulline
+
 
 def calculate_theanine():
     """calculates L-Theanine
@@ -237,40 +259,46 @@ def calculate_theanine():
     recommended_intake: 200-400 mg
     improves:           focus
     """
-    theanine = 100 # base recommendation
-    if goals[2]: # focus
+    theanine = 100  # base recommendation
+    if goals[2]:  # focus
         theanine = 400
         
     return theanine
 
+
 def calculate_tyrosine():
     """calculates L-Tyrosine
     
-    recommended_intake: 100-150 mg/kg
+    recommended_intake: 500-2000 mg
     improves:           focus
     """
-    tyrosine = 100 * kg # base recommendation
-    if goals[2]: # focus
-        tyrosine = 150 * kg
+    tyrosine = 500  # base recommendation
+    if goals[2]:  # focus
+        tyrosine = 1500
         
     return tyrosine
+
 
 def calculate_agmatine():
     """calculates Agmatine Sulfate
     
-    recommended_intake: 1.6-6.4 mg/kg
+    recommended_intake: 10-20 mg/kg
     improves:           pump
     """
-    agmatine = 1.6 * kg # base recommendation
-    if goals[0]: # pump
-        agmatine = 6.4 * kg
+    agmatine = 10 * kg  # base recommendation
+    if goals[0]:  # pump
+        agmatine = 20 * kg
         
+    # cap to 1500mg (max effective dose)
+    agmatine = min(agmatine, 1500)
     return agmatine
 
 # ========== getters ==========
+
  
 def get_recommendations():
      return recommended_amounts
+
  
 def get_pool():
     return pool_ingredients
