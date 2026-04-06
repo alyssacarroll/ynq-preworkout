@@ -1,7 +1,7 @@
 # ingredients = {caffeine: 100, beta_alanine: 0.5, creatine: 5, l_citrulline: -1}
 
 
-def get_length(ingredients):
+def num_active_ing(ingredients):
     """finds the number of included/toggled ingredients.
     i.e. ingredients that don't equal -1
 
@@ -58,9 +58,20 @@ def is_similar(product, ingredients):
         similarity_score += 1
     if ingredients["creatine"] != -1     and abs(float(product["Creatine"]) - float(ingredients["creatine"])) <= 2.5:
         similarity_score += 1
-    # TODO: continue this for the rest of ingredients
+    if ingredients["betaine"] != -1      and abs(float(product["Betaine"]) - float(ingredients["betaine"])) <= 1:
+        similarity_score += 1
+    if ingredients["taurine"] != -1      and abs(float(product["Taurine"]) - float(ingredients["taurine"])) <= 500:
+        similarity_score += 1
+    if ingredients["citrulline"] != -1   and abs(float(product["L_Citrulline"]) - float(ingredients["citrulline"])) <= 0.5:
+        similarity_score += 1
+    if ingredients["theanine"] != -1     and abs(float(product["Theanine"]) - float(ingredients["theanine"])) <= 50:
+        similarity_score += 1
+    if ingredients["tyrosine"] != -1     and abs(float(product["Tyrosine"]) - float(ingredients["tyrosine"])) <= 500:
+        similarity_score += 1
+    if ingredients["agmatine"] != -1     and abs(float(product["Agmatine"]) - float(ingredients["agmatine"])) <= 250:
+        similarity_score += 1
             
-    return similarity_score == get_length(ingredients)
+    return similarity_score == num_active_ing(ingredients)
 
 
 def categorize_products(products, ingredients):
@@ -77,7 +88,7 @@ def categorize_products(products, ingredients):
     """
     perfect, close, similar = [], [], []
     
-    length = get_length(ingredients)
+    length = num_active_ing(ingredients)
     for p in products:
         s = score_product(p, ingredients)
         # product's ingredients match exactly what the user wants
