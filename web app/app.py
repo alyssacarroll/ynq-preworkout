@@ -225,8 +225,9 @@ def stimulant():
 # <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
 @app.route("/quiz/results", methods=["GET", "POST"])
 def results():
-    """ displays quiz results. for debugging purposes.
+    """ displays quiz results. FOR DEBUGGING PURPOSES ONLY
     """
+    # set globals in calc_ingredients.py
     ci.set_user_info(session.get("age", ""),
                      session.get("weight", -1),
                      session.get("sex", ""),
@@ -252,19 +253,21 @@ def results():
 
 @app.route("/customize", methods=["GET", "POST"])
 def customize():
-    """displays customization page w/ sliders
+    """displays customization page w/ sliders. stores user preferences in session. 
+    sets session variables to -1 if user doesn't adjust slider (indicating they don't care about that ingredient).
+    redirects to products page on submit.
 
     """
     if request.method == "POST":
-        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
-        session["custom_beta"] = request.form.get("custom_beta", -1)
-        session["custom_creatine"] = request.form.get("custom_creatine", -1)
-        session["custom_theanine"] = request.form.get("custom_theanine", -1)
-        session["custom_betaine"] = request.form.get("custom_betaine", -1)
-        session["custom_taurine"] = request.form.get("custom_taurine", -1)
+        session["custom_caffeine"]   = request.form.get("custom_caffeine",   -1)
+        session["custom_beta"]       = request.form.get("custom_beta",       -1)
+        session["custom_creatine"]   = request.form.get("custom_creatine",   -1)
+        session["custom_theanine"]   = request.form.get("custom_theanine",   -1)
+        session["custom_betaine"]    = request.form.get("custom_betaine",    -1)
+        session["custom_taurine"]    = request.form.get("custom_taurine",    -1)
         session["custom_citrulline"] = request.form.get("custom_citrulline", -1)
-        session["custom_tyrosine"] = request.form.get("custom_tyrosine", -1)
-        session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
+        session["custom_tyrosine"]   = request.form.get("custom_tyrosine",   -1)
+        session["custom_agmatine"]   = request.form.get("custom_agmatine",   -1)
         return redirect(url_for('products'))
     
     recommended = ci.get_recommendations()
@@ -279,26 +282,26 @@ def customize():
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 
-    
+
 @app.route("/products")
 def products(): 
     """
-    NEW AND IMPROVED PRODUCTS FUNCTION
+    displays products that match user's preferences. product info is pulled from DSLD database.
     """
     # establish connection w/ database
     query = text("SELECT * FROM preworkout")
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients = {"caffeine": session.get("custom_caffeine", 0),
-                   "beta": session.get("custom_beta", 0),
-                   "creatine": session.get("custom_creatine", 0),
-                   "betaine": session.get("custom_betaine", 0),
-                   "taurine": session.get("custom_taurine", 0),
+    ingredients = {"caffeine"  : session.get("custom_caffeine", 0),
+                   "beta"      : session.get("custom_beta", 0),
+                   "creatine"  : session.get("custom_creatine", 0),
+                   "betaine"   : session.get("custom_betaine", 0),
+                   "taurine"   : session.get("custom_taurine", 0),
                    "citrulline": session.get("custom_citrulline", 0),
-                   "theanine": session.get("custom_theanine", 0),
-                   "tyrosine": session.get("custom_tyrosine", 0),
-                   "agmatine": session.get("custom_agmatine", 0)} 
+                   "theanine"  : session.get("custom_theanine", 0),
+                   "tyrosine"  : session.get("custom_tyrosine", 0),
+                   "agmatine"  : session.get("custom_agmatine", 0)} 
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.num_active_ing(ingredients)
@@ -309,9 +312,6 @@ def products():
                            similar=similar,
                            length=length,
                            active=active,
-                           caff=session.get("custom_caffeine", 0), # debugging
-                           beta=session.get("custom_beta", 0),     # debugging
-                           cre=session.get("custom_creatine", 0)   # debugging
     )
 
 
