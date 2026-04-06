@@ -232,13 +232,16 @@ def calculate_citrulline():
     return citrulline
 
 def calculate_theanine():
-    """calculates L-Tyrosine
+    """calculates L-Theanine
     
     recommended_intake: 200-400 mg
     improves:           focus
     """
-    # TODO
-    pass
+    theanine = 100 # base recommendation
+    if goals[2]: # focus
+        theanine = 400
+        
+    return theanine
 
 def calculate_tyrosine():
     """calculates L-Tyrosine
@@ -246,17 +249,23 @@ def calculate_tyrosine():
     recommended_intake: 100-150 mg/kg
     improves:           focus
     """
-    # TODO
-    pass
+    tyrosine = 100 * kg # base recommendation
+    if goals[2]: # focus
+        tyrosine = 150 * kg
+        
+    return tyrosine
 
 def calculate_agmatine():
     """calculates Agmatine Sulfate
     
-    recommended_intake: 
+    recommended_intake: 1.6-6.4 mg/kg
     improves:           pump
     """
-    # TODO
-    pass
+    agmatine = 1.6 * kg # base recommendation
+    if goals[0]: # pump
+        agmatine = 6.4 * kg
+        
+    return agmatine
 
 # ========== getters ==========
  
