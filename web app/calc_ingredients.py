@@ -5,6 +5,7 @@
 # stimulant preference: none, low, moderate, high, any
 from test.test_decimal import TODO_TESTS
 
+# <><><><><><><><><><><><> GLOBAL VARIABLES <><><><><><><><><><><><><><><>
 
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     global age, kg, sex, goals, stim
@@ -14,17 +15,34 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     goals = user_goals
     stim = user_stimulant
     
+    set_ingredients()
+
+def set_ingredients():
+    global caffeine, beta, creatine, betaine, taurine, citrulline, theanine, tyrosine, agmatine
+    caffeine = 0
+    beta = 0.0
+    creatine = 0.0
+    betaine = 0.0
+    taurine = 0.0
+    citrulline = 0.0
+    theanine = 0.0
+    tyrosine = 0.0
+    agmatine = 0.0
     
-def get_recommendations():
+    global recommended_amounts, pool_ingredients
+    recommended_amounts = calculate_recommendations()
+    pool_ingredients = calculate_pool()
+    
+# <><><><><><><><><><><><> REC & POOL CALCULATIONS <><><><><><><><><><><><><><><>
+
+def calculate_recommendations():
     """ identifies which ingredients should be in the user's product based on their preferences
     and calculates recommended amounts for each ingredient
     
     returns: dictionary of recommended ingredients and their amounts, e.g. {"caffeine": 150, "beta": 4.5}
     
     """
-    
     recommended_ingredients = []
-    recommended_amounts = {}
     
     # === stimulant preference adjustments ====
     if stim == "none": # best ingredients for non-stimulant pre-workout: beta-alanine, l-citrulline, taurine
@@ -69,8 +87,19 @@ def get_recommendations():
     
     return recommended_amounts
 
+def calculate_pool():
+    """ identifies which ingredients should be in the pool of ingredients
+    returns: list of ingredients that should be in the pool, e.g. ["betaine", "taurine", "theanine"]
+    """
+    all_ing = set(["caffeine", "beta", "creatine", "betaine", "taurine", "citrulline", "theanine", "tyrosine", "agmatine"])
+    rec_ing = set(recommended_amounts.keys())
+    pool_ing = all_ing - rec_ing
+    
+    pool_ingredients = list(pool_ing)
+    
+    return pool_ingredients
 
-# <><><><><><><><><><><><> INDIVIDUAL CALCULATIONS <><><><><><><><><><><><><><><>
+# <><><><><><><><><><><><> INGREDIENT CALCULATIONS <><><><><><><><><><><><><><><>
 
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight
@@ -100,12 +129,12 @@ def calculate_caffeine():
         caffeine = min(caffeine, 100)
     elif stim == "moderate":
         caffeine = min(caffeine, 200)
+        caffeine = max(caffeine, kg * 2)    # if user doesn't have many stimulant-heavy goals but still wants moderate stimulant preference
     elif stim == "high":
         caffeine = min(caffeine, 500)
-        caffeine = max(caffeine, kg * 6) # if user doesn't have many stimulant-heavy goals but still wants high stimulant preference
+        caffeine = max(caffeine, kg * 6)    # if user doesn't have many stimulant-heavy goals but still wants high stimulant preference
     elif stim == "any":
-        # keep base caffeine calculation
-        pass
+        pass                                # keep base caffeine calculation
         
     # cap caffeine at 6mg/kg or 500 mg, whichever is lower
     if caffeine > min(kg * 6, 500):
@@ -115,7 +144,10 @@ def calculate_caffeine():
     if age == "65+":
         caffeine = min(caffeine, 400, kg * 5)
     
-    return int(caffeine)
+    # round to nearest 5 mg
+    caffeine = round(int(caffeine), -0.5)  
+    
+    return caffeine
 
 def calculate_beta():
     """calculates Beta-Alanine based on goals
@@ -159,7 +191,7 @@ def calculate_betaine():
     recommended_intake: 1.25g (sources differ)
     improves:           strength, endurance
     """
-    # TODO
+    betaine = 0 # base recommendation
     pass
 
 def calculate_taurine():
@@ -206,3 +238,11 @@ def calculate_agmatine():
     """
     # TODO
     pass
+
+# ========== getters ==========
+ 
+def get_recommendations():
+     return recommended_amounts
+ 
+def get_pool():
+    return pool_ingredients
