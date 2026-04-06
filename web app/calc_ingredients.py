@@ -14,9 +14,50 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     goals = user_goals
     stim = user_stimulant
     
-# <><><><><><><><><><><><> CALCULATIONS <><><><><><><><><><><><><><><>
+    
+def get_recommendations():
+    """ identifies which ingredients should be in the user's product based on their preferences
+    returns a list of ingredients
+    """
+    
+    recommended_ingredients = []
+    
+    # === stimulant preference adjustments ====
+    if stim == "none": # best ingredients for non-stimulant pre-workout: beta-alanine, l-citrulline, taurine
+        recommended_ingredients.append("beta")
+        recommended_ingredients.append("citrulline")
+        recommended_ingredients.append("taurine")
+    else: # top 3 most common ingredients in pre-workouts: caffeine, beta-alanine, citrulline
+        recommended_ingredients.append("caffeine")
+        recommended_ingredients.append("beta")
+        recommended_ingredients.append("citrulline")
+    
+    # === goal adjustments ====
+    if goals[0]: # pump
+        recommended_ingredients.append("citrulline")
+        recommended_ingredients.append("agmatine")
+    if goals[1]: # energy
+        recommended_ingredients.append("caffeine")
+    if goals[2]: # focus
+        recommended_ingredients.append("caffeine")
+        recommended_ingredients.append("taurine")
+        recommended_ingredients.append("theanine")
+        recommended_ingredients.append("tyrosine")
+    if goals[3]: # endurance
+        recommended_ingredients.append("caffeine")
+        recommended_ingredients.append("beta-alanine")
+        recommended_ingredients.append("betaine")
+    if goals[4]: # strength
+        recommended_ingredients.append("creatine")
+        recommended_ingredients.append("betaine")
+            
+    # get rid of duplicates
+    unique_recs = set(recommended_ingredients)
+    
+    return list(unique_recs)
 
 
+# <><><><><><><><><><><><> INDIVIDUAL CALCULATIONS <><><><><><><><><><><><><><><>
 
 def calculate_caffeine():
     """ calculates caffeine range based on stimulant preference and weight

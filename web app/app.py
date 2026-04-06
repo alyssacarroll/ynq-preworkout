@@ -270,6 +270,7 @@ def customize():
     caffeine = ci.calculate_caffeine()
     beta = ci.calculate_beta()
     creatine = ci.calculate_creatine()
+    recommended = ci.get_recommendations()
     
     return render_template("customize.html",
                             usr=session.get("user"),
@@ -277,7 +278,7 @@ def customize():
                             caffeine=caffeine,
                             beta=beta,
                             creatine=creatine,
-                            recommended=['caffeine', 'beta', 'creatine'] # TODO update this to reflect actual recommendations based on quiz results
+                            recommended=recommended
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
