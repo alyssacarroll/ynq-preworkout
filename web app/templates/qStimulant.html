@@ -12,20 +12,24 @@
         <input type="radio" class="btn-check" name="stimulant" id="low-stimulant" value="low" autocomplete="off">
         <label class="btn btn-outline-dark" for="low-stimulant">Low</label>
 
-        <input type="radio" class="btn-check" name="stimulant" id="medium-stimulant" value="moderate" autocomplete="off">
+        <input type="radio" class="btn-check" name="stimulant" id="medium-stimulant" value="moderate"
+            autocomplete="off">
         <label class="btn btn-outline-dark" for="medium-stimulant">Moderate</label>
 
-        <input type="radio" class="btn-check" name="stimulant" id="high-stimulant" value="high"  autocomplete="off">
-        <label class="btn btn-outline-dark" for="high-stimulant">High</label>        
+        <input type="radio" class="btn-check" name="stimulant" id="high-stimulant" value="high" autocomplete="off">
+        <label class="btn btn-outline-dark" for="high-stimulant">High</label>
 
         <input type="radio" class="btn-check" name="stimulant" id="any-stimulant" value="any" autocomplete="off">
         <label class="btn btn-outline-dark" for="any-stimulant">I don't care</label>
 
-        <div class="error-msg">{{ error }}</div>
+        {% if error %}
+        <div class="error-inline">
+            <div class="error-dot"></div> {{ error }} </div>
+        {% endif %}
 
-         <a class="btn-back" href="/quiz/goals" > ← Back </a>
+        <a class="btn-back" href="/quiz/goals"> ← Back </a>
     </div>
-    
+
     <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
 </form>
 

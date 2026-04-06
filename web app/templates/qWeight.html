@@ -1,14 +1,19 @@
 {% extends "quiz_template.html" %}
 {% block quiz_content %}
 
-    <h2 class="container question">What's your weight?</h2>
-    <form method="POST" action="/quiz/weight">
-        <div class="d-grid gap-3 col-6 mx-auto">
+<h2 class="container question">What's your weight?</h2>
+<form method="POST" action="/quiz/weight">
+    <div class="d-grid gap-3 col-6 mx-auto">
         <input class="form-control" type="number" name="weight" placeholder="Weight (in lbs)" aria-label="weight input">
-        <div class="error-msg">{{ error }}</div>
-        <a class="btn-back" href="/quiz/sex" > ← Back </a>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
-    </form> 
+        
+        {% if error %}
+        <div class="error-inline">
+            <div class="error-dot"></div> {{ error }} </div>
+        {% endif %}
+
+        <a class="btn-back" href="/quiz/sex"> ← Back </a>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
+</form>
 
 {% endblock %}
