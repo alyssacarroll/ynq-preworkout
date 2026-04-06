@@ -30,6 +30,8 @@ def set_ingredients():
     agmatine = 0.0
     
     global recommended_amounts, pool_ingredients
+    recommended_amounts = {}
+    pool_ingredients = []
     recommended_amounts = calculate_recommendations()
     pool_ingredients = calculate_pool()
     
@@ -144,8 +146,9 @@ def calculate_caffeine():
     if age == "65+":
         caffeine = min(caffeine, 400, kg * 5)
     
-    # round to nearest 5 mg
-    caffeine = round(int(caffeine), -0.5)  
+    # round to nearest 10 mg
+    # TODO: make this 5 mg
+    caffeine = round(int(caffeine), -1)  
     
     return caffeine
 

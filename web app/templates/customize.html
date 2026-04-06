@@ -414,7 +414,7 @@
 
     /* ── STATE ── */
     const RECOMMENDED = Object.keys(ING_RECS); // just IDs for ING_RECS
-    const POOL_IDS = {{ pool | keys | list | tojson }};
+    const POOL_IDS = {{ pool | tojson }};
     const ALL_IDS = [...RECOMMENDED, ...POOL_IDS];
 
     const state = {};
