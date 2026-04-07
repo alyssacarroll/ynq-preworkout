@@ -3,10 +3,8 @@
 # sex: male, female, don't consider
 # goals: pump, energy, focus, endurance, strength
 # stimulant preference: none, low, moderate, high, any
-from test.test_decimal import TODO_TESTS
 
 # <><><><><><><><><><><><> GLOBAL VARIABLES <><><><><><><><><><><><><><><>
-
 
 def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     global age, kg, sex, goals, stim
@@ -100,7 +98,7 @@ def calculate_recommendations():
     
     for ingredient in unique_recs:
         result = func_map[ingredient]()
-        if result:
+        if result is not None:
             recommended_amounts[ingredient] = result
     
     return recommended_amounts
@@ -118,7 +116,7 @@ def calculate_pool():
     
     return pool_ingredients
 
-# <><><><><><><><><><><><> INGREDIENT CALCULATIONS <><><><><><><><><><><><><><><>
+# <><><><><><><><><><><> INGREDIENT CALCULATIONS <><><><><><><><><><><><><><><>
 
 
 def calculate_caffeine():
@@ -165,7 +163,6 @@ def calculate_caffeine():
         caffeine = min(caffeine, 400, kg * 5)
     
     # round to nearest 10 mg
-    # TODO: make this 5 mg
     caffeine = round(int(caffeine), -1)  
     
     return caffeine
@@ -181,8 +178,6 @@ def calculate_beta():
     
     if goals[3]:  # endurance
         beta = 3.2
-    if goals[1]:  # energy
-        beta += 0.25
     
     return beta
 
@@ -290,10 +285,12 @@ def calculate_agmatine():
         
     # cap to 1500mg (max effective dose)
     agmatine = min(agmatine, 1500)
+    
+    agmatine = round(agmatine, -1)  # round to nearest 10 mg
     return agmatine
 
-# ========== getters ==========
 
+# <><><><><><><><> GETTERS <><><><><><><><><>
  
 def get_recommendations():
      return recommended_amounts

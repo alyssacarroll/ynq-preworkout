@@ -271,6 +271,15 @@ def customize():
         session["custom_agmatine"]   = request.form.get("custom_agmatine",   -1)
         return redirect(url_for('products'))
     
+    ci.set_user_info(session.get("age", ""),
+                     session.get("weight", -1),
+                     session.get("sex", ""),
+                     [session.get("pumpGoal", False),
+                      session.get("energyGoal", False),
+                      session.get("focusGoal", False),
+                      session.get("enduranceGoal", False),
+                      session.get("strengthGoal", False)],
+                     session.get("stimulant", -1))
     recommended = ci.get_recommendations()
     pool = ci.get_pool()
     

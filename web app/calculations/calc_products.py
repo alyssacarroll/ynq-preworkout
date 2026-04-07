@@ -76,12 +76,12 @@ def is_similar(product, ingredients):
         ingredients (dict): list of the ingredients that the user wants in their product
 
     Returns:
-        _type_: _description_
+        is_similar (bool): True if the product is similar to the user's preferences, False otherwise
     """
     similarity_score = 0
     if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"])) <= 50:
         similarity_score += 1
-    if ingredients["beta"] != -1 and abs(float(product["Beta_Alanine"]) - float(ingredients["beta"])) <= 0.5:
+    if ingredients["beta"] != -1         and abs(float(product["Beta_Alanine"]) - float(ingredients["beta"])) <= 0.5:
         similarity_score += 1
     if ingredients["creatine"] != -1     and abs(float(product["Creatine"]) - float(ingredients["creatine"])) <= 2.5:
         similarity_score += 1
@@ -98,7 +98,10 @@ def is_similar(product, ingredients):
     if ingredients["agmatine"] != -1     and abs(float(product["Agmatine_Sulfate"]) - float(ingredients["agmatine"])) <= 250:
         similarity_score += 1
             
-    return similarity_score == num_active_ing(ingredients)
+    # product is similar if it has at least 75% of the ingredients that the user wants with similar values
+    is_similar = similarity_score >= (num_active_ing(ingredients) * 0.75)
+    
+    return is_similar  
 
 
 def categorize_products(products, ingredients):
@@ -110,7 +113,7 @@ def categorize_products(products, ingredients):
 
     Returns:
         perfect (list): products that match every ingredient that the user prefers
-        close (list): products that match 75% of the ingredients that the user prefers
+        close   (list): products that match 75% of the ingredients that the user prefers
         similar (list): products that have similar ingredient values to those which the user prefers
     """
     perfect, close, similar = [], [], []
