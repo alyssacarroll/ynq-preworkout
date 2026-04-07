@@ -209,7 +209,7 @@ def stimulant():
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
             
-        return redirect(url_for('results'))
+        return redirect(url_for('customize'))
     
     # nav bar updates
     if "stimulant" not in session["visited_steps"]:
@@ -222,32 +222,33 @@ def stimulant():
 
 
 # <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
-@app.route("/quiz/results", methods=["GET", "POST"])
-def results():
-    """ displays quiz results. FOR DEBUGGING PURPOSES ONLY
-    """
-    # set globals in calc_ingredients.py
-    ci.set_user_info(session.get("age", ""),
-                     session.get("weight", -1),
-                     session.get("sex", ""),
-                     [session.get("pumpGoal", False),
-                      session.get("energyGoal", False),
-                      session.get("focusGoal", False),
-                      session.get("enduranceGoal", False),
-                      session.get("strengthGoal", False)],
-                     session.get("stimulant", -1))
-    caffeine = ci.calculate_caffeine()
-    return render_template("qResults.html",
-                            usr=session.get("user"),
-                            weight=session.get("weight"),
-                            stimulant=session.get("stimulant"),
-                            pumpGoal=session.get("pumpGoal"),
-                            energyGoal=session.get("energyGoal"),
-                            focusGoal=session.get("focusGoal"),
-                            enduranceGoal=session.get("enduranceGoal"),
-                            strengthGoal=session.get("strengthGoal"),
-                            caffeine=caffeine
-                            )
+
+# @app.route("/quiz/results", methods=["GET", "POST"])
+# def results():
+#     """ displays quiz results. FOR DEBUGGING PURPOSES ONLY
+#     """
+#     # set globals in calc_ingredients.py
+#     ci.set_user_info(session.get("age", ""),
+#                      session.get("weight", -1),
+#                      session.get("sex", ""),
+#                      [session.get("pumpGoal", False),
+#                       session.get("energyGoal", False),
+#                       session.get("focusGoal", False),
+#                       session.get("enduranceGoal", False),
+#                       session.get("strengthGoal", False)],
+#                      session.get("stimulant", -1))
+#     caffeine = ci.calculate_caffeine()
+#     return render_template("qResults.html",
+#                             usr=session.get("user"),
+#                             weight=session.get("weight"),
+#                             stimulant=session.get("stimulant"),
+#                             pumpGoal=session.get("pumpGoal"),
+#                             energyGoal=session.get("energyGoal"),
+#                             focusGoal=session.get("focusGoal"),
+#                             enduranceGoal=session.get("enduranceGoal"),
+#                             strengthGoal=session.get("strengthGoal"),
+#                             caffeine=caffeine
+#                             )
                     
 
 @app.route("/customize", methods=["GET", "POST"])
@@ -257,6 +258,7 @@ def customize():
     redirects to products page on submit.
 
     """
+    
     if request.method == "POST":
         session["custom_caffeine"]   = request.form.get("custom_caffeine",   -1)
         session["custom_beta"]       = request.form.get("custom_beta",       -1)
@@ -279,8 +281,8 @@ def customize():
                             pool=pool
                             )
 
-# <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 
+# <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 
 @app.route("/products")
 def products(): 
