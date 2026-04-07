@@ -28,7 +28,7 @@
   .quiz-nav {
     display: flex;
     justify-content: center;
-    gap: 2.5rem;
+    gap: 2rem;
     margin-bottom: 2rem;
   }
 
@@ -65,7 +65,7 @@
   }
 
   .quiz-nav-item.active .quiz-nav-bar {
-    background-color: #ddd;
+    background-color: #ffffff;
     outline: 1.5px solid #1e7e34;
   }
 
@@ -117,11 +117,11 @@
 
 {% endblock %}
 
-{% block title %}pre-workout quiz{% endblock %}
+{% block title %}YNQ{% endblock %}
 
 {% block user %}
 {% if usr != "" and usr != None %}
-<p>Hi, {{ usr }}!</p>
+<div style="margin-bottom: 15px; margin-top: -0.5rem;">Hi, {{ usr }}!</div>
 {% endif %}
 {% endblock %}
 
