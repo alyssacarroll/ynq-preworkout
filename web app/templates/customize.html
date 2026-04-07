@@ -352,6 +352,49 @@
     .btn-back:hover {
         color: var(--text);
     }
+
+    /* info icon */
+    .info-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 1.5px solid var(--text-3);
+        color: var(--text-3);
+        font-size: 9px;
+        font-weight: 700;
+        cursor: default;
+        position: relative;
+        flex-shrink: 0;
+        font-style: normal;
+    }
+
+    .info-icon::after {
+        content: attr(data-tip);
+        position: absolute;
+        bottom: calc(100% + 7px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2a2820;
+        color: #f2ede4;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.45;
+        padding: 8px 11px;
+        border-radius: 8px;
+        width: 220px;
+        white-space: normal;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s;
+        z-index: 100;
+    }
+
+    .info-icon:hover::after {
+        opacity: 1;
+    }
 </style>
 
 <form method="POST" action="/customize" id="customize-form">
@@ -420,6 +463,18 @@
         theanine: 'L-Theanine', tyrosine: 'L-Tyrosine', agmatine: 'Agmatine Sulfate',
     };
 
+    const INFO = {
+        caffeine: 'A stimulant that can improve focus, energy, and performance. Commonly found in coffee, tea, and pre-workout supplements.',
+        beta: 'An amino acid that can help buffer lactic acid in muscles, potentially improving endurance and reducing fatigue.',
+        creatine: 'A compound that can help increase strength and power output by replenishing ATP stores in muscles.',
+        betaine: 'A compound that may support muscle strength and power, as well as promote hydration.',
+        taurine: 'An amino acid that may help with muscle function, reduce fatigue, and support cardiovascular health.',
+        citrulline: 'An amino acid that can help increase blood flow and reduce muscle soreness by boosting nitric oxide production.',
+        theanine: 'An amino acid found in tea that can promote relaxation without drowsiness, often used to counteract caffeine jitters.',
+        tyrosine: 'An amino acid that may help improve focus and cognitive function under stress by supporting neurotransmitter production.',
+        agmatine: 'A compound derived from arginine that may have neuroprotective effects and support mood and cognition.',
+    }
+
     /* ── STATE ── */
     const RECOMMENDED = Object.keys(ING_RECS); // just IDs for ING_RECS
     const POOL_IDS = {{ pool | tojson }};
@@ -455,6 +510,7 @@
             <div class="ing-item" id="item-${id}">
                 <div class="ing-label">
                     <span>${NAMES[id]}</span>
+                    <span class="info-icon" data-tip="${INFO[id]}">?</span> 
                 </div>
                 <div class="slider-row">
                 <input type="range" min="${min}" max="${max}" step="${step}" value="${s.val}" id="custom_${id}" name="custom_${id}"
@@ -475,6 +531,7 @@
             <button type="button" class="add-chip" id="chip-${id}" onclick="addIng('${id}')">
                 <span class="plus">+</span>
                 ${NAMES[id]}
+                <span class="info-icon" data-tip="${INFO[id]}">?</span> 
             </button>`;
     }
 
