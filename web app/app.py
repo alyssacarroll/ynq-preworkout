@@ -49,16 +49,19 @@ def ensure_user():
         session.permanent = True
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
+
 @app.route("/")
 def home():
     return render_template("home.html")
 
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 
+
 # TODO: add disclaimer page
 @app.route("/quiz")
 def quiz():
     return render_template("qDisclaimer.html")
+
 
 @app.route("/quiz/name", methods=["GET", "POST"])
 def name():
@@ -82,6 +85,7 @@ def name():
                            usr=session.get("user"),
                            current_step="name"
                            )  
+
    
 @app.route("/quiz/age", methods=["GET", "POST"])
 def age():
@@ -246,7 +250,6 @@ def stimulant():
                            current_step="stimulant"
                            )
 
-
 # <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
 
 # @app.route("/quiz/results", methods=["GET", "POST"])
@@ -286,15 +289,15 @@ def customize():
     """
     
     if request.method == "POST":
-        session["custom_caffeine"]   = request.form.get("custom_caffeine",   -1)
-        session["custom_beta"]       = request.form.get("custom_beta",       -1)
-        session["custom_creatine"]   = request.form.get("custom_creatine",   -1)
-        session["custom_theanine"]   = request.form.get("custom_theanine",   -1)
-        session["custom_betaine"]    = request.form.get("custom_betaine",    -1)
-        session["custom_taurine"]    = request.form.get("custom_taurine",    -1)
+        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
+        session["custom_beta"] = request.form.get("custom_beta", -1)
+        session["custom_creatine"] = request.form.get("custom_creatine", -1)
+        session["custom_theanine"] = request.form.get("custom_theanine", -1)
+        session["custom_betaine"] = request.form.get("custom_betaine", -1)
+        session["custom_taurine"] = request.form.get("custom_taurine", -1)
         session["custom_citrulline"] = request.form.get("custom_citrulline", -1)
-        session["custom_tyrosine"]   = request.form.get("custom_tyrosine",   -1)
-        session["custom_agmatine"]   = request.form.get("custom_agmatine",   -1)
+        session["custom_tyrosine"] = request.form.get("custom_tyrosine", -1)
+        session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
         return redirect(url_for('products'))
     
     ci.set_user_info(session.get("age", ""),
@@ -316,8 +319,8 @@ def customize():
                             pool=pool
                             )
 
-
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
+
 
 @app.route("/products")
 def products(): 
@@ -329,15 +332,15 @@ def products():
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients = {"caffeine"  : session.get("custom_caffeine", 0),
-                   "beta"      : session.get("custom_beta", 0),
-                   "creatine"  : session.get("custom_creatine", 0),
-                   "betaine"   : session.get("custom_betaine", 0),
-                   "taurine"   : session.get("custom_taurine", 0),
+    ingredients = {"caffeine": session.get("custom_caffeine", 0),
+                   "beta": session.get("custom_beta", 0),
+                   "creatine": session.get("custom_creatine", 0),
+                   "betaine": session.get("custom_betaine", 0),
+                   "taurine": session.get("custom_taurine", 0),
                    "citrulline": session.get("custom_citrulline", 0),
-                   "theanine"  : session.get("custom_theanine", 0),
-                   "tyrosine"  : session.get("custom_tyrosine", 0),
-                   "agmatine"  : session.get("custom_agmatine", 0)} 
+                   "theanine": session.get("custom_theanine", 0),
+                   "tyrosine": session.get("custom_tyrosine", 0),
+                   "agmatine": session.get("custom_agmatine", 0)} 
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.num_active_ing(ingredients)
@@ -349,6 +352,27 @@ def products():
                            length=length,
                            active=active,
     )
+
+
+@app.route("/save-product", methods=["POST"])
+def save_product():
+    data = request.json
+
+    query = text("""
+        INSERT INTO user_products (user_id, user_name, brand_name, product_name, product_link)
+        VALUES (:user_id, :user_name, :brand, :product, :link)
+    """)
+
+    db.session.execute(query, {
+        "user_id": session.get("user_id"),
+        "user_name": session.get("user"),
+        "brand": data["brand"],
+        "product": data["product"],
+        "link": data["link"]
+    })
+
+    db.session.commit()
+    return {"status": "success"}
 
 
 if __name__ == "__main__":

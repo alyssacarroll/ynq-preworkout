@@ -1,45 +1,48 @@
 <div class="product-name-row">
-          <div class="product-name">{{ p["Product Name"] }}</div>
+  <div class="product-name">{{ p["Product Name"] }}</div>
 
-          <button class="favorite-btn" onclick="this.classList.toggle('active')" title="Save to favorites">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-          </button>
+  <button class="favorite-btn" onclick="save_product(
+    '{{ p[" Brand Name"] }}', '{{ p["Product Name"] }}'
+    , '{{ "https://" + p["Link"] if not p["Link"].startswith("http") else p["Link"] }}' )" title="Save to favorites">
 
-        </div>
-        <div class="brand-name">{{ p["Brand Name"] }}</div>
-        <div class="ingredients-label">Ingredients</div>
-        <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] | int }}</span></div>
-        {% if "caffeine" in active %}
-        <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        {% endif %}
-        {% if "beta" in active %}
-        <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
-        {% endif %}
-        {% if "creatine" in active %}
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
-        {% endif %}
-        {% if "betaine" in active %}
-        <div class="ingredient-row"><span>Betaine</span><span>{{ p["Betaine"] }}g</span></div>
-        {% endif %}
-        {% if "taurine" in active %}
-        <div class="ingredient-row"><span>Taurine</span><span>{{ p["Taurine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "citrulline" in active %}
-        <div class="ingredient-row"><span>L-Citrulline</span><span>{{ p["L_Citrulline"] }}g</span></div>
-        {% endif %}
-        {% if "theanine" in active %}
-        <div class="ingredient-row"><span>L-Theanine</span><span>{{ p["L_Theanine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "tyrosine" in active %}
-        <div class="ingredient-row"><span>L-Tyrosine</span><span>{{ p["L_Tyrosine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "agmatine" in active %}
-        <div class="ingredient-row"><span>Agmatine</span><span>{{ p["Agmatine_Sulfate"] | int }}mg</span></div>
-        {% endif %}
-        <div class="spacer"></div>
-        <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
-          class="view-product-btn">View Product →</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  </button>
+
+</div>
+<div class="brand-name">{{ p["Brand Name"] }}</div>
+<div class="ingredients-label">Ingredients</div>
+<div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] | int }}</span></div>
+{% if "caffeine" in active %}
+<div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
+{% endif %}
+{% if "beta" in active %}
+<div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
+{% endif %}
+{% if "creatine" in active %}
+<div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
+{% endif %}
+{% if "betaine" in active %}
+<div class="ingredient-row"><span>Betaine</span><span>{{ p["Betaine"] }}g</span></div>
+{% endif %}
+{% if "taurine" in active %}
+<div class="ingredient-row"><span>Taurine</span><span>{{ p["Taurine"] | int }}mg</span></div>
+{% endif %}
+{% if "citrulline" in active %}
+<div class="ingredient-row"><span>L-Citrulline</span><span>{{ p["L_Citrulline"] }}g</span></div>
+{% endif %}
+{% if "theanine" in active %}
+<div class="ingredient-row"><span>L-Theanine</span><span>{{ p["L_Theanine"] | int }}mg</span></div>
+{% endif %}
+{% if "tyrosine" in active %}
+<div class="ingredient-row"><span>L-Tyrosine</span><span>{{ p["L_Tyrosine"] | int }}mg</span></div>
+{% endif %}
+{% if "agmatine" in active %}
+<div class="ingredient-row"><span>Agmatine</span><span>{{ p["Agmatine_Sulfate"] | int }}mg</span></div>
+{% endif %}
+<div class="spacer"></div>
+<a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
+  class="view-product-btn">View Product →</a>

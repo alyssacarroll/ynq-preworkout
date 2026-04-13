@@ -375,7 +375,7 @@
     {% for p in close %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <div class="match-tag perfect"><span class="match-dot"></span> Close Match</div>
+        <div class="match-tag close"><span class="match-dot"></span> Close Match</div>
         {% include 'components/product_card.html' %}
       </div>
     </div>
@@ -393,7 +393,7 @@
     {% for p in similar %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <div class="match-tag perfect"><span class="match-dot"></span> Similar Match</div>
+        <div class="match-tag similar"><span class="match-dot"></span> Similar Match</div>
         {% include 'components/product_card.html' %}
       </div>
     </div>
@@ -415,3 +415,19 @@
 {% endif %}
 
 {% endblock %}
+
+<script>
+  async function saveProduct(brand, product, link) {
+    await fetch("/save-product", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        brand: brand,
+        product: product,
+        link: link
+      })
+    });
+  }
+</script>
