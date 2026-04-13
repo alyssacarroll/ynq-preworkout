@@ -53,8 +53,8 @@ def name():
     """
     if request.method == "POST":  # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
-        session.permanent = True  # make session permanent (lasts for 10 minutes)
         session["completed_steps"] = session.get("completed_steps", [])
+        session.permanent = True  # make session permanent (lasts for 10 minutes)
         
         # nav bar updates
         if "name" not in session["completed_steps"]:
@@ -86,6 +86,8 @@ def age():
         session["age"] = request.form.get("age", "")
         
         # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
         if "age" not in session["completed_steps"]:
             session["completed_steps"].append("age")
             
@@ -116,6 +118,8 @@ def sex():
         session["sex"] = request.form.get("sex", "")
         
         # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
         if "sex" not in session["completed_steps"]:
             session["completed_steps"].append("sex")
             
@@ -154,6 +158,8 @@ def weight():
                                    )
         session["weight"] = request.form.get("weight", "")
         # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
         if "weight" not in session["completed_steps"]:
             session["completed_steps"].append("weight")
             
@@ -182,6 +188,8 @@ def goals():
         session["strengthGoal"] = "strength"  in selected_goals
         
         # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
         if "goals" not in session["completed_steps"]:
             session["completed_steps"].append("goals")
             
@@ -210,6 +218,8 @@ def stimulant():
         session["stimulant"] = request.form.get("stimulant", "")
         
         # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
             
