@@ -101,7 +101,6 @@
     flex-direction: column;
     transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
-    overflow: hidden;
   }
 
   .product-card::before {
@@ -280,6 +279,60 @@
     display: block;
     margin-top: 0.1rem;
   }
+
+  .favorite-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #c8d8c0;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s, transform 0.15s;
+  }
+
+  .favorite-btn:hover {
+    transform: scale(1.15);
+    color: #8faa85;
+  }
+
+  .favorite-btn.active {
+    color: #8faa85;
+  }
+
+  .product-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .favorite-btn {
+    background: none;
+    border: none;
+    color: #c8d8c0;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: color 0.2s, transform 0.15s;
+    position: static;
+  }
+
+  .favorite-btn:hover {
+    transform: scale(1.15);
+    color: #8faa85;
+  }
+
+  .favorite-btn.active {
+    color: #8faa85;
+  }
+
+  .favorite-btn.active svg path {
+    fill: currentColor;
+  }
 </style>
 {% endblock %}
 
@@ -303,44 +356,8 @@
     {% for p in perfect %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <button class="favorite-btn" onclick="this.classList.toggle('active')" title="Save to favorites">
-          &#10084;
-        </button>
         <div class="match-tag perfect"><span class="match-dot"></span> Perfect Match</div>
-        <div class="product-name">{{ p["Product Name"] }}</div>
-        <div class="brand-name">{{ p["Brand Name"] }}</div>
-        <div class="ingredients-label">Ingredients</div>
-        <div class="ingredient-row"><span>Calories</span><span>{{ p["Calories"] | int }}</span></div>
-        {% if "caffeine" in active %}
-        <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        {% endif %}
-        {% if "beta" in active %}
-        <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
-        {% endif %}
-        {% if "creatine" in active %}
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
-        {% endif %}
-        {% if "betaine" in active %}
-        <div class="ingredient-row"><span>Betaine</span><span>{{ p["Betaine"] }}g</span></div>
-        {% endif %}
-        {% if "taurine" in active %}
-        <div class="ingredient-row"><span>Taurine</span><span>{{ p["Taurine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "citrulline" in active %}
-        <div class="ingredient-row"><span>L-Citrulline</span><span>{{ p["L_Citrulline"] }}g</span></div>
-        {% endif %}
-        {% if "theanine" in active %}
-        <div class="ingredient-row"><span>L-Theanine</span><span>{{ p["L_Theanine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "tyrosine" in active %}
-        <div class="ingredient-row"><span>L-Tyrosine</span><span>{{ p["L_Tyrosine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "agmatine" in active %}
-        <div class="ingredient-row"><span>Agmatine</span><span>{{ p["Agmatine_Sulfate"] | int }}mg</span></div>
-        {% endif %}
-        <div class="spacer"></div>
-        <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
-          class="view-product-btn">View Product →</a>
+        {% include 'components/product_card.html' %}
       </div>
     </div>
     {% endfor %}
@@ -358,40 +375,8 @@
     {% for p in close %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <div class="match-tag"><span class="match-dot"></span> Close Match</div>
-        <div class="product-name">{{ p["Product Name"] }}</div>
-        <div class="brand-name">{{ p["Brand Name"] }}</div>
-        <div class="ingredients-label">Ingredients</div>
-        {% if "caffeine" in active %}
-        <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        {% endif %}
-        {% if "beta" in active %}
-        <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
-        {% endif %}
-        {% if "creatine" in active %}
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
-        {% endif %}
-        {% if "betaine" in active %}
-        <div class="ingredient-row"><span>Betaine</span><span>{{ p["Betaine"] }}g</span></div>
-        {% endif %}
-        {% if "taurine" in active %}
-        <div class="ingredient-row"><span>Taurine</span><span>{{ p["Taurine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "citrulline" in active %}
-        <div class="ingredient-row"><span>L-Citrulline</span><span>{{ p["L_Citrulline"] }}g</span></div>
-        {% endif %}
-        {% if "theanine" in active %}
-        <div class="ingredient-row"><span>L-Theanine</span><span>{{ p["L_Theanine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "tyrosine" in active %}
-        <div class="ingredient-row"><span>L-Tyrosine</span><span>{{ p["L_Tyrosine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "agmatine" in active %}
-        <div class="ingredient-row"><span>Agmatine</span><span>{{ p["Agmatine_Sulfate"] | int }}mg</span></div>
-        {% endif %}
-        <div class="spacer"></div>
-        <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
-          class="view-product-btn">View Product →</a>
+        <div class="match-tag perfect"><span class="match-dot"></span> Close Match</div>
+        {% include 'components/product_card.html' %}
       </div>
     </div>
     {% endfor %}
@@ -408,40 +393,8 @@
     {% for p in similar %}
     <div class="col-md-6 col-lg-4">
       <div class="product-card">
-        <div class="match-tag"><span class="match-dot"></span> Similar</div>
-        <div class="product-name">{{ p["Product Name"] }}</div>
-        <div class="brand-name">{{ p["Brand Name"] }}</div>
-        <div class="ingredients-label">Ingredients</div>
-        {% if "caffeine" in active %}
-        <div class="ingredient-row"><span>Caffeine Blend</span><span>{{ p["Caffeine Blend"] | int }}mg</span></div>
-        {% endif %}
-        {% if "beta" in active %}
-        <div class="ingredient-row"><span>Beta-Alanine</span><span>{{ p["Beta_Alanine"] }}g</span></div>
-        {% endif %}
-        {% if "creatine" in active %}
-        <div class="ingredient-row"><span>Creatine</span><span>{{ p["Creatine"] | round(1) }}g</span></div>
-        {% endif %}
-        {% if "betaine" in active %}
-        <div class="ingredient-row"><span>Betaine</span><span>{{ p["Betaine"] }}g</span></div>
-        {% endif %}
-        {% if "taurine" in active %}
-        <div class="ingredient-row"><span>Taurine</span><span>{{ p["Taurine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "citrulline" in active %}
-        <div class="ingredient-row"><span>L-Citrulline</span><span>{{ p["L_Citrulline"] }}g</span></div>
-        {% endif %}
-        {% if "theanine" in active %}
-        <div class="ingredient-row"><span>L-Theanine</span><span>{{ p["L_Theanine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "tyrosine" in active %}
-        <div class="ingredient-row"><span>L-Tyrosine</span><span>{{ p["L_Tyrosine"] | int }}mg</span></div>
-        {% endif %}
-        {% if "agmatine" in active %}
-        <div class="ingredient-row"><span>Agmatine</span><span>{{ p["Agmatine_Sulfate"] | int }}mg</span></div>
-        {% endif %}
-        <div class="spacer"></div>
-        <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
-          class="view-product-btn">View Product →</a>
+        <div class="match-tag perfect"><span class="match-dot"></span> Similar Match</div>
+        {% include 'components/product_card.html' %}
       </div>
     </div>
     {% endfor %}
