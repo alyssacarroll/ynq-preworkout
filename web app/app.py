@@ -1,31 +1,35 @@
+import uuid
+
 from flask import Flask, redirect, url_for, render_template, request, session
+from flask_session import Session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-import os
 from calculations import calc_ingredients as ci
 from calculations import calc_products as cp
+import os
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+uri = os.getenv("DATABASE_URL")
+uri = uri.replace("&channel_binding=require", "")
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
+
+db = SQLAlchemy(app)
+
+app.config["SESSION_TYPE"] = "sqlalchemy"
+app.config["SESSION_SQLALCHEMY"] = db
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=90)
+
+Session(app)
 
 app.secret_key = "key"
-
-uri = os.getenv("DATABASE_URL")
-
-# REMOVE channel_binding (important for psycopg2)
-uri = uri.replace("&channel_binding=require", "")
-
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
     "pool_recycle": 300,
 }
 
-db = SQLAlchemy(app)
 
 @app.route("/test-db")
 def test_db():
@@ -33,8 +37,17 @@ def test_db():
     db.session.execute(text("SELECT 1"))
     return "DB works"
 
-# <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
+@app.before_request
+def ensure_user():
+    """ensures every user has a unique id stored in session.
+       if user doesn't have id, generates new uuid and stores in session.
+       makes session permanent (lasts for 90 days).
+    """
+    if "user_id" not in session:
+        session["user_id"] = str(uuid.uuid4())
+        session.permanent = True
+# <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
 @app.route("/")
 def home():
@@ -51,16 +64,15 @@ def quiz():
 def name():
     """ asks user for name and stores in session. redirects to weight question page.
     """
-    if request.method == "POST":  # user submits name
-        session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
+    if request.method == "POST":
+        session["user_name"] = request.form.get("user", "").strip() 
         session["completed_steps"] = session.get("completed_steps", [])
-        session.permanent = True  # make session permanent (lasts for 10 minutes)
         
         # nav bar updates
         if "name" not in session["completed_steps"]:
             session["completed_steps"].append("name")
             
-        return redirect(url_for('age'))  # redirect to weight question page
+        return redirect(url_for('age')) 
     
     # nav bar updates
     session["visited_steps"] = session.get("visited_steps", [])
