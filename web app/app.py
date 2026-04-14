@@ -361,13 +361,12 @@ def save_product():
     data = request.json
 
     query = text("""
-        INSERT INTO user_data (user_id, user_name, brand_name, product_name, product_link)
-        VALUES (:user_id, :user_name, :brand, :product, :link)
+        INSERT INTO user_products (user_id, brand_name, product_name, product_link)
+        VALUES (:user_id, :brand, :product, :link)
     """)
 
     db.session.execute(query, {
         "user_id": session.get("user_id"),
-        "user_name": session.get("user_name"),
         "brand": data.get("brand"),
         "product": data.get("product"),
         "link": data.get("link")
@@ -380,15 +379,15 @@ def save_product():
 def save_user_session_to_db():
     query = text("""
         INSERT INTO user_data (
-            user_id, user_name, age, weight, sex,
-            pump_goal, energy_goal, focus_goal,
-            endurance_goal, strength_goal, stimulant
+            user_id, user_name, brand_name, product_name, product_link
         )
-        VALUES (
-            :user_id, :user_name, :age, :weight, :sex,
-            :pump_goal, :energy_goal, :focus_goal,
-            :endurance_goal, :strength_goal, :stimulant
-        )
+        VALUES (:user_id, :user_name, :brand, :product, :link)
+        ON CONFLICT (user_id)
+        DO UPDATE SET
+            user_name = EXCLUDED.user_name,
+            brand_name = EXCLUDED.brand_name,
+            product_name = EXCLUDED.product_name,
+            product_link = EXCLUDED.product_link
     """)
 
     db.session.execute(query, {
