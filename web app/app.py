@@ -360,6 +360,21 @@ def products():
 def save_product():
     data = request.json
 
+    # check to see if product is already saved for user to avoid unnecessary db writes
+    check_query = text("""
+        SELECT 1 FROM user_products
+        WHERE user_id = :user_id AND brand_name = :brand AND product_name = :product
+    """)
+    
+    exists = db.session.execute(check_query, {
+        "user_id": session.get("user_id"),
+        "brand": data.get("brand"),
+        "product": data.get("product")
+    }).fetchone()
+
+    if exists:
+        return {"status": "already_saved"}
+
     query = text("""
         INSERT INTO user_products (user_id, brand_name, product_name, product_link)
         VALUES (:user_id, :brand, :product, :link)
@@ -370,6 +385,40 @@ def save_product():
         "brand": data.get("brand"),
         "product": data.get("product"),
         "link": data.get("link")
+    })
+
+    db.session.commit()
+    return {"status": "success"}
+
+
+@app.route("/remove-product", methods=["POST"])
+def remove_product():
+    data = request.json
+
+    # check to make sure product is actually saved for user before attempting to delete
+    check_query = text("""
+        SELECT 1 FROM user_products
+        WHERE user_id = :user_id AND brand_name = :brand AND product_name = :product
+    """)
+    
+    exists = db.session.execute(check_query, {
+        "user_id": session.get("user_id"),
+        "brand": data.get("brand"),
+        "product": data.get("product")
+    }).fetchone()
+
+    if not exists:
+        return {"status": "not_saved"}
+                       
+    query = text("""
+        DELETE FROM user_products
+        WHERE user_id = :user_id AND brand_name = :brand AND product_name = :product
+    """)
+
+    db.session.execute(query, {
+        "user_id": session.get("user_id"),
+        "brand": data.get("brand"),
+        "product": data.get("product")
     })
 
     db.session.commit()

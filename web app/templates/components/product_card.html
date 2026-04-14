@@ -1,11 +1,189 @@
+<style>
+  /* MATCH BADGE */
+  .match-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(143, 170, 139, 0.12);
+    border: 1px solid rgba(143, 170, 139, 0.3);
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .match-tag.perfect {
+    color: #5a8a55;
+    background: rgba(143, 170, 139, 0.2);
+    border-color: rgba(143, 170, 139, 0.5);
+  }
+
+  .match-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* PRODUCT CARD */
+  .product-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 8px;
+    padding: 1.75rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .product-card:hover::before {
+    opacity: 1;
+  }
+
+  .product-card .product-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    margin-bottom: 0.25rem;
+    color: #2c2c28;
+  }
+
+  .product-card .brand-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(44, 44, 40, 0.4);
+    margin-bottom: 1.25rem;
+  }
+
+  .product-card .spacer {
+    flex: 1;
+  }
+
+  .product-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .ingredients-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(44, 44, 40, 0.4);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ingredients */
+  .ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.85rem;
+    color: #2c2c28;
+  }
+
+  .ingredient-row:last-of-type {
+    border-bottom: none;
+  }
+
+  .ingredient-row span:first-child {
+    color: rgba(44, 44, 40, 0.6);
+  }
+
+  .ingredient-row span:last-child {
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+
+  /* view product button */
+  .view-product-btn {
+    display: block;
+    text-align: center;
+    margin-top: 1.25rem;
+    padding: 0.7rem 1rem;
+    background: var(--accent);
+    color: #fcfaf6 !important;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .view-product-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(143, 170, 139, 0.35);
+    text-decoration: none;
+    color: #fcfaf6 !important;
+  }
+
+  /* favorite button */
+  .favorite-btn {
+    background: none;
+    border: none;
+    color: #c8d8c0;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: color 0.2s, transform 0.15s;
+    position: static;
+  }
+
+  .favorite-btn:hover {
+    transform: scale(1.15);
+    color: #8faa85;
+  }
+
+  .favorite-btn.active {
+    color: #8faa85;
+  }
+
+  .favorite-btn.active svg path {
+    fill: currentColor;
+  }
+</style>
+
 <div class="product-name-row">
   <div class="product-name">{{ p["Product Name"] }}</div>
 
-  <button class="favorite-btn" onclick="save_product(
-                                  '{{ p["Brand Name"] }}',
-                                  '{{ p["Product Name"] }}',
-                                   '{{ "https://" + p["Link"] if not p["Link"].startswith("http") else p["Link"] }}' )"
-                                    title="Save to favorites">
+ <button class="favorite-btn" onclick="like_product(
+    '{{ p["Brand Name"] }}',
+    '{{ p["Product Name"] }}',
+    '{{ "https://" + p["Link"] if not p["Link"].startswith("http") else p["Link"] }}',
+    this
+    )" title="Save to favorites">
 
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -50,17 +228,22 @@
   class="view-product-btn">View Product →</a>
 
 <script>
-  async function save_product(brand, product, link) {
-    await fetch("/save-product", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        brand: brand,
-        product: product,
-        link: link
-      })
-    });
+  async function like_product(brand, product, link, btn) {
+    const alreadySaved = btn.classList.contains('active');
+    btn.classList.toggle('active');
+
+    if (alreadySaved) {
+      await fetch('/remove-product', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, product })
+      });
+    } else {
+      await fetch('/save-product', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, product, link })
+      });
+    }
   }
 </script>
