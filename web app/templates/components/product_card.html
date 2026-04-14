@@ -228,22 +228,5 @@
   class="view-product-btn">View Product →</a>
 
 <script>
-  async function like_product(brand, product, link, btn) {
-    const alreadySaved = btn.classList.contains('active');
-    btn.classList.toggle('active');
-
-    if (alreadySaved) {
-      await fetch('/remove-product', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brand, product })
-      });
-    } else {
-      await fetch('/save-product', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brand, product, link })
-      });
-    }
-  }
+  
 </script>
