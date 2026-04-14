@@ -238,13 +238,15 @@ def stimulant():
             return redirect(url_for('name'))
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
-            
+        
+        save_user_session_to_db()
+        
         return redirect(url_for('customize'))
     
     # nav bar updates
     if "stimulant" not in session["visited_steps"]:
         session["visited_steps"].append("stimulant")
-        
+    
     return render_template("qStimulant.html",
                            usr=session.get("user_name"),
                            current_step="stimulant"
@@ -373,6 +375,37 @@ def save_product():
 
     db.session.commit()
     return {"status": "success"}
+
+
+def save_user_session_to_db():
+    query = text("""
+        INSERT INTO user_data (
+            user_id, user_name, age, weight, sex,
+            pump_goal, energy_goal, focus_goal,
+            endurance_goal, strength_goal, stimulant
+        )
+        VALUES (
+            :user_id, :user_name, :age, :weight, :sex,
+            :pump_goal, :energy_goal, :focus_goal,
+            :endurance_goal, :strength_goal, :stimulant
+        )
+    """)
+
+    db.session.execute(query, {
+        "user_id": session.get("user_id"),
+        "user_name": session.get("user_name"),
+        "age": session.get("age"),
+        "weight": session.get("weight"),
+        "sex": session.get("sex"),
+        "pump_goal": session.get("pumpGoal"),
+        "energy_goal": session.get("energyGoal"),
+        "focus_goal": session.get("focusGoal"),
+        "endurance_goal": session.get("enduranceGoal"),
+        "strength_goal": session.get("strengthGoal"),
+        "stimulant": session.get("stimulant")
+    })
+
+    db.session.commit()
 
 
 if __name__ == "__main__":
