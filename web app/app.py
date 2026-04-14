@@ -428,15 +428,21 @@ def remove_product():
 def save_user_session_to_db():
     query = text("""
         INSERT INTO user_data (
-            user_id, user_name, brand_name, product_name, product_link
+            user_id, user_name, age, weight, sex, pump_goal, energy_goal, focus_goal, endurance_goal, strength_goal, stimulant
         )
-        VALUES (:user_id, :user_name, :brand, :product, :link)
+        VALUES (:user_id, :user_name, :age, :weight, :sex, :pump_goal, :energy_goal, :focus_goal, :endurance_goal, :strength_goal, :stimulant)
         ON CONFLICT (user_id)
         DO UPDATE SET
             user_name = EXCLUDED.user_name,
-            brand_name = EXCLUDED.brand_name,
-            product_name = EXCLUDED.product_name,
-            product_link = EXCLUDED.product_link
+            age = EXCLUDED.age,
+            weight = EXCLUDED.weight,
+            sex = EXCLUDED.sex,
+            pump_goal = EXCLUDED.pump_goal,
+            energy_goal = EXCLUDED.energy_goal,
+            focus_goal = EXCLUDED.focus_goal,
+            endurance_goal = EXCLUDED.endurance_goal,
+            strength_goal = EXCLUDED.strength_goal,
+            stimulant = EXCLUDED.stimulant
     """)
 
     db.session.execute(query, {

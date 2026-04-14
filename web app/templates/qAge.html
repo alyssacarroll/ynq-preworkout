@@ -1,7 +1,7 @@
 {% extends "quiz_template.html" %}
 {% block quiz_content %}
-<h2>How old are you?</h2>
-<br>
+
+<h2 class="question">How old are you?</h2>
 <form method="POST" action="/quiz/age">
 
     <div class="d-grid gap-3 col-6 mx-auto">
@@ -27,7 +27,7 @@
         <a class="btn-back" href="/quiz/name"> &#8592; Back </a>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3 btn-submit">Next</button>
+    <button type="submit" class="btn btn-primary mt-3 btn-submit">Next→</button>
 </form>
 
 {% endblock %}
