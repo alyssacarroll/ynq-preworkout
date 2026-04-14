@@ -82,7 +82,7 @@ def name():
     session["visited_steps"].append("name")
     
     return render_template("qName.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="name"
                            )  
 
@@ -96,7 +96,7 @@ def age():
         if request.form.get("age", "") == "":
             error = "Please select an option."
             return render_template("qAge.html",
-                                   usr=session.get("user"),
+                                   usr=session.get("user_name"),
                                    current_step="age",
                                    error=error)
         session["age"] = request.form.get("age", "")
@@ -114,7 +114,7 @@ def age():
         session["visited_steps"].append("age")
         
     return render_template("qAge.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="age"
                            )
 
@@ -128,7 +128,7 @@ def sex():
         if request.form.get("sex", "") == "":
             error = "Please select an option."
             return render_template("qSex.html",
-                                   usr=session.get("user"),
+                                   usr=session.get("user_name"),
                                    current_step="sex",
                                    error=error)
         session["sex"] = request.form.get("sex", "")
@@ -146,7 +146,7 @@ def sex():
         session["visited_steps"].append("sex")
         
     return render_template("qSex.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="sex"
                            )
 
@@ -160,7 +160,7 @@ def weight():
         if request.form.get("weight", "") == "":
             error = "Please enter your weight."
             return render_template("qWeight.html",
-                                   usr=session.get("user"),
+                                   usr=session.get("user_name"),
                                    current_step="weight",
                                    error=error
                                    )
@@ -168,7 +168,7 @@ def weight():
         if not (request.form.get("weight", "").isdigit()):
             error = "Please enter a valid weight."
             return render_template("qWeight.html",
-                                   usr=session.get("user"),
+                                   usr=session.get("user_name"),
                                    current_step="weight",
                                    error=error
                                    )
@@ -186,7 +186,7 @@ def weight():
         session["visited_steps"].append("weight")
         
     return render_template("qWeight.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="weight"
                            )
   
@@ -216,7 +216,7 @@ def goals():
         session["visited_steps"].append("goals")
         
     return render_template("qGoals.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="goals"
                            )
 
@@ -228,7 +228,7 @@ def stimulant():
         if request.form.get("stimulant", "") == "":
             error = "Please select an option."
             return render_template("qStimulant.html",
-                                   usr=session.get("user"),
+                                   usr=session.get("user_name"),
                                    current_step="stimulant",
                                    error=error)
         session["stimulant"] = request.form.get("stimulant", "")
@@ -246,7 +246,7 @@ def stimulant():
         session["visited_steps"].append("stimulant")
         
     return render_template("qStimulant.html",
-                           usr=session.get("user"),
+                           usr=session.get("user_name"),
                            current_step="stimulant"
                            )
 
@@ -268,7 +268,7 @@ def stimulant():
 #                      session.get("stimulant", -1))
 #     caffeine = ci.calculate_caffeine()
 #     return render_template("qResults.html",
-#                             usr=session.get("user"),
+#                             usr=session.get("user_name"),
 #                             weight=session.get("weight"),
 #                             stimulant=session.get("stimulant"),
 #                             pumpGoal=session.get("pumpGoal"),
@@ -313,7 +313,7 @@ def customize():
     pool = ci.get_pool()
     
     return render_template("customize.html",
-                            usr=session.get("user"),
+                            usr=session.get("user_name"),
                             current_step="customize",
                             recommended=recommended,
                             pool=pool
@@ -359,16 +359,16 @@ def save_product():
     data = request.json
 
     query = text("""
-        INSERT INTO user_products (user_id, user_name, brand_name, product_name, product_link)
+        INSERT INTO user_data (user_id, user_name, brand_name, product_name, product_link)
         VALUES (:user_id, :user_name, :brand, :product, :link)
     """)
 
     db.session.execute(query, {
         "user_id": session.get("user_id"),
-        "user_name": session.get("user"),
-        "brand": data["brand"],
-        "product": data["product"],
-        "link": data["link"]
+        "user_name": session.get("user_name"),
+        "brand": data.get("brand"),
+        "product": data.get("product"),
+        "link": data.get("link")
     })
 
     db.session.commit()
