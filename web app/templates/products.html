@@ -415,19 +415,3 @@
 {% endif %}
 
 {% endblock %}
-
-<script>
-  async function saveProduct(brand, product, link) {
-    await fetch("/save-product", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        brand: brand,
-        product: product,
-        link: link
-      })
-    });
-  }
-</script>

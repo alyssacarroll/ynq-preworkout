@@ -2,8 +2,10 @@
   <div class="product-name">{{ p["Product Name"] }}</div>
 
   <button class="favorite-btn" onclick="save_product(
-    '{{ p[" Brand Name"] }}', '{{ p["Product Name"] }}'
-    , '{{ "https://" + p["Link"] if not p["Link"].startswith("http") else p["Link"] }}' )" title="Save to favorites">
+                                  '{{ p["Brand Name"] }}',
+                                  '{{ p["Product Name"] }}',
+                                   '{{ "https://" + p["Link"] if not p["Link"].startswith("http") else p["Link"] }}' )"
+                                    title="Save to favorites">
 
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -46,3 +48,19 @@
 <div class="spacer"></div>
 <a href="{{ 'https://' + p['Link'] if not p['Link'].startswith('http') else p['Link'] }}" target="_blank"
   class="view-product-btn">View Product →</a>
+
+<script>
+  async function save_product(brand, product, link) {
+    await fetch("/save-product", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        brand: brand,
+        product: product,
+        link: link
+      })
+    });
+  }
+</script>
