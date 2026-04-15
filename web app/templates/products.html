@@ -165,6 +165,40 @@
     background: var(--accent);
     color: #fff;
   }
+
+  @media (max-width: 768px) {
+    .products-hero {
+      padding: 4rem 2rem 2rem;
+    }
+
+    .products-grid {
+      padding: 1rem 2rem 3rem;
+    }
+
+    .section-divider {
+      padding: 0 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .app-inner {
+      padding: 0;
+      margin: 0;
+      width: 100vw;
+    }
+
+    .products-hero {
+      padding: 1rem 1.5rem 2rem;
+    }
+
+    .products-grid {
+      padding: 1rem;
+    }
+
+    .section-divider {
+      padding: 0 1.5rem;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -211,12 +245,12 @@
 
 {% if close %}
 <div class="section-divider 
-  {% if perfect %}collapsible-trigger{% endif %}" 
-  {% if perfect%}onclick="toggleSection('close-matches')" style="cursor:pointer;" {% endif %}>
-    <span class="section-divider-label">Close Matches</span>
-    {% if perfect %}
-    <span class="toggle-label" id="close-matches-toggle-label">Show</span>
-    {% endif %}
+  {% if perfect %}collapsible-trigger{% endif %}" {% if perfect%}onclick="toggleSection('close-matches')"
+  style="cursor:pointer;" {% endif %}>
+  <span class="section-divider-label">Close Matches</span>
+  {% if perfect %}
+  <span class="toggle-label" id="close-matches-toggle-label">Show</span>
+  {% endif %}
   <div class="section-divider-line"></div>
 </div>
 <div id="close-matches" class="products-grid {% if perfect %}collapsed-section{% endif %}" style="padding-top: 0;">

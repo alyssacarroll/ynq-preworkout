@@ -46,6 +46,9 @@
 
         .main-nav {
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
             display: flex;
             align-items: center;
@@ -67,11 +70,6 @@
             .logo-img {
                 height: 30px;
             }
-        }
-
-        .question {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
         }
 
         .app-container {
@@ -206,8 +204,8 @@
 
 <body>
     <nav class="main-nav"> <a href="/" style="display:flex; align-items:center; gap:0.6rem; text-decoration:none;">
-        <img class="logo-img" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
-        <span class="nav-txt">YNQ</span>
+            <img class="logo-img" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
+            <span class="nav-txt">YNQ</span>
         </a>
     </nav>
 
