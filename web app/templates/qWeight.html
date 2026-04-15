@@ -3,9 +3,9 @@
 
 <h2 class="question">What's your weight?</h2>
 <form method="POST" action="/quiz/weight">
-    <div class="d-grid gap-3 col-6 mx-auto">
+    <div class="d-grid gap-3 col-12 col-md-6 mx-auto">
         
-        <input class="form-control" type="number" name="weight" placeholder="Weight (in lbs)" aria-label="weight input">
+        <input class="form-control" type="number" name="weight" placeholder="Enter your weight in lbs" aria-label="weight input">
         
         {% if error %}
         <div class="error-inline">

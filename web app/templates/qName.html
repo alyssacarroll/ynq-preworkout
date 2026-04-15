@@ -1,7 +1,7 @@
 {% extends "quiz_template.html" %}
 {% block quiz_content %}
 
-<h2 class="question">What's your name?</h2>
+<div class="question">What's your name?</div>
 <form method="POST" action="/quiz/name">
     <div class="d-grid gap-2 col-6 mx-auto">
         <input class="form-control {% if error %}is-invalid{% endif %}" type="text" name="user" placeholder="Your name"

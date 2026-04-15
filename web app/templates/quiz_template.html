@@ -20,6 +20,11 @@
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
   }
 
+  .btn-outline-dark {
+      border-color: #859184;
+      color: #333;
+    }
+
   .btn-check:checked+.btn {
     background-color: var(--accent);
     color: white;
@@ -138,6 +143,7 @@
       font-size: 0.9rem;
     }
   }
+
   /* phone */
   @media (max-width: 480px) {
     .app-inner {
@@ -145,15 +151,21 @@
       width: 95vw;
     }
 
+    .d-grid {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+
     .quiz-nav {
       width: 90vw;
       gap: 1rem;
       justify-content: center;
       margin-bottom: 1.5rem;
+      margin-top: -1rem;
     }
 
     .quiz-nav-item {
-      justify-content: ;
+      justify-content: center;
       font-size: auto;
       letter-spacing: auto;
     }
@@ -161,12 +173,18 @@
     .question {
       font-size: 1.25rem;
       margin-bottom: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .btn {
+      padding-top: 1.1rem;
+      padding-bottom: 1.1rem;
     }
 
     .btn-submit {
       margin-top: 2rem !important;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+      padding: 0.4rem 1.75rem !important;
       width: auto !important;
     }
   }
@@ -176,33 +194,33 @@
 {% block title %}YNQ{% endblock %}
 
 {% block content %}
-  {% set steps = [
-  ("name",      "Name",      "/quiz/name"),
-  ("age",       "Age",       "/quiz/age"),
-  ("sex",       "Sex",       "/quiz/sex"),
-  ("weight",    "Weight",    "/quiz/weight"),
-  ("goals",     "Goals",     "/quiz/goals"),
-  ("stimulant", "Stimulant", "/quiz/stimulant")
-  ] %}
-  
-  {% set visited = session.get("visited_steps", []) %}
-  {% set completed = session.get("completed_steps", []) %}
+{% set steps = [
+("name", "Name", "/quiz/name"),
+("age", "Age", "/quiz/age"),
+("sex", "Sex", "/quiz/sex"),
+("weight", "Weight", "/quiz/weight"),
+("goals", "Goals", "/quiz/goals"),
+("stimulant", "Stimulant", "/quiz/stimulant")
+] %}
 
-  <nav class="quiz-nav">
-    {% for step_id, label, url in steps %}
-      {% if step_id == current_step %}
-        <a class="quiz-nav-item active" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
-      {% elif step_id in completed %}
-        <a class="quiz-nav-item completed" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
-      {% elif step_id in visited %}
-        <a class="quiz-nav-item visited" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
-      {% else %}
-        <span class="quiz-nav-item">{{ label }}<div class="quiz-nav-bar"></div></span>
-      {% endif %}
-    {% endfor %}
-  </nav>
+{% set visited = session.get("visited_steps", []) %}
+{% set completed = session.get("completed_steps", []) %}
 
-  <!-- {% block user %}
+<nav class="quiz-nav">
+  {% for step_id, label, url in steps %}
+  {% if step_id == current_step %}
+  <a class="quiz-nav-item active" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
+  {% elif step_id in completed %}
+  <a class="quiz-nav-item completed" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
+  {% elif step_id in visited %}
+  <a class="quiz-nav-item visited" href="{{ url }}">{{ label }}<div class="quiz-nav-bar"></div></a>
+  {% else %}
+  <span class="quiz-nav-item">{{ label }}<div class="quiz-nav-bar"></div></span>
+  {% endif %}
+  {% endfor %}
+</nav>
+
+<!-- {% block user %}
     {% if usr != "" and usr != None %}
       <div style="margin-bottom: 15px; margin-top: -0.5rem;">
         Hi, {{ usr }}!
@@ -210,5 +228,5 @@
     {% endif %}
   {% endblock %} -->
 
-  {% block quiz_content %}{% endblock %}
+{% block quiz_content %}{% endblock %}
 {% endblock %}
