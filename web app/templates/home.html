@@ -111,7 +111,7 @@
       justify-content: center;
       padding: 8rem 3rem 5rem;
       overflow: hidden;
-      
+
       background-size: cover;
       background-position: center;
     }
@@ -119,8 +119,10 @@
     .hero::after {
       content: '';
       position: absolute;
-      top: -10%; right: -5%;
-      width: 55%; height: 130%;
+      top: -10%;
+      right: -5%;
+      width: 55%;
+      height: 130%;
       background: linear-gradient(135deg, rgba(143, 170, 139, 0.1) 0%, transparent 60%);
       /* background-image: linear-gradient(to right, rgba(252, 250, 246, 0.92) 40%, rgba(252, 250, 246, 0.6) 100%),
       url("{{ url_for('static', filename='wall.png') }}"); */
@@ -595,7 +597,7 @@
       <img class="logo-icon" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
       <span class="nav-brand">YNQ</span>
     </a>
-    <a href="/quiz/name" class="nav-cta">Take the Quiz</a>
+    <a href="#" class="nav-cta" onclick="showDisclaimer(event)">Take the Quiz</a>
   </nav>
 
   <section class="hero">
@@ -604,7 +606,7 @@
     <p class="hero-sub">Answer a few questions, fine-tune your ingredients, and get matched to real products that
       actually fit your needs.</p>
     <div class="hero-actions">
-      <a href="/quiz/name" class="btn-primary">
+      <a href="#" class="btn-primary" onclick="showDisclaimer(event)">
         Take the Quiz
         <!-- Right arrow icon -->
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -674,7 +676,7 @@
 
   <div class="cta-banner">
     <h2>Ready to find what works for you?</h2>
-    <a href="/quiz/name" class="btn-dark">Start the Quiz →</a>
+    <a href="#" class="btn-dark" onclick="showDisclaimer(event)">Start the Quiz →</a>
   </div>
 
   <footer>
@@ -682,6 +684,30 @@
     <p>Data sourced from the Dietary Supplement Label Database (DSLD)</p>
   </footer>
 
+  {% include 'components/disclaimer.html' %}
 </body>
 
 </html>
+
+<script>
+  const overlay = document.getElementById('disclaimer-overlay');
+
+  function showDisclaimer(e) {
+    e.preventDefault();
+    overlay.style.display = 'flex';
+  }
+
+  function closeDisclaimer() {
+    overlay.style.display = 'none';
+    document.getElementById('disclaimer-check').checked = false;
+  }
+
+  function acceptDisclaimer() {
+    window.location.href = '/quiz/name';
+  }
+
+  // close on background click
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closeDisclaimer();
+  });
+</script>

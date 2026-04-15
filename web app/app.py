@@ -56,13 +56,6 @@ def home():
 
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 
-
-# TODO: add disclaimer page
-@app.route("/quiz")
-def quiz():
-    return render_template("qDisclaimer.html")
-
-
 @app.route("/quiz/name", methods=["GET", "POST"])
 def name():
     """ asks user for name and stores in session. redirects to weight question page.
