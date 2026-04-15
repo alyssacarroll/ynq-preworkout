@@ -26,4 +26,14 @@
     <button type="submit" class="btn btn-primary mt-3 btn-submit">Next→</button>
 </form>
 
+<script>
+  if (window.innerWidth <= 480) {
+    document.querySelectorAll('.btn-check').forEach(radio => {
+      radio.addEventListener('change', () => {
+        radio.closest('form').submit();
+      });
+    });
+  }
+</script>
 {% endblock %}
+

@@ -4,7 +4,7 @@
 <div class="question">How much stimulant do you want your pre-workout to have?</div>
 <form method="POST" action="/quiz/stimulant">
 
-    <div class="d-grid gap-3 col-6 mx-auto">
+    <div class="d-grid gap-3 col-12 col-md-6 mx-auto">
 
         <input type="radio" class="btn-check" name="stimulant" id="no-stimulant" value="none" autocomplete="off">
         <label class="btn btn-outline-dark" for="no-stimulant">None</label>
@@ -33,6 +33,13 @@
     <button type="submit" class="btn btn-primary mt-3 btn-submit">Submit</button>
 </form>
 
-
-
+<script>
+  if (window.innerWidth <= 480) {
+    document.querySelectorAll('.btn-check').forEach(radio => {
+      radio.addEventListener('change', () => {
+        radio.closest('form').submit();
+      });
+    });
+  }
+</script>
 {% endblock %}
