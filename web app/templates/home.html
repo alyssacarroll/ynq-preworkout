@@ -690,10 +690,15 @@
 </html>
 
 <script>
+  const disclaimerAccepted = {{ disclaimer_accepted | tojson }};
   const overlay = document.getElementById('disclaimer-overlay');
 
   function showDisclaimer(e) {
     e.preventDefault();
+    if (disclaimerAccepted) {
+      window.location.href = '/quiz/name';
+      return;
+    }
     overlay.style.display = 'flex';
   }
 
@@ -703,6 +708,7 @@
   }
 
   function acceptDisclaimer() {
+    fetch('/accept-disclaimer', { method: 'POST' });
     window.location.href = '/quiz/name';
   }
 

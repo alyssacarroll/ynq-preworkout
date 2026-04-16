@@ -15,28 +15,22 @@ uri = os.getenv("DATABASE_URL")
 uri = uri.replace("&channel_binding=require", "")
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-db = SQLAlchemy(app)
-
-app.config["SESSION_TYPE"] = "sqlalchemy"
-app.config["SESSION_SQLALCHEMY"] = db
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=90)
-
-Session(app)
-
-app.secret_key = "key"
-
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
     "pool_recycle": 300,
 }
 
+db = SQLAlchemy(app)
 
-@app.route("/test-db")
-def test_db():
-    print(os.getenv("DATABASE_URL"))
-    db.session.execute(text("SELECT 1"))
-    return "DB works"
+app.config["SESSION_TYPE"] = "sqlalchemy"
+app.config["SESSION_SQLALCHEMY"] = db
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=365)
 
+Session(app)
+
+app.secret_key = os.getenv("SECRET_KEY")
+
+# <><><><><><><><><><><><><> USER INFO <><><><><><><><><><><><><><><><>
 
 @app.before_request
 def ensure_user():
@@ -44,15 +38,31 @@ def ensure_user():
        if user doesn't have id, generates new uuid and stores in session.
        makes session permanent (lasts for 90 days).
     """
+    session.permanent = True
     if "user_id" not in session:
         session["user_id"] = str(uuid.uuid4())
-        session.permanent = True
+        
+@app.route("/accept-disclaimer", methods=["POST"])
+def accept_disclaimer():
+    query = text("""
+        UPDATE user_data SET accepted_disclaimer = TRUE
+        WHERE user_id = :user_id
+    """)
+    db.session.execute(query, {"user_id": session.get("user_id")})
+    db.session.commit()
+    return {"status": "success"}
+        
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
-
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    result = db.session.execute(
+        text("SELECT accepted_disclaimer FROM user_data WHERE user_id = :uid"),
+        {"uid": session.get("user_id")}
+    ).fetchone()
+    
+    disclaimer_accepted = result.accepted_disclaimer if result else False
+    return render_template("home.html", disclaimer_accepted=disclaimer_accepted)
 
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 
