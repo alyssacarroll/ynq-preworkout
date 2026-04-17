@@ -356,8 +356,29 @@ def products():
                            similar=similar,
                            length=length,
                            active=active,
-    )
+                           )
 
+# <><><><><><><><><><><><> LIKED PRODUCTS PAGE <><><><><><><><><><><><><>
+
+@app.route("/liked-products")
+def liked_products():
+    user_id = session.get("user_id")
+
+    query = text("""
+        SELECT brand_name, product_name, product_link
+        FROM user_products
+        WHERE user_id = :user_id
+    """)
+
+    result = db.session.execute(query, {"user_id": user_id})
+
+    products = [dict(row._mapping) for row in result]
+    return render_template("liked_products.html",
+                           products=products
+                           )
+
+
+# <><><><><><><><><><><><> HELPER FUNCTIONS <><><><><><><><><><><><><>
 
 @app.route("/save-product", methods=["POST"])
 def save_product():

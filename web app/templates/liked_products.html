@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}Liked Products{% endblock %}
+
+{% block styles %}
+<style>
+  .app-container {
+    display: block;
+    padding-top: 0;
+    min-height: unset;
+  }
+
+  .app-inner {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  /* ── HERO ── */
+  .products-hero {
+    padding: 7rem 3rem 3rem;
+    position: relative;
+  }
+
+  .products-hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(143, 170, 139, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .products-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .products-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .products-subtitle {
+    font-size: 0.95rem;
+    color: rgba(44, 44, 40, 0.5);
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    padding: 0 3rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .section-divider-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    color: #2c2c28;
+  }
+
+  .section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  /* ── GRID ── */
+  .products-grid {
+    padding: 2rem 3rem 4rem;
+  }
+
+  /* ── LIKED PRODUCT CARD ── */
+  .liked-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    animation: fadeUp 0.4s ease both;
+    height: 100%;
+  }
+
+  .liked-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .col-md-6:nth-child(1) .liked-card  { animation-delay: 0.05s; }
+  .col-md-6:nth-child(2) .liked-card  { animation-delay: 0.10s; }
+  .col-md-6:nth-child(3) .liked-card  { animation-delay: 0.15s; }
+  .col-md-6:nth-child(4) .liked-card  { animation-delay: 0.20s; }
+  .col-md-6:nth-child(5) .liked-card  { animation-delay: 0.25s; }
+  .col-md-6:nth-child(6) .liked-card  { animation-delay: 0.30s; }
+  .col-md-6:nth-child(7) .liked-card  { animation-delay: 0.35s; }
+  .col-md-6:nth-child(8) .liked-card  { animation-delay: 0.40s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .liked-card-info { flex: 1; min-width: 0; }
+
+  .liked-card-brand {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(44, 44, 40, 0.45);
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+  }
+
+  .liked-card-link {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    color: #2c2c28;
+    text-decoration: none;
+    display: block;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+
+  .liked-card-link:hover { color: var(--accent); }
+
+  .liked-card-link::after {
+    content: ' \2197';
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .liked-card-link:hover::after { opacity: 1; }
+
+  .heart-btn {
+    background: rgba(143, 170, 139, 0.12);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+  }
+
+  .heart-btn:hover {
+    background: rgba(143, 170, 139, 0.25);
+    transform: scale(1.1);
+  }
+
+  .heart-btn svg {
+    stroke: var(--accent);
+    fill: var(--accent);
+    width: 16px;
+    height: 16px;
+    transition: transform 0.15s;
+  }
+
+  .heart-btn:hover svg { transform: scale(1.15); }
+
+  /* ── COUNT BADGE ── */
+  .count-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    padding: 0.2rem 0.75rem;
+    white-space: nowrap;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    padding: 4rem 3rem;
+    text-align: center;
+  }
+
+  .empty-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(143, 170, 139, 0.12);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 1.25rem;
+  }
+
+  .empty-icon svg {
+    stroke: var(--accent);
+    fill: none;
+    width: 28px;
+    height: 28px;
+  }
+
+  .empty-state h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+    color: rgba(44, 44, 40, 0.5);
+    max-width: 32ch;
+    margin: 0 auto;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .products-hero  { padding: 4rem 2rem 2rem; }
+    .products-grid  { padding: 1rem 2rem 3rem; }
+    .section-divider { padding: 0 2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .app-inner { padding: 0; margin: 0; width: 100vw; }
+    .products-hero  { padding: 1rem 1.5rem 2rem; }
+    .products-grid  { padding: 1rem; }
+    .section-divider { padding: 0 1.5rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="products-hero">
+  <p class="products-eyebrow">Your Profile</p>
+  <h1 class="products-title">Liked Products</h1>
+  <p class="products-subtitle">Products you've saved from your results.</p>
+</div>
+
+{% if products %}
+
+<div class="section-divider">
+  <span class="section-divider-label">Saved</span>
+  <span class="count-badge">{{ products | length }} product{{ 's' if products | length != 1 }}</span>
+  <div class="section-divider-line"></div>
+</div>
+
+<div class="products-grid" style="padding-top: 0;">
+  <div class="row g-4">
+    {% for product in products %}
+    <div class="col-md-6 col-lg-4">
+      <div class="liked-card">
+        <div class="liked-card-info">
+            <a class="liked-card-link"
+             href="{{ product.product_link }}"
+             target="_blank"
+             rel="noopener noreferrer"
+             title="{{ product.product_name }}">
+            {{ product.product_name }}
+          </a>
+          <div style="margin-top:-1rem; opacity: 5%;">_________________</div>
+          <p class="liked-card-brand">{{ product.brand_name }}</p>
+        </div>
+        <button
+          class="heart-btn active"
+          aria-label="Unlike product"
+          onclick="unlike_product('{{ product.brand_name }}', '{{ product.product_name }}', this)">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+
+<div class="empty-state">
+  <div class="empty-icon">
+    <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  </div>
+  <h3>Nothing Saved Yet</h3>
+  <p>Products you like from your results will appear here.</p>
+  <p>Go to <a href="/products">your results</a> to save products.</p>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  async function unlike_product(brand, product, btn) {
+    const card = btn.closest('.col-md-6');
+    card.style.transition = 'opacity 0.25s, transform 0.25s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.96)';
+
+    await fetch('/remove-product', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brand, product })
+    });
+  }
+</script>
+{% endblock %}
