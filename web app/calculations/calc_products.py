@@ -70,6 +70,8 @@ def is_similar(product, ingredients):
     """finds products that are similar to user's preferences. 
     based on similar ingredient values, not how many ingredients match the exact amount that the user wants.
     for example, if the user wants 100mg of caffeine, a similar product would have 80mg of caffeine.
+    
+    product is similar if it has at least 50% of the ingredients that the user wants with similar values
 
     Args:
         product (dict): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
@@ -98,8 +100,8 @@ def is_similar(product, ingredients):
     if ingredients["agmatine"] != -1     and abs(float(product["Agmatine_Sulfate"]) - float(ingredients["agmatine"])) <= 250:
         similarity_score += 1
             
-    # product is similar if it has at least 75% of the ingredients that the user wants with similar values
-    is_similar = similarity_score >= (num_active_ing(ingredients) * 0.75)
+    # product is similar if it has at least 50% of the ingredients that the user wants with similar values
+    is_similar = similarity_score >= (num_active_ing(ingredients) * 0.50)
     
     return is_similar  
 
