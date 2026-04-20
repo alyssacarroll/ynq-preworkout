@@ -81,21 +81,21 @@ def is_similar(product, ingredients):
         is_similar (bool): True if the product is similar to the user's preferences, False otherwise
     """
     similarity_score = 0
-    if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"]) - int(ingredients["caffeine"])) <= 50:
+    if ingredients["caffeine"] != -1     and abs(int(product["Caffeine Blend"])     - int(ingredients["caffeine"])) <= 50:
         similarity_score += 1
-    if ingredients["beta"] != -1         and abs(float(product["Beta_Alanine"]) - float(ingredients["beta"])) <= 0.5:
+    if ingredients["beta"] != -1         and abs(float(product["Beta_Alanine"])     - float(ingredients["beta"])) <= 0.5:
         similarity_score += 1
-    if ingredients["creatine"] != -1     and abs(float(product["Creatine"]) - float(ingredients["creatine"])) <= 2.5:
+    if ingredients["creatine"] != -1     and abs(float(product["Creatine"])         - float(ingredients["creatine"])) <= 2.5:
         similarity_score += 1
-    if ingredients["betaine"] != -1      and abs(float(product["Betaine"]) - float(ingredients["betaine"])) <= 1:
+    if ingredients["betaine"] != -1      and abs(float(product["Betaine"])          - float(ingredients["betaine"])) <= 1:
         similarity_score += 1
-    if ingredients["taurine"] != -1      and abs(float(product["Taurine"]) - float(ingredients["taurine"])) <= 500:
+    if ingredients["taurine"] != -1      and abs(float(product["Taurine"])          - float(ingredients["taurine"])) <= 500:
         similarity_score += 1
-    if ingredients["citrulline"] != -1   and abs(float(product["L_Citrulline"]) - float(ingredients["citrulline"])) <= 0.5:
+    if ingredients["citrulline"] != -1   and abs(float(product["L_Citrulline"])     - float(ingredients["citrulline"])) <= 0.5:
         similarity_score += 1
-    if ingredients["theanine"] != -1     and abs(float(product["L_Theanine"]) - float(ingredients["theanine"])) <= 50:
+    if ingredients["theanine"] != -1     and abs(float(product["L_Theanine"])       - float(ingredients["theanine"])) <= 50:
         similarity_score += 1
-    if ingredients["tyrosine"] != -1     and abs(float(product["L_Tyrosine"]) - float(ingredients["tyrosine"])) <= 500:
+    if ingredients["tyrosine"] != -1     and abs(float(product["L_Tyrosine"])       - float(ingredients["tyrosine"])) <= 500:
         similarity_score += 1
     if ingredients["agmatine"] != -1     and abs(float(product["Agmatine_Sulfate"]) - float(ingredients["agmatine"])) <= 250:
         similarity_score += 1
