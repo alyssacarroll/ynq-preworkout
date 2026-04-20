@@ -66,7 +66,6 @@ def calculate_recommendations():
     if goals[2]:  # focus
         recommended_ingredients.append("caffeine")
         recommended_ingredients.append("taurine")
-        recommended_ingredients.append("theanine")
         recommended_ingredients.append("tyrosine")
     if goals[3]:  # endurance
         recommended_ingredients.append("caffeine")
