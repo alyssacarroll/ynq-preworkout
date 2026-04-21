@@ -16,13 +16,6 @@
     transform: none;
   }
 
-  :root {
-    --black: #fcfaf6;
-    --offwhite: #2c2c28;
-    --accent: #66a072;
-    --muted: #8a8a82;
-  }
-
   /* ── BUTTONS (shared base) ── */
   .btn {
     display: inline-flex;
@@ -46,14 +39,14 @@
 
   .btn-primary {
     background: var(--accent);
-    color: #fcfaf6;
+    color: var(--offwhite);
     border-color: var(--accent);
   }
 
   .btn-primary:hover {
     background: #aebfac;
     box-shadow: 0 8px 30px rgba(143, 170, 139, .35);
-    color: #fcfaf6;
+    color: var(--offwhite);
     border-color: var(--accent);
   }
 
@@ -71,8 +64,8 @@
   }
 
   .btn-dark {
-    background: #fcfaf6;
-    color: var(--offwhite);
+    background: var(--offwhite);
+    color: var(--black);
     flex-shrink: 0;
   }
 
@@ -81,7 +74,7 @@
   }
 
   .btn-ghost {
-    color: rgba(44, 44, 40, .5);
+    color: var(--black);
     font-size: .9rem;
     font-weight: 400;
     text-transform: none;
@@ -92,7 +85,7 @@
   }
 
   .btn-ghost:hover {
-    color: var(--offwhite);
+    color: var(--black);
     transform: none;
   }
 
@@ -167,7 +160,7 @@
 
   .hero-title em {
     font-style: normal;
-    -webkit-text-stroke: 1.5px var(--offwhite);
+    -webkit-text-stroke: 1.5px var(--black);
     color: transparent;
   }
 
@@ -175,7 +168,7 @@
     margin-top: 2rem;
     font-size: 1.1rem;
     font-weight: 300;
-    color: rgba(44, 44, 40, .55);
+    color: var(--black);
     max-width: 38ch;
     line-height: 1.6;
   }
@@ -233,7 +226,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.1rem;
     letter-spacing: .12em;
-    color: #fcfaf6;
+    color: var(--offwhite);
     padding: 0 2.5rem;
   }
 
@@ -277,12 +270,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5px;
-    background: rgba(0, 0, 0, .08);
-    border: 1px solid rgba(0, 0, 0, .08);
+    background: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   .step {
-    background: var(--black);
+    background: var(--offwhite);
     padding: 2.5rem 2rem;
     position: relative;
     transition: background .3s;
@@ -327,7 +320,7 @@
 
   .step p {
     font-size: .875rem;
-    color: rgba(44, 44, 40, .5);
+    color: var(--black);
     line-height: 1.6;
   }
 
@@ -349,7 +342,7 @@
     content: 'YNQ';
     font-family: 'Bebas Neue', sans-serif;
     font-size: 14rem;
-    color: rgba(0, 0, 0, .06);
+    color: rgba(0, 0, 0, 0.06);
     position: absolute;
     right: -1rem;
     bottom: -2rem;
