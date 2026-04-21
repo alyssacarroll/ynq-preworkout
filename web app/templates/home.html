@@ -3,41 +3,7 @@
 {% block styles %}
 {{ super() }}
 <style>
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  :root {
-    --black: #fcfaf6;
-    --offwhite: #2c2c28;
-    /* --accent: #8faa8b; */
-    --accent: #66a072;
-    --accent-light: #dce8da;
-    --muted: #8a8a82;
-  }
-
-  body {
-    background: var(--black);
-    color: var(--offwhite);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
+  /* ── Override base layout for the landing page ── */
   .app-container {
     display: block;
     min-height: unset;
@@ -50,92 +16,95 @@
     transform: none;
   }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
+  :root {
+    --black: #fcfaf6;
+    --offwhite: #2c2c28;
+    --accent: #66a072;
+    --muted: #8a8a82;
+  }
+
+  /* ── BUTTONS (shared base) ── */
+  .btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(252, 250, 246, 0.88);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    text-decoration: none;
-  }
-
-  .nav-logo :hover {
-    opacity: 0.85;
-    text-decoration: none !important;
-  }
-
-  .logo-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 4px;
-    display: grid;
-    place-items: center;
-  }
-
-  .logo-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .nav-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.08em;
-    color: var(--offwhite);
-  }
-
-  .nav-brand:hover {
-    opacity: 0.85;
-    text-decoration: none !important;
-  }
-
-  .nav-cta {
-    background: var(--accent);
-    color: #fcfaf6;
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
+    justify-content: center;
+    gap: .5rem;
+    font-weight: 700;
+    font-size: .9rem;
+    letter-spacing: .06em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 0.55rem 1.4rem;
+    padding: .9rem 2.2rem;
     border-radius: 4px;
-    transition: opacity 0.2s;
+    transition: transform .2s, box-shadow .2s, opacity .2s, background-color .2s;
+    white-space: nowrap;
   }
 
-  .nav-cta:hover {
-    opacity: 0.85;
+  .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(143, 170, 139, 0.35);
-    background-color: #aebfac;
-    color: #fcfaf6;
   }
 
-  /* HERO */
+  .btn-primary {
+    background: var(--accent);
+    color: #fcfaf6;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: #aebfac;
+    box-shadow: 0 8px 30px rgba(143, 170, 139, .35);
+    color: #fcfaf6;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:active,
+  .btn-primary:focus {
+    background: var(--accent) !important;
+    color: #fcfaf6 !important;
+    outline: none !important;
+    box-shadow: 0 4px 15px rgba(143, 170, 139, .4) !important;
+  }
+
+  .btn-primary svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .btn-dark {
+    background: #fcfaf6;
+    color: var(--offwhite);
+    flex-shrink: 0;
+  }
+
+  .btn-dark:hover {
+    opacity: .9;
+  }
+
+  .btn-ghost {
+    color: rgba(44, 44, 40, .5);
+    font-size: .9rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: .02em;
+    padding: 0;
+    border-radius: 0;
+    transition: color .2s;
+  }
+
+  .btn-ghost:hover {
+    color: var(--offwhite);
+    transform: none;
+  }
+
+  /* ── HERO ── */
   .hero {
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6rem 3rem 5rem;
+    padding: 7rem 3rem 5rem;
     overflow: hidden;
-    
-    background-size: cover;
-    background-position: center;
   }
 
   .hero::after {
@@ -145,32 +114,55 @@
     right: -5%;
     width: 55%;
     height: 130%;
-    background: linear-gradient(135deg, rgba(143, 170, 139, 0.1) 0%, transparent 60%);
-    /* background-image: linear-gradient(to right, rgba(252, 250, 246, 0.92) 40%, rgba(252, 250, 246, 0.6) 100%),
-      url("{{ url_for('static', filename='wall.png') }}"); */
+    background: linear-gradient(135deg, rgba(143, 170, 139, .1) 0%, transparent 60%);
     transform: skewX(-8deg);
     pointer-events: none;
   }
 
+  .hero-eyebrow,
+  .hero-title,
+  .hero-sub,
+  .hero-actions,
+  .hero-stats {
+    opacity: 0;
+    animation: fadeUp .7s forwards;
+  }
+
   .hero-eyebrow {
-    font-size: 0.8rem;
+    animation-delay: .1s;
+  }
+
+  .hero-title {
+    animation-delay: .25s;
+  }
+
+  .hero-sub {
+    animation-delay: .4s;
+  }
+
+  .hero-actions {
+    animation-delay: .55s;
+  }
+
+  .hero-stats {
+    animation-delay: .7s;
+  }
+
+  .hero-eyebrow {
+    font-size: .8rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 1.2rem;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.1s forwards;
   }
 
   .hero-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(4rem, 8vw, 7rem);
-    line-height: 0.92;
-    letter-spacing: 0.02em;
+    line-height: .92;
+    letter-spacing: .02em;
     max-width: 14ch;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.25s forwards;
   }
 
   .hero-title em {
@@ -183,11 +175,9 @@
     margin-top: 2rem;
     font-size: 1.1rem;
     font-weight: 300;
-    color: rgba(44, 44, 40, 0.55);
+    color: rgba(44, 44, 40, .55);
     max-width: 38ch;
     line-height: 1.6;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.4s forwards;
   }
 
   .hero-actions {
@@ -196,55 +186,6 @@
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.55s forwards;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #fcfaf6;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1rem 2.4rem;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(143, 170, 139, 0.35);
-    background-color: #aebfac;
-  }
-
-  .btn-primary:active,
-  .btn-primary:focus {
-    background: var(--accent) !important;
-    color: #fcfaf6 !important;
-    outline: none !important;
-    box-shadow: 0 4px 15px rgba(143, 170, 139, 0.4) !important;
-  }
-
-  .btn-primary svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .btn-ghost {
-    color: rgba(44, 44, 40, 0.5);
-    font-size: 0.9rem;
-    text-decoration: none;
-    letter-spacing: 0.02em;
-    transition: color 0.2s;
-  }
-
-  .btn-ghost:hover {
-    color: var(--offwhite);
   }
 
   .hero-stats {
@@ -252,8 +193,6 @@
     display: flex;
     gap: 3rem;
     flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.7s forwards;
   }
 
   .stat {
@@ -264,23 +203,23 @@
   .stat-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 2.4rem;
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
     line-height: 1;
   }
 
   .stat-label {
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     color: var(--muted);
-    margin-top: 0.25rem;
+    margin-top: .25rem;
   }
 
-  /* MARQUEE */
+  /* ── MARQUEE ── */
   .marquee-wrap {
     background: var(--accent);
-    padding: 0.85rem 0;
+    padding: .85rem 0;
     overflow: hidden;
     white-space: nowrap;
   }
@@ -293,7 +232,7 @@
   .marquee-item {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.1rem;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     color: #fcfaf6;
     padding: 0 2.5rem;
   }
@@ -302,23 +241,23 @@
     display: inline-block;
     width: 5px;
     height: 5px;
-    background: rgba(252, 250, 246, 0.4);
+    background: rgba(252, 250, 246, .4);
     border-radius: 50%;
     vertical-align: middle;
     margin: 0 1.5rem;
   }
 
-  /* HOW IT WORKS */
+  /* ── SECTIONS ── */
   .section {
     position: relative;
     z-index: 1;
-    padding: 0rem 3rem 4rem;
+    padding: 0 3rem 4rem;
   }
 
   .section-label {
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 1rem;
@@ -327,25 +266,26 @@
   .section-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
     max-width: 20ch;
     line-height: 1;
   }
 
+  /* ── STEPS ── */
   .steps {
     margin-top: 4rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5px;
-    background: rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, .08);
+    border: 1px solid rgba(0, 0, 0, .08);
   }
 
   .step {
     background: var(--black);
     padding: 2.5rem 2rem;
     position: relative;
-    transition: background 0.3s;
+    transition: background .3s;
   }
 
   .step:hover {
@@ -355,7 +295,7 @@
   .step-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 4rem;
-    color: rgba(143, 170, 139, 0.25);
+    color: rgba(143, 170, 139, .25);
     line-height: 1;
     position: absolute;
     top: 1.5rem;
@@ -365,7 +305,7 @@
   .step-icon {
     width: 44px;
     height: 44px;
-    background: rgba(143, 170, 139, 0.15);
+    background: rgba(143, 170, 139, .15);
     border-radius: 8px;
     display: grid;
     place-items: center;
@@ -381,17 +321,17 @@
   .step h3 {
     font-size: 1rem;
     font-weight: 600;
-    letter-spacing: 0.03em;
-    margin-bottom: 0.6rem;
+    letter-spacing: .03em;
+    margin-bottom: .6rem;
   }
 
   .step p {
-    font-size: 0.875rem;
-    color: rgba(44, 44, 40, 0.5);
+    font-size: .875rem;
+    color: rgba(44, 44, 40, .5);
     line-height: 1.6;
   }
 
-  /* CTA BANNER */
+  /* ── CTA BANNER ── */
   .cta-banner {
     margin: 0 3rem 6rem;
     background: var(--accent);
@@ -409,7 +349,7 @@
     content: 'YNQ';
     font-family: 'Bebas Neue', sans-serif;
     font-size: 14rem;
-    color: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, .06);
     position: absolute;
     right: -1rem;
     bottom: -2rem;
@@ -421,34 +361,14 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(2rem, 4vw, 3.2rem);
     color: #fcfaf6;
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
     max-width: 22ch;
     line-height: 1.05;
   }
 
-  .btn-dark {
-    background: #fcfaf6;
-    color: var(--offwhite);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1rem 2.2rem;
-    border-radius: 4px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    transition: transform 0.2s, opacity 0.2s;
-  }
-
-  .btn-dark:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-  }
-
-  /* FOOTER */
+  /* ── FOOTER ── */
   footer {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, .08);
     padding: 2rem 3rem;
     display: flex;
     align-items: center;
@@ -460,14 +380,15 @@
   .footer-brand {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.3rem;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
   }
 
   footer p {
-    font-size: 0.78rem;
+    font-size: .78rem;
     color: var(--muted);
   }
 
+  /* ── KEYFRAMES ── */
   @keyframes fadeUp {
     from {
       opacity: 0;
@@ -481,22 +402,17 @@
   }
 
   @keyframes marquee {
-    0% {
+    from {
       transform: translateX(0);
     }
 
-    100% {
+    to {
       transform: translateX(-50%);
     }
   }
 
-  /* ===== MOBILE FORMATTING ===== */
-  /* Tablet */
+  /* ── MOBILE FORMATTING ── */
   @media (max-width: 768px) {
-    nav {
-      padding: 1rem 1.5rem;
-    }
-
     .hero {
       padding: 7rem 1.5rem 4rem;
       min-height: 100svh;
@@ -533,34 +449,19 @@
 
     .btn-dark {
       width: 100%;
-      text-align: center;
     }
 
     footer {
       padding: 1.5rem;
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.5rem;
+      gap: .5rem;
     }
   }
 
-  /* Mobile */
   @media (max-width: 480px) {
-    nav {
-      padding: 0.9rem 1.25rem;
-    }
-
-    .nav-brand {
-      font-size: 1.25rem;
-    }
-
-    .nav-cta {
-      font-size: 0.75rem;
-      padding: 0.45rem 1rem;
-    }
-
     .hero {
-      padding: 6rem 1.25rem 3rem;
+      padding: clamp(5rem, 10vw, 6rem) 1.25rem 3rem;
     }
 
     .hero-title {
@@ -575,12 +476,6 @@
 
     .btn-primary {
       width: 100%;
-      justify-content: center;
-      padding: 0.9rem 1.5rem;
-    }
-
-    .hero-stats {
-      gap: 1.25rem;
     }
 
     .stat-num {
@@ -613,22 +508,19 @@
 <title>{% block title%}YNQ Pre-Workout{% endblock %}</title>
 
 {% block content %}
-<input type="checkbox" id="menu-toggle">
-
 <section class="hero">
   <p class="hero-eyebrow">Powered by DSLD Database</p>
   <h1 class="hero-title">Find Your <em>Perfect</em> Pre-Workout</h1>
   <p class="hero-sub">Answer a few questions, fine-tune your ingredients, and get matched to real products that
     actually fit your needs.</p>
   <div class="hero-actions">
-    <a href="#" class="btn-primary" onclick="showDisclaimer(event)">
+    <a href="#" class="btn btn-primary" onclick="showDisclaimer(event)">
       Take the Quiz
-      <!-- Right arrow icon -->
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <path d="M3 8h10M9 4l4 4-4 4" />
       </svg>
     </a>
-    <a href="#how-it-works" class="btn-ghost">How it works ↓</a>
+    <a href="#how-it-works" class="btn btn-ghost">How it works ↓</a>
   </div>
   <div class="hero-stats">
     <div class="stat">
@@ -691,7 +583,7 @@
 
 <div class="cta-banner">
   <h2>Ready to find what works for you?</h2>
-  <a href="#" class="btn-dark" onclick="showDisclaimer(event)">Start the Quiz →</a>
+  <a href="#" class="btn btn-dark" onclick="showDisclaimer(event)">Start the Quiz →</a>
 </div>
 
 <footer>
@@ -710,10 +602,7 @@
 
   function showDisclaimer(e) {
     e.preventDefault();
-    if (disclaimerAccepted) {
-      window.location.href = '/quiz/name';
-      return;
-    }
+    if (disclaimerAccepted) { window.location.href = '/quiz/name'; return; }
     overlay.style.display = 'flex';
   }
 
@@ -727,10 +616,6 @@
     window.location.href = '/quiz/name';
   }
 
-  // close on background click
-  overlay.addEventListener('click', function (e) {
-    if (e.target === overlay) closeDisclaimer();
-  });
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeDisclaimer(); });
 </script>
-
 {% endblock %}
