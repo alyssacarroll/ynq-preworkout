@@ -67,11 +67,81 @@
             color: #2c2c28;
         }
 
-        /* Scale logo for smaller screens */
-        @media (max-width: 480px) {
-            .logo-img {
-                height: 30px;
-            }
+        .nav-txt :hover {
+            opacity: 0.8;
+        }
+
+        /* menu */
+        .nav-drawer {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 260px;
+            background: #fcfaf6;
+            border-left: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 200;
+            padding: 2rem 1.5rem;
+        }
+
+        .nav-drawer.open {
+            display: block;
+        }
+
+        .drawer-link {
+            display: block;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            text-decoration: none;
+            color: var(--offwhite);
+            font-size: 0.95rem;
+        }
+
+        .drawer-link:hover {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Custom submit button that preserves Bootstrap basics */
+        .btn.btn-submit {
+            background-color: #529963;
+            color: #ffffff;
+            border-color: #5faa70;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            transition: background-color 150ms ease, border-color 150ms ease;
+        }
+
+        .btn.btn-submit:hover,
+        .btn.btn-submit:focus {
+            background-color: #67b378;
+            border-color: #529963;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+        }
+
+        .btn.btn-submit:active {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        /* back button */
+        .btn-back {
+            color: inherit;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            width: fit-content;
+            margin-top: -0.5rem;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            text-shadow: #242422;
+            color: #535350;
         }
 
         .app-container {
@@ -126,7 +196,6 @@
                 padding-right: 1rem;
             }
 
-            /* on very small screens, avoid shifting — let content flow naturally */
             .app-inner {
                 transform: translateY(12%);
                 max-width: 95vw;
@@ -152,50 +221,13 @@
                 padding: 0.9rem 1.5rem;
             }
 
+            .logo-img {
+                height: 30px;
+            }
+
             footer {
                 padding: 1.25rem;
             }
-        }
-
-        /* Custom submit button that preserves Bootstrap basics */
-        .btn.btn-submit {
-            background-color: #529963;
-            color: #ffffff;
-            border-color: #5faa70;
-            padding-top: 3px;
-            padding-bottom: 3px;
-            transition: background-color 150ms ease, border-color 150ms ease;
-        }
-
-        .btn.btn-submit:hover,
-        .btn.btn-submit:focus {
-            background-color: #67b378;
-            border-color: #529963;
-            color: #ffffff;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
-        }
-
-        .btn.btn-submit:active {
-            background-color: #1e7e34;
-            border-color: #1c7430;
-        }
-
-        /* back button */
-        .btn-back {
-            color: inherit;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            width: fit-content;
-            margin-top: -0.5rem;
-        }
-
-        .btn-back:hover {
-            transform: translateY(-2px);
-            text-shadow: #242422;
-            color: #535350;
         }
     </style>
 
@@ -205,20 +237,24 @@
 </head>
 
 <body>
-    <nav class="main-nav"> <a href="/" style="display:flex; align-items:center; gap:0.6rem; text-decoration:none;">
+    <div class="main-nav">
+        <a href="/" style="display:flex; align-items:center; gap:0.6rem; text-decoration:none;">
             <img class="logo-img" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
             <span class="nav-txt">YNQ</span>
         </a>
-        <a href="/liked-products"
-            style="display:grid; place-items:center; color:var(--offwhite); opacity:0.6; transition:opacity 0.2s;"
-            title="Liked Products">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" />
-            </svg>
-        </a>
-    </nav>
+        <button id="hamburger-btn" style="background:none; border:none; cursor:pointer; font-size:1.4rem;">☰</button>
+    </div>
+
+    <div class="nav-drawer" id="nav-drawer">
+        <button onclick="document.getElementById('nav-drawer').classList.remove('open')"
+            style="background:none; border:none; cursor:pointer; float:right;">✕</button>
+        <br>
+        <a href="/" class="drawer-link">Home</a>
+        <a href="/quiz/name" class="drawer-link">Quiz</a>
+        <a href="/customize" class="drawer-link">Customize</a>
+        <a href="/liked-products" class="drawer-link">Liked Products</a>
+        <a href="/products" class="drawer-link">Products</a>
+    </div>
 
     <div class="app-container">
         <div class="app-inner">
@@ -227,6 +263,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        document.getElementById('hamburger-btn').onclick = () => {
+            document.getElementById('nav-drawer').classList.toggle('open');
+        };
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 
