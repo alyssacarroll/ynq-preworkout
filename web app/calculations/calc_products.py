@@ -115,7 +115,7 @@ def categorize_products(products, ingredients):
 
     Returns:
         perfect (list): products that match every ingredient that the user prefers
-        close   (list): products that match 75% of the ingredients that the user prefers
+        close   (list): products that match 2/3rds of the ingredients that the user prefers
         similar (list): products that have similar ingredient values to those which the user prefers
     """
     perfect, close, similar = [], [], []
