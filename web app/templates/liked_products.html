@@ -70,7 +70,7 @@
     font-size: 1.6rem;
     letter-spacing: 0.06em;
     white-space: nowrap;
-    color: #2c2c28;
+    color: var(--black);
   }
 
   .section-divider-line {
@@ -94,33 +94,66 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     animation: fadeUp 0.4s ease both;
     height: 100%;
   }
 
   .liked-card:hover {
-    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
     border-color: var(--accent);
   }
 
-  .col-md-6:nth-child(1) .liked-card  { animation-delay: 0.05s; }
-  .col-md-6:nth-child(2) .liked-card  { animation-delay: 0.10s; }
-  .col-md-6:nth-child(3) .liked-card  { animation-delay: 0.15s; }
-  .col-md-6:nth-child(4) .liked-card  { animation-delay: 0.20s; }
-  .col-md-6:nth-child(5) .liked-card  { animation-delay: 0.25s; }
-  .col-md-6:nth-child(6) .liked-card  { animation-delay: 0.30s; }
-  .col-md-6:nth-child(7) .liked-card  { animation-delay: 0.35s; }
-  .col-md-6:nth-child(8) .liked-card  { animation-delay: 0.40s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .col-md-6:nth-child(1) .liked-card {
+    animation-delay: 0.05s;
   }
 
-  .liked-card-info { flex: 1; min-width: 0; }
+  .col-md-6:nth-child(2) .liked-card {
+    animation-delay: 0.10s;
+  }
+
+  .col-md-6:nth-child(3) .liked-card {
+    animation-delay: 0.15s;
+  }
+
+  .col-md-6:nth-child(4) .liked-card {
+    animation-delay: 0.20s;
+  }
+
+  .col-md-6:nth-child(5) .liked-card {
+    animation-delay: 0.25s;
+  }
+
+  .col-md-6:nth-child(6) .liked-card {
+    animation-delay: 0.30s;
+  }
+
+  .col-md-6:nth-child(7) .liked-card {
+    animation-delay: 0.35s;
+  }
+
+  .col-md-6:nth-child(8) .liked-card {
+    animation-delay: 0.40s;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .liked-card-info {
+    flex: 1;
+    min-width: 0;
+  }
 
   .liked-card-brand {
     font-size: 0.72rem;
@@ -136,7 +169,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.3rem;
     letter-spacing: 0.04em;
-    color: #2c2c28;
+    color: var(--black);
     text-decoration: none;
     display: block;
     line-height: 1.2;
@@ -146,7 +179,9 @@
     transition: color 0.15s;
   }
 
-  .liked-card-link:hover { color: var(--accent); }
+  .liked-card-link:hover {
+    color: var(--accent);
+  }
 
   .liked-card-link::after {
     content: ' \2197';
@@ -155,7 +190,9 @@
     transition: opacity 0.15s;
   }
 
-  .liked-card-link:hover::after { opacity: 1; }
+  .liked-card-link:hover::after {
+    opacity: 1;
+  }
 
   .heart-btn {
     background: rgba(143, 170, 139, 0.12);
@@ -184,7 +221,9 @@
     transition: transform 0.15s;
   }
 
-  .heart-btn:hover svg { transform: scale(1.15); }
+  .heart-btn:hover svg {
+    transform: scale(1.15);
+  }
 
   /* ── COUNT BADGE ── */
   .count-badge {
@@ -238,16 +277,37 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    .products-hero  { padding: 4rem 2rem 2rem; }
-    .products-grid  { padding: 1rem 2rem 3rem; }
-    .section-divider { padding: 0 2rem; }
+    .products-hero {
+      padding: 4rem 2rem 2rem;
+    }
+
+    .products-grid {
+      padding: 1rem 2rem 3rem;
+    }
+
+    .section-divider {
+      padding: 0 2rem;
+    }
   }
 
   @media (max-width: 480px) {
-    .app-inner { padding: 0; margin: 0; width: 100vw; }
-    .products-hero  { padding: 1rem 1.5rem 2rem; }
-    .products-grid  { padding: 1rem; }
-    .section-divider { padding: 0 1.5rem; }
+    .app-inner {
+      padding: 0;
+      margin: 0;
+      width: 100vw;
+    }
+
+    .products-hero {
+      padding: 1rem 1.5rem 2rem;
+    }
+
+    .products-grid {
+      padding: 1rem;
+    }
+
+    .section-divider {
+      padding: 0 1.5rem;
+    }
   }
 </style>
 {% endblock %}
@@ -274,22 +334,18 @@
     <div class="col-md-6 col-lg-4">
       <div class="liked-card">
         <div class="liked-card-info">
-            <a class="liked-card-link"
-             href="{{ product.product_link }}"
-             target="_blank"
-             rel="noopener noreferrer"
-             title="{{ product.product_name }}">
+          <a class="liked-card-link" href="{{ product.product_link }}" target="_blank" rel="noopener noreferrer"
+            title="{{ product.product_name }}">
             {{ product.product_name }}
           </a>
           <div style="margin-top:-1rem; opacity: 5%;">_________________</div>
           <p class="liked-card-brand">{{ product.brand_name }}</p>
         </div>
-        <button
-          class="heart-btn active"
-          aria-label="Unlike product"
+        <button class="heart-btn active" aria-label="Unlike product"
           onclick="unlike_product('{{ product.brand_name }}', '{{ product.product_name }}', this)">
           <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         </button>
       </div>
@@ -303,7 +359,8 @@
 <div class="empty-state">
   <div class="empty-icon">
     <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
     </svg>
   </div>
   <h3>Nothing Saved Yet</h3>
