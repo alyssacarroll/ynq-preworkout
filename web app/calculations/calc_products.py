@@ -133,3 +133,12 @@ def categorize_products(products, ingredients):
         elif is_similar(p, ingredients):
             similar.append(p)
     return perfect, close, similar
+
+
+def get_women_products(products):
+    """finds products that are marketed towards women"""
+    women_products = []
+    for p in products:
+        if p["woman"] == 1:
+            women_products.append(p)
+    return women_products

@@ -8,6 +8,7 @@ from sqlalchemy import text
 from calculations import calc_ingredients as ci
 from calculations import calc_products as cp
 import os
+from sympy.external.gmpy import is_fermat_prp
 
 app = Flask(__name__)
 
@@ -350,12 +351,14 @@ def products():
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.num_active_ing(ingredients)
     active = cp.active_ingredients(ingredients)
+    women_products = cp.get_women_products(products)
     return render_template("products.html",
                            perfect=perfect,
                            close=close,
                            similar=similar,
                            length=length,
                            active=active,
+                           women_products = women_products
                            )
 
 # <><><><><><><><><><><><> LIKED PRODUCTS PAGE <><><><><><><><><><><><><>

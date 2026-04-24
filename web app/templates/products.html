@@ -198,6 +198,7 @@
     .section-divider {
       padding: 0 1.5rem;
     }
+
     .collapsed-section {
       display: none;
       padding-bottom: 1rem;
@@ -291,15 +292,34 @@
     </div>
     {% endfor %}
   </div>
+</div>
+{% endif %}
+
+{% if women_products %}
+<div class="section-divider collapsible-trigger" onclick="toggleSection('women-products')" style="cursor:pointer;">
+  <span class="section-divider-label">Women's Products</span>
+  <span class="toggle-label" id="women-products-toggle-label">Show</span>
+  <div class="section-divider-line"></div>
+</div>
+<div id="women-products" class="products-grid collapsed-section" style="padding-top: 0;">
+  <div class="row g-4">
+    {% for p in women_products %}
+    <div class="col-md-6 col-lg-4">
+      <div class="product-card">
+        <div class="match-tag women"><span class="match-dot"></span> Products for Women</div>
+        {% include 'components/product_card.html' %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <footer style="margin-top: 2rem; font-size: 0.85rem; color: rgba(44, 44, 40, 0.5); position: fixed; 
             display: flex; background-color: #d6d4d46f; transparency: 0.05; border-radius: 10px;
             bottom: 10px; left: 10px; z-index: 100;">
-          <a href="/customize" class="btn">← Back to Customization</a>
+    <a href="/customize" class="btn">← Back to Customization</a>
   </footer>
 </div>
-{% endif %}
-
 {% endblock %}
 
 {% block scripts %}
