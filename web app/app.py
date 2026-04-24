@@ -8,7 +8,6 @@ from sqlalchemy import text
 from calculations import calc_ingredients as ci
 from calculations import calc_products as cp
 import os
-from sympy.external.gmpy import is_fermat_prp
 
 app = Flask(__name__)
 
