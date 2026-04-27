@@ -36,7 +36,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 def ensure_user():
     """ensures every user has a unique id stored in session.
        if user doesn't have id, generates new uuid and stores in session.
-       makes session permanent (lasts for 90 days).
+       makes session permanent (lasts for 1 year).
     """
     session.permanent = True
     if "user_id" not in session:
@@ -56,6 +56,8 @@ def accept_disclaimer():
 
 @app.route("/")
 def home():
+    """landing page for ynq website. handles disclaimer logic.
+    """
     result = db.session.execute(
         text("SELECT accepted_disclaimer FROM user_data WHERE user_id = :uid"),
         {"uid": session.get("user_id")}
@@ -226,6 +228,8 @@ def goals():
 
 @app.route("/quiz/stimulant", methods=["GET", "POST"])
 def stimulant():
+    """asks user their stimulant preferences & stores it in the session
+    """
     if request.method == "POST":
         # ensure user selects an option
         if request.form.get("stimulant", "") == "":
@@ -290,7 +294,6 @@ def customize():
     """displays customization page w/ sliders. stores user preferences in session. 
     sets session variables to -1 if user doesn't adjust slider (indicating they don't care about that ingredient).
     redirects to products page on submit.
-
     """
     
     if request.method == "POST":
@@ -324,8 +327,8 @@ def customize():
                             pool=pool
                             )
 
-# <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 
+# <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 
 @app.route("/products")
 def products(): 
@@ -351,6 +354,7 @@ def products():
     length = cp.num_active_ing(ingredients)
     active = cp.active_ingredients(ingredients)
     women_products = cp.get_women_products(products)
+    
     return render_template("products.html",
                            perfect=perfect,
                            close=close,
@@ -360,10 +364,14 @@ def products():
                            women_products = women_products
                            )
 
+
 # <><><><><><><><><><><><> LIKED PRODUCTS PAGE <><><><><><><><><><><><><>
 
 @app.route("/liked-products")
 def liked_products():
+    """displays products that user has liked
+    """
+    
     user_id = session.get("user_id")
 
     query = text("""
@@ -384,6 +392,8 @@ def liked_products():
 
 @app.route("/save-product", methods=["POST"])
 def save_product():
+    """ helper function. saves product that user likes to user_products table in database.
+    """
     data = request.json
 
     # check to see if product is already saved for user to avoid unnecessary db writes
@@ -419,6 +429,8 @@ def save_product():
 
 @app.route("/remove-product", methods=["POST"])
 def remove_product():
+    """ helper function. removes product that user unlikes from user_products table in database.
+    """
     data = request.json
 
     # check to make sure product is actually saved for user before attempting to delete
@@ -452,6 +464,10 @@ def remove_product():
 
 
 def save_user_session_to_db():
+    """ helper function. saves user info stored in session to user_data table in database.
+    this occurs at the end of the quiz to save db writes (instead of writing to db after each question).
+    """
+    
     query = text("""
         INSERT INTO user_data (
             user_id, user_name, completed_steps, age, weight, sex, pump_goal, energy_goal, focus_goal, endurance_goal, strength_goal, stimulant
