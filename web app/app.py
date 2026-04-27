@@ -1,13 +1,13 @@
+import os
 import uuid
-
 from flask import Flask, redirect, url_for, render_template, request, session
 from flask_session import Session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+
 from calculations import calc_ingredients as ci
 from calculations import calc_products as cp
-import os
 
 app = Flask(__name__)
 
