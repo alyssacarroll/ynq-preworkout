@@ -56,6 +56,7 @@ def home():
     disclaimer_accepted = result.accepted_disclaimer if result else False
     return render_template("home.html", disclaimer_accepted=disclaimer_accepted)
 
+
 # <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 
 @app.route("/quiz/name", methods=["GET", "POST"])
@@ -70,7 +71,7 @@ def name():
         if "name" not in session["completed_steps"]:
             session["completed_steps"].append("name")
             
-        return redirect(url_for('age')) 
+        return redirect(url_for('weight')) 
     
     # nav bar updates
     session["visited_steps"] = session.get("visited_steps", [])
@@ -81,6 +82,47 @@ def name():
                            current_step="name"
                            )  
 
+
+@app.route("/quiz/weight", methods=["GET", "POST"])
+def weight():
+    """ asks user for weight and stores in session. redirects to goals page.
+    """
+    if request.method == "POST":
+        # user cannot submit empty weight
+        if request.form.get("weight", "") == "" and "weight" not in session["completed_steps"]:
+            error = "Please enter your weight."
+            return render_template("qWeight.html",
+                                   usr=session.get("user_name"),
+                                   current_step="weight",
+                                   error=error
+                                   )
+        # weight entered must be a number
+        if not (request.form.get("weight", "").isdigit()):
+            error = "Please enter a valid weight."
+            return render_template("qWeight.html",
+                                   usr=session.get("user_name"),
+                                   current_step="weight",
+                                   error=error
+                                   )
+        session["weight"] = request.form.get("weight", "")
+        
+        # nav bar updates
+        if not session.get("completed_steps"):
+            return redirect(url_for('name'))
+        if "weight" not in session["completed_steps"]:
+            session["completed_steps"].append("weight")
+            
+        return redirect(url_for('age'))
+    
+    # nav bar updates
+    if "weight" not in session["visited_steps"]:
+        session["visited_steps"].append("weight")
+        
+    return render_template("qWeight.html",
+                           usr=session.get("user_name"),
+                           current_step="weight"
+                           )
+    
    
 @app.route("/quiz/age", methods=["GET", "POST"])
 def age():
@@ -88,7 +130,7 @@ def age():
     """
     if request.method == "POST":
         # ensure user selects an option
-        if request.form.get("age", "") == "":
+        if request.form.get("age", "") == "" and "age" not in session["completed_steps"]:
             error = "Please select an option."
             return render_template("qAge.html",
                                    usr=session.get("user_name"),
@@ -120,7 +162,7 @@ def sex():
     """
     if request.method == "POST":
         # ensure user selects an option
-        if request.form.get("sex", "") == "":
+        if request.form.get("sex", "") == "" and "sex" not in session["completed_steps"]:
             error = "Please select an option."
             return render_template("qSex.html",
                                    usr=session.get("user_name"),
@@ -134,7 +176,7 @@ def sex():
         if "sex" not in session["completed_steps"]:
             session["completed_steps"].append("sex")
             
-        return redirect(url_for('weight')) 
+        return redirect(url_for('goals')) 
     
     # nav bar updates
     if "sex" not in session["visited_steps"]:
@@ -144,48 +186,7 @@ def sex():
                            usr=session.get("user_name"),
                            current_step="sex"
                            )
-
-
-@app.route("/quiz/weight", methods=["GET", "POST"])
-def weight():
-    """ asks user for weight and stores in session. redirects to goals page.
-    """
-    if request.method == "POST":
-        # user cannot submit empty weight
-        if request.form.get("weight", "") == "":
-            error = "Please enter your weight."
-            return render_template("qWeight.html",
-                                   usr=session.get("user_name"),
-                                   current_step="weight",
-                                   error=error
-                                   )
-        # weight entered must be a number
-        if not (request.form.get("weight", "").isdigit()):
-            error = "Please enter a valid weight."
-            return render_template("qWeight.html",
-                                   usr=session.get("user_name"),
-                                   current_step="weight",
-                                   error=error
-                                   )
-        session["weight"] = request.form.get("weight", "")
         
-        # nav bar updates
-        if not session.get("completed_steps"):
-            return redirect(url_for('name'))
-        if "weight" not in session["completed_steps"]:
-            session["completed_steps"].append("weight")
-            
-        return redirect(url_for('goals'))
-    
-    # nav bar updates
-    if "weight" not in session["visited_steps"]:
-        session["visited_steps"].append("weight")
-        
-    return render_template("qWeight.html",
-                           usr=session.get("user_name"),
-                           current_step="weight"
-                           )
-  
   
 @app.route("/quiz/goals", methods=["GET", "POST"])
 def goals():
@@ -223,7 +224,7 @@ def stimulant():
     """
     if request.method == "POST":
         # ensure user selects an option
-        if request.form.get("stimulant", "") == "":
+        if request.form.get("stimulant", "") == "" and "stimulant" not in session["completed_steps"]:
             error = "Please select an option."
             return render_template("qStimulant.html",
                                    usr=session.get("user_name"),
