@@ -17,11 +17,11 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
         user_stimulant (string): user's stimulant preference (one of "none," "low," "moderate," "high," or "any")
     """
     global age, kg, sex, goals, stim
-    age = user_age
-    kg = int(user_lbs) * 0.453592
-    sex = user_sex
+    age   = user_age
+    kg    = int(user_lbs) * 0.453592
+    sex   = user_sex
     goals = user_goals
-    stim = user_stimulant
+    stim  = user_stimulant
     
     set_ingredients()
 
@@ -30,21 +30,21 @@ def set_ingredients():
     """initializes all ingredients as well as recommended and pool lists.
     """
     global caffeine, beta, creatine, betaine, taurine, citrulline, theanine, tyrosine, agmatine
-    caffeine = 0
-    beta = 0.0
-    creatine = 0.0
-    betaine = 0.0
-    taurine = 0.0
+    caffeine   = 0
+    beta       = 0.0
+    creatine   = 0.0
+    betaine    = 0.0
+    taurine    = 0.0
     citrulline = 0.0
-    theanine = 0.0
-    tyrosine = 0.0
-    agmatine = 0.0
+    theanine   = 0.0
+    tyrosine   = 0.0
+    agmatine   = 0.0
     
     global recommended_amounts, pool_ingredients
     recommended_amounts = {}
-    pool_ingredients = []
+    pool_ingredients    = []
     recommended_amounts = calculate_recommendations()
-    pool_ingredients = calculate_pool()
+    pool_ingredients    = calculate_pool()
     
 # <><><><><><><><><><><><> REC & POOL CALCULATIONS <><><><><><><><><><><><><><><>
 
@@ -93,15 +93,15 @@ def calculate_recommendations():
     
     # calculate recommended amounts for each ingredient
     func_map = {
-    "caffeine": calculate_caffeine,
-    "beta": calculate_beta,
-    "creatine": calculate_creatine,
-    "betaine": calculate_betaine,
-    "taurine": calculate_taurine,
+    "caffeine"  : calculate_caffeine,
+    "beta"      : calculate_beta,
+    "creatine"  : calculate_creatine,
+    "betaine"   : calculate_betaine,
+    "taurine"   : calculate_taurine,
     "citrulline": calculate_citrulline,
-    "theanine": calculate_theanine,
-    "tyrosine": calculate_tyrosine,
-    "agmatine": calculate_agmatine
+    "theanine"  : calculate_theanine,
+    "tyrosine"  : calculate_tyrosine,
+    "agmatine"  : calculate_agmatine
     }
     
     # loop through recommended ingredients and calculate amounts using func_map
@@ -119,8 +119,8 @@ def calculate_pool():
     
     returns: list of ingredients that should be in the pool, e.g. ["betaine", "taurine", "theanine"]
     """
-    all_ing = set(["caffeine", "beta", "creatine", "betaine", "taurine", "citrulline", "theanine", "tyrosine", "agmatine"])
-    rec_ing = set(recommended_amounts.keys())
+    all_ing  = set(["caffeine", "beta", "creatine", "betaine", "taurine", "citrulline", "theanine", "tyrosine", "agmatine"])
+    rec_ing  = set(recommended_amounts.keys())
     pool_ing = all_ing - rec_ing
     
     pool_ingredients = list(pool_ing)
@@ -137,7 +137,7 @@ def calculate_caffeine():
     improves:           energy, focus, endurance
     """    
     # base caffeine calculation
-    caffeine = 0
+    caffeine  = 0
     mg_per_kg = 0
     
     # ==== goal adjustments ====
@@ -291,7 +291,7 @@ def calculate_agmatine():
     improves:           pump
     """
     agmatine = 10 * kg  # base recommendation
-    if goals[0]:  # pump
+    if goals[0]: # pump
         agmatine = 20 * kg
         
     # cap to 1500mg (max effective dose)
