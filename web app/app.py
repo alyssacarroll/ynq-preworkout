@@ -96,14 +96,6 @@ def weight():
                                    current_step="weight",
                                    error=error
                                    )
-        # weight entered must be a number
-        if not (request.form.get("weight", "").isdigit()):
-            error = "Please enter a valid weight."
-            return render_template("qWeight.html",
-                                   usr=session.get("user_name"),
-                                   current_step="weight",
-                                   error=error
-                                   )
         session["weight"] = request.form.get("weight", "")
         
         # nav bar updates
