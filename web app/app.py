@@ -361,7 +361,8 @@ def products():
                            similar=similar,
                            length=length,
                            active=active,
-                           women_products = women_products
+                           women_products = women_products,
+                           sex=session.get("sex", "")
                            )
 
 
