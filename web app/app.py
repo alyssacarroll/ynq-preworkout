@@ -40,17 +40,7 @@ def ensure_user():
     """
     session.permanent = True
     if "user_id" not in session:
-        session["user_id"] = str(uuid.uuid4())
-        
-@app.route("/accept-disclaimer", methods=["POST"])
-def accept_disclaimer():
-    query = text("""
-        UPDATE user_data SET accepted_disclaimer = TRUE
-        WHERE user_id = :user_id
-    """)
-    db.session.execute(query, {"user_id": session.get("user_id")})
-    db.session.commit()
-    return {"status": "success"}
+        session["user_id"] = str(uuid.uuid4())    
         
 # <><><><><><><><><><><><><> HOME PAGE <><><><><><><><><><><><><><><><>
 
@@ -73,7 +63,7 @@ def name():
     """ asks user for name and stores in session. redirects to weight question page.
     """
     if request.method == "POST":
-        session["user_name"] = request.form.get("user", "").strip() 
+        session["user_name"]       = request.form.get("user", "").strip() 
         session["completed_steps"] = session.get("completed_steps", [])
         
         # nav bar updates
@@ -178,6 +168,7 @@ def weight():
                                    error=error
                                    )
         session["weight"] = request.form.get("weight", "")
+        
         # nav bar updates
         if not session.get("completed_steps"):
             return redirect(url_for('name'))
@@ -202,11 +193,11 @@ def goals():
     """
     if request.method == "POST":
         selected_goals = request.form.getlist("goal")
-        session["pumpGoal"] = "pump"      in selected_goals
-        session["energyGoal"] = "energy"    in selected_goals
-        session["focusGoal"] = "focus"     in selected_goals
+        session["pumpGoal"]      = "pump"      in selected_goals
+        session["energyGoal"]    = "energy"    in selected_goals
+        session["focusGoal"]     = "focus"     in selected_goals
         session["enduranceGoal"] = "endurance" in selected_goals
-        session["strengthGoal"] = "strength"  in selected_goals
+        session["strengthGoal"]  = "strength"  in selected_goals
         
         # nav bar updates
         if not session.get("completed_steps"):
@@ -246,6 +237,7 @@ def stimulant():
         if "stimulant" not in session["completed_steps"]:
             session["completed_steps"].append("stimulant")
         
+        # quiz is now complete, so save user info to database
         save_user_session_to_db()
         
         return redirect(url_for('customize'))
@@ -297,26 +289,28 @@ def customize():
     """
     
     if request.method == "POST":
-        session["custom_caffeine"] = request.form.get("custom_caffeine", -1)
-        session["custom_beta"] = request.form.get("custom_beta", -1)
-        session["custom_creatine"] = request.form.get("custom_creatine", -1)
-        session["custom_theanine"] = request.form.get("custom_theanine", -1)
-        session["custom_betaine"] = request.form.get("custom_betaine", -1)
-        session["custom_taurine"] = request.form.get("custom_taurine", -1)
+        session["custom_caffeine"]   = request.form.get("custom_caffeine",   -1)
+        session["custom_beta"]       = request.form.get("custom_beta",       -1)
+        session["custom_creatine"]   = request.form.get("custom_creatine",   -1)
+        session["custom_theanine"]   = request.form.get("custom_theanine",   -1)
+        session["custom_betaine"]    = request.form.get("custom_betaine",    -1)
+        session["custom_taurine"]    = request.form.get("custom_taurine",    -1)
         session["custom_citrulline"] = request.form.get("custom_citrulline", -1)
-        session["custom_tyrosine"] = request.form.get("custom_tyrosine", -1)
-        session["custom_agmatine"] = request.form.get("custom_agmatine", -1)
+        session["custom_tyrosine"]   = request.form.get("custom_tyrosine",   -1)
+        session["custom_agmatine"]   = request.form.get("custom_agmatine",   -1)
         return redirect(url_for('products'))
     
-    ci.set_user_info(session.get("age", ""),
+    ci.set_user_info(session.get("age",    ""),
                      session.get("weight", -1),
-                     session.get("sex", ""),
-                     [session.get("pumpGoal", False),
-                      session.get("energyGoal", False),
-                      session.get("focusGoal", False),
-                      session.get("enduranceGoal", False),
-                      session.get("strengthGoal", False)],
-                     session.get("stimulant", -1))
+                     session.get("sex",    ""),
+                     [
+                     session.get("pumpGoal",      False),
+                     session.get("energyGoal",    False),
+                     session.get("focusGoal",     False),
+                     session.get("enduranceGoal", False),
+                     session.get("strengthGoal",  False)
+                     ],
+                     session.get("stimulant", ""))
     recommended = ci.get_recommendations()
     pool = ci.get_pool()
     
@@ -340,15 +334,15 @@ def products():
     result = db.session.execute(query)
 
     products = [dict(row._mapping) for row in result]
-    ingredients = {"caffeine": session.get("custom_caffeine", 0),
-                   "beta": session.get("custom_beta", 0),
-                   "creatine": session.get("custom_creatine", 0),
-                   "betaine": session.get("custom_betaine", 0),
-                   "taurine": session.get("custom_taurine", 0),
+    ingredients = {"caffeine"  : session.get("custom_caffeine",   0),
+                   "beta"      : session.get("custom_beta",       0),
+                   "creatine"  : session.get("custom_creatine",   0),
+                   "betaine"   : session.get("custom_betaine",    0),
+                   "taurine"   : session.get("custom_taurine",    0),
                    "citrulline": session.get("custom_citrulline", 0),
-                   "theanine": session.get("custom_theanine", 0),
-                   "tyrosine": session.get("custom_tyrosine", 0),
-                   "agmatine": session.get("custom_agmatine", 0)} 
+                   "theanine"  : session.get("custom_theanine",   0),
+                   "tyrosine"  : session.get("custom_tyrosine",   0),
+                   "agmatine"  : session.get("custom_agmatine",   0)} 
     
     perfect, close, similar = cp.categorize_products(products, ingredients)
     length = cp.num_active_ing(ingredients)
@@ -391,6 +385,19 @@ def liked_products():
 
 # <><><><><><><><><><><><> HELPER FUNCTIONS <><><><><><><><><><><><><>
 
+@app.route("/accept-disclaimer", methods=["POST"])
+def accept_disclaimer():
+    """ helper function. updates user_data table to indicate that user has accepted disclaimer.
+    """
+    query = text("""
+        UPDATE user_data SET accepted_disclaimer = TRUE
+        WHERE user_id = :user_id
+    """)
+    db.session.execute(query, {"user_id": session.get("user_id")})
+    db.session.commit()
+    return {"status": "success"}
+   
+
 @app.route("/save-product", methods=["POST"])
 def save_product():
     """ helper function. saves product that user likes to user_products table in database.
@@ -405,7 +412,7 @@ def save_product():
     
     exists = db.session.execute(check_query, {
         "user_id": session.get("user_id"),
-        "brand": data.get("brand"),
+        "brand"  : data.get("brand"),
         "product": data.get("product")
     }).fetchone()
 
@@ -442,7 +449,7 @@ def remove_product():
     
     exists = db.session.execute(check_query, {
         "user_id": session.get("user_id"),
-        "brand": data.get("brand"),
+        "brand"  : data.get("brand"),
         "product": data.get("product")
     }).fetchone()
 
@@ -456,7 +463,7 @@ def remove_product():
 
     db.session.execute(query, {
         "user_id": session.get("user_id"),
-        "brand": data.get("brand"),
+        "brand"  : data.get("brand"),
         "product": data.get("product")
     })
 
@@ -490,18 +497,18 @@ def save_user_session_to_db():
     """)
 
     db.session.execute(query, {
-        "user_id": session.get("user_id"),
-        "user_name": session.get("user_name"),
+        "user_id"        : session.get("user_id"),
+        "user_name"      : session.get("user_name"),
         "completed_steps": session.get("completed_steps"),
-        "age": session.get("age"),
-        "weight": session.get("weight"),
-        "sex": session.get("sex"),
-        "pump_goal": session.get("pumpGoal"),
-        "energy_goal": session.get("energyGoal"),
-        "focus_goal": session.get("focusGoal"),
-        "endurance_goal": session.get("enduranceGoal"),
-        "strength_goal": session.get("strengthGoal"),
-        "stimulant": session.get("stimulant")
+        "age"            : session.get("age"),
+        "weight"         : session.get("weight"),
+        "sex"            : session.get("sex"),
+        "pump_goal"      : session.get("pumpGoal"),
+        "energy_goal"    : session.get("energyGoal"),
+        "focus_goal"     : session.get("focusGoal"),
+        "endurance_goal" : session.get("enduranceGoal"),
+        "strength_goal"  : session.get("strengthGoal"),
+        "stimulant"      : session.get("stimulant")
     })
 
     db.session.commit()

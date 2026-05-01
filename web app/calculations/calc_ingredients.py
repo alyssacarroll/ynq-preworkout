@@ -10,10 +10,10 @@ def set_user_info(user_age, user_lbs, user_sex, user_goals, user_stimulant):
     """sets global variables for user info so they can be used for caluclations.
 
     Args:
-        user_age (string): age range the user selected (e.g. "18-32")
-        user_lbs (int): user's weight in lbs
-        user_sex (string): user's sex (one of "female," "male," or "ignore")
-        user_goals (list): list of user's pre-workout goals (e.g. ["pump", "energy"])
+        user_age       (string): age range the user selected (e.g. "18-32")
+        user_lbs       (int):    user's weight in lbs
+        user_sex       (string): user's sex (one of "female," "male," or "ignore")
+        user_goals     (list):   list of user's pre-workout goals (e.g. ["pump", "energy"])
         user_stimulant (string): user's stimulant preference (one of "none," "low," "moderate," "high," or "any")
     """
     global age, kg, sex, goals, stim
