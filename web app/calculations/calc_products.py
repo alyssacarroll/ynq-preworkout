@@ -37,30 +37,30 @@ def score_product(product, ingredients):
     """counts how many product ingredients match the user's preferences
 
     Args:
-        product (dict): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
+        product     (dict): DSLD entry containing product info (ID, name, brand, ingredients, etc.)
         ingredients (dict): list of the ingredients that the user wants in their product
 
     Returns:
         int: number of ingredients that match the user's preferences
     """
     score = 0
-    if ingredients["caffeine"] != -1   and int(ingredients["caffeine"]) == int(product["Caffeine Blend"]):
+    if ingredients["caffeine"] != -1   and int(ingredients["caffeine"])     == int(product["Caffeine Blend"]):
         score += 1
-    if ingredients["beta"] != -1       and float(ingredients["beta"]) == float(product["Beta_Alanine"]):
+    if ingredients["beta"] != -1       and float(ingredients["beta"])       == float(product["Beta_Alanine"]):
         score += 1
-    if ingredients["creatine"] != -1   and float(ingredients["creatine"]) == float(product["Creatine"]):
+    if ingredients["creatine"] != -1   and float(ingredients["creatine"])   == float(product["Creatine"]):
         score += 1
-    if ingredients["betaine"] != -1    and float(ingredients["betaine"]) == float(product["Betaine"]):
+    if ingredients["betaine"] != -1    and float(ingredients["betaine"])    == float(product["Betaine"]):
         score += 1
-    if ingredients["taurine"] != -1    and float(ingredients["taurine"]) == float(product["Taurine"]):
+    if ingredients["taurine"] != -1    and float(ingredients["taurine"])    == float(product["Taurine"]):
         score += 1
     if ingredients["citrulline"] != -1 and float(ingredients["citrulline"]) == float(product["L_Citrulline"]):
         score += 1
-    if ingredients["theanine"] != -1   and float(ingredients["theanine"]) == float(product["L_Theanine"]):
+    if ingredients["theanine"] != -1   and float(ingredients["theanine"])   == float(product["L_Theanine"]):
         score += 1
-    if ingredients["tyrosine"] != -1   and float(ingredients["tyrosine"]) == float(product["L_Tyrosine"]):
+    if ingredients["tyrosine"] != -1   and float(ingredients["tyrosine"])   == float(product["L_Tyrosine"]):
         score += 1
-    if ingredients["agmatine"] != -1   and float(ingredients["agmatine"]) == float(product["Agmatine_Sulfate"]):
+    if ingredients["agmatine"] != -1   and float(ingredients["agmatine"])   == float(product["Agmatine_Sulfate"]):
         score += 1
         
     return score
